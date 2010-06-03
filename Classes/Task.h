@@ -38,4 +38,8 @@ typedef enum
 @property(nonatomic) BOOL completed;
 @property(nonatomic,retain) NSString * note;
 
+- (int) estimatedTimeMinutes;
+- (BOOL) isOverdue;
+- (NSString*) dueDateString;
+
 @end

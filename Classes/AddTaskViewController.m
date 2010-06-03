@@ -30,6 +30,31 @@
 		self.task.name=self.nameTextField.text;
 		self.task.note=self.notesTextView.text;
 		self.task.priority=self.prioritySegmentedControl.selectedSegmentIndex;
+		
+		switch(self.estimatedTimeSegmentedControl.selectedSegmentIndex)
+		{
+			case 0:// 2 min
+				self.task.estimatedTime=120;
+				break;
+			case 1:// 15 min
+				self.task.estimatedTime=240;
+				break;
+			case 2:// 1 hr
+				self.task.estimatedTime=3600;
+				break;
+			case 3:// 2 hr
+				self.task.estimatedTime=3600*2;
+				break;
+			case 4:// 4 hr
+				self.task.estimatedTime=3600*4;
+				break;
+			case 5:// 1 day
+				self.task.estimatedTime=3600*24;
+				break;
+		}
+		
+		
+		
 		if(delegate)
 		{
 			[delegate taskFormViewDone:self.task project:self.project editMode:self.editMode];
@@ -140,16 +165,33 @@
 		[cell.contentView addSubview:estimatedTimeSegmentedControl];
 	}
 	
-	/*if(self.task)
+	if(self.task)
 	{
-		estimatedTimeSegmentedControl.selectedSegmentIndex=self.task.priority;
+		int minutes=[self.task estimatedTimeMinutes];
+		switch (minutes) {
+			case 2:
+				estimatedTimeSegmentedControl.selectedSegmentIndex=0;
+				break;
+			case 15:
+				estimatedTimeSegmentedControl.selectedSegmentIndex=1;
+				break;
+			case 60:
+				estimatedTimeSegmentedControl.selectedSegmentIndex=2;
+				break;
+			case 120:
+				estimatedTimeSegmentedControl.selectedSegmentIndex=3;
+				break;
+			case 240:
+				estimatedTimeSegmentedControl.selectedSegmentIndex=4;
+				break;
+			case 1440:
+				estimatedTimeSegmentedControl.selectedSegmentIndex=5;
+				break;
+			default:
+				estimatedTimeSegmentedControl.selectedSegmentIndex=1; // default to 15 mins
+				break;
+		}
 	}
-	else 
-	{
-		estimatedTimeSegmentedControl.selectedSegmentIndex=TaskPriorityNormal;
-	}*/
-	
-	
 	
 	return cell;
 }
@@ -281,11 +323,12 @@
 		UILabel * label=[[UILabel alloc] initWithFrame:CGRectMake(10, 5, 100, 30)];
 		label.text=@"Notes:";
 		label.textColor=[UIColor grayColor];
+		label.backgroundColor=[UIColor clearColor];
 		label.font=[UIFont systemFontOfSize:18];
 		
 		//cell.textLabel.text=@"Notes:";
 		//cell.textLabel.frame=CGRectMake(5, 5, 100, 30);
-		UITextView * textView=[[UITextView alloc] initWithFrame:CGRectMake(5, 30, 450, 270)];
+		UITextView * textView=[[UITextView alloc] initWithFrame:CGRectMake(5, 30, 450, 170)];
 	
 		textView.backgroundColor=[UIColor clearColor];
 		textView.font=[UIFont systemFontOfSize:14];
@@ -317,26 +360,14 @@
 {
 	if(indexPath.section==2)
 	{
-		return 310;
+		return 210;
 	}
 	else 
 	{
 		return 44;
 	}
 }
-/*
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-		if(section==3)
-		{
-			return @"Task Notes:";
-		}
-		else 
-		{
-			return nil;
-		}
-}
-*/
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
 	return 3;
 }
@@ -364,13 +395,13 @@
 			{
 				switch (indexPath.row) {
 					case 0:
-						return [self getDueDateCell];
+						return [self getProjectCell];
 					case 1:
 						return [self getPriorityCell];
 					case 2:
-						return [self getEstimatedTimeCell];
+						return [self getDueDateCell];
 					case 3:
-						return [self getProjectCell];
+						return [self getEstimatedTimeCell];
 					default:
 						return nil;
 				}
@@ -405,7 +436,7 @@
 				
 			{
 				switch (indexPath.row) {
-					case 0:
+					case 2:
 						// choose due date from date picker control
 						//if(datePicker==nil)
 						//{
@@ -431,7 +462,7 @@
 						[self.datePickerPopover presentPopoverFromRect:CGRectMake(5,5,20,20) inView:datePickerOriginView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 						
 						break;
-					case 3:
+					case 0:
 						// choose project from list
 						//if (projectPicker == nil) {
 							self.projectPicker = [[ProjectPickerViewController alloc] 

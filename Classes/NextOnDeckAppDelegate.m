@@ -14,10 +14,15 @@
 #import "Project.h"
 #import "Task.h"
 #import "NextOnDeckProject.h"
+#import "UncompletedTasksProject.h"
+#import "DueDatesProject.h"
+#import "OverdueProject.h"
+#import "SomedayMaybeProject.h"
+#import "InboxProject.h"
 
 @implementation NextOnDeckAppDelegate
 
-@synthesize window, splitViewController, nextOnDeckProject, uncompletedTasksProject,projectsViewController, unassignedTasks,projectViewController,navigationController,projects;
+@synthesize window, splitViewController, somedayMaybeTasks,overdueProject,dueDatesProject,nextOnDeckProject, uncompletedTasksProject,projectsViewController, unassignedTasks,projectViewController,navigationController,projects;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -26,21 +31,31 @@
     
 	[self loadArchivedData];
 	
-	self.projectsViewController=[[ProjectsViewController alloc] init];
+	self.projectsViewController=[[ProjectsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	UINavigationController *projectsNavigationController = [[UINavigationController alloc] initWithRootViewController:projectsViewController];
-    projectsNavigationController.navigationBar.topItem.title=@"Projects";
-	
-	self.projectsViewController.projects=self.projects;
-	self.projectsViewController.unassignedTasks=self.unassignedTasks;
-	
-	self.projectViewController=[[ProjectViewController alloc] initWithNibName:@"ProjectView" bundle:nil];
+    //projectsNavigationController.navigationBar.topItem.title=@"Projects";
 	
 	NSMutableArray * allProjects=[NSMutableArray arrayWithArray:self.projects];
-	
 	[allProjects addObject:self.unassignedTasks];
 	
 	nextOnDeckProject=[[NextOnDeckProject alloc] initWithProjects:allProjects];
 	uncompletedTasksProject=[[UncompletedTasksProject alloc] initWithProjects:allProjects];
+	dueDatesProject=[[DueDatesProject alloc] initWithProjects:allProjects];
+	overdueProject=[[OverdueProject alloc] initWithProjects:allProjects];
+	
+	NSMutableArray * builtinProjects=[NSMutableArray new];
+	[builtinProjects addObject:unassignedTasks];
+	[builtinProjects addObject:overdueProject];
+	[builtinProjects addObject:nextOnDeckProject];
+	[builtinProjects addObject:dueDatesProject];
+	[builtinProjects addObject:somedayMaybeTasks];
+	
+	self.projectsViewController.userProjects=self.projects;
+	self.projectsViewController.builtinProjects=builtinProjects;
+	
+	[builtinProjects release];
+	
+	self.projectViewController=[[ProjectViewController alloc] initWithNibName:@"ProjectView" bundle:nil];
 	
 	self.projectsViewController.projectViewController=self.projectViewController;
 	self.projectViewController.project=nextOnDeckProject;
@@ -73,6 +88,15 @@
 			}
 		}
 	}
+	
+	for(Task * t in somedayMaybeTasks.tasks)
+	{	
+		if([t isEqual:task])
+		{
+			return somedayMaybeTasks;
+		}
+	}
+	
 	return unassignedTasks;
 }
 
@@ -97,6 +121,7 @@
 		self.projects=[unarchiver decodeObjectForKey:@"projects"];
 		
 		self.unassignedTasks=[unarchiver decodeObjectForKey:@"unassignedTasks"];
+		self.somedayMaybeTasks=[unarchiver decodeObjectForKey:@"somedayMaybeTasks"];
 		
 		[unarchiver finishDecoding];
 		
@@ -110,8 +135,12 @@
 	}
 	if(unassignedTasks==nil)
 	{
-		unassignedTasks=[[Project alloc] init];
-		unassignedTasks.name=@"Unassigned";
+		unassignedTasks=[[InboxProject alloc] init];
+		 
+	}
+	if(somedayMaybeTasks==nil)
+	{
+		somedayMaybeTasks=[[SomedayMaybeProject alloc] init];
 	}
 }
 
@@ -129,6 +158,7 @@
 		}
 		
 		[archiver encodeObject:unassignedTasks forKey:@"unassignedTasks"];
+		[archiver encodeObject:somedayMaybeTasks forKey:@"somedayMaybeTasks"];
 		
 		[archiver finishEncoding];
 		
@@ -161,6 +191,9 @@
 	[unassignedTasks release];
 	[nextOnDeckProject release];
 	[uncompletedTasksProject release];
+	[somedayMaybeTasks release];
+	[overdueProject release];
+	[dueDatesProject release];
     [super dealloc];
 }
 

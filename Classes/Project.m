@@ -7,6 +7,7 @@
 //
 
 #import "Project.h"
+#import "Task.h"
 
 @implementation Project
 @synthesize name,tasks;
@@ -22,7 +23,24 @@
 	}
 	return nil;
 }
-
+- (UIImage*) image
+{
+	return nil;
+}
+- (int) countUncompleted
+{
+	int count=0;
+	 
+	for(Task * t in self.tasks)
+	{
+		if(!t.completed)
+		{
+			count++;
+		}
+	}
+	 
+	return count;
+}
 - (void)encodeWithCoder:(NSCoder*)encoder
 {
 	[encoder encodeObject:name forKey:@"name"];

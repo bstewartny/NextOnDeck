@@ -44,6 +44,15 @@
 		B0CFBBDA11A8504400E02D89 /* NextOnDeckProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CFBBD911A8504400E02D89 /* NextOnDeckProject.m */; };
 		B0CFBC3111AB5A9700E02D89 /* UncompletedTasksProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CFBC3011AB5A9700E02D89 /* UncompletedTasksProject.m */; };
 		B0CFBC3411AB5ABA00E02D89 /* AggregateProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CFBC3311AB5ABA00E02D89 /* AggregateProject.m */; };
+		B0E067C511B6D9D7006AC173 /* DueDatesProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E067C411B6D9D7006AC173 /* DueDatesProject.m */; };
+		B0E067C811B6DA6E006AC173 /* OverdueProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E067C711B6DA6E006AC173 /* OverdueProject.m */; };
+		B0E0689411B741BA006AC173 /* All-mail-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0688F11B741BA006AC173 /* All-mail-icon.png */; };
+		B0E0689511B741BA006AC173 /* Baseball-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0689011B741BA006AC173 /* Baseball-icon.png */; };
+		B0E0689611B741BA006AC173 /* iCal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0689111B741BA006AC173 /* iCal-icon.png */; };
+		B0E0689711B741BA006AC173 /* money-bag-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0689211B741BA006AC173 /* money-bag-icon.png */; };
+		B0E0689811B741BA006AC173 /* Star-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0689311B741BA006AC173 /* Star-icon.png */; };
+		B0E068AB11B74310006AC173 /* SomedayMaybeProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E068AA11B74310006AC173 /* SomedayMaybeProject.m */; };
+		B0E068AE11B74377006AC173 /* InboxProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E068AD11B74377006AC173 /* InboxProject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +114,19 @@
 		B0CFBC3011AB5A9700E02D89 /* UncompletedTasksProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncompletedTasksProject.m; sourceTree = "<group>"; };
 		B0CFBC3211AB5ABA00E02D89 /* AggregateProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AggregateProject.h; sourceTree = "<group>"; };
 		B0CFBC3311AB5ABA00E02D89 /* AggregateProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AggregateProject.m; sourceTree = "<group>"; };
+		B0E067C311B6D9D7006AC173 /* DueDatesProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DueDatesProject.h; sourceTree = "<group>"; };
+		B0E067C411B6D9D7006AC173 /* DueDatesProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DueDatesProject.m; sourceTree = "<group>"; };
+		B0E067C611B6DA6E006AC173 /* OverdueProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverdueProject.h; sourceTree = "<group>"; };
+		B0E067C711B6DA6E006AC173 /* OverdueProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverdueProject.m; sourceTree = "<group>"; };
+		B0E0688F11B741BA006AC173 /* All-mail-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "All-mail-icon.png"; sourceTree = "<group>"; };
+		B0E0689011B741BA006AC173 /* Baseball-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Baseball-icon.png"; sourceTree = "<group>"; };
+		B0E0689111B741BA006AC173 /* iCal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iCal-icon.png"; sourceTree = "<group>"; };
+		B0E0689211B741BA006AC173 /* money-bag-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "money-bag-icon.png"; sourceTree = "<group>"; };
+		B0E0689311B741BA006AC173 /* Star-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star-icon.png"; sourceTree = "<group>"; };
+		B0E068A911B74310006AC173 /* SomedayMaybeProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SomedayMaybeProject.h; sourceTree = "<group>"; };
+		B0E068AA11B74310006AC173 /* SomedayMaybeProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SomedayMaybeProject.m; sourceTree = "<group>"; };
+		B0E068AC11B74377006AC173 /* InboxProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxProject.h; sourceTree = "<group>"; };
+		B0E068AD11B74377006AC173 /* InboxProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxProject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +182,14 @@
 				B0CFBC3311AB5ABA00E02D89 /* AggregateProject.m */,
 				B0AFDB7911ADF87100CDDD3E /* DatePickerViewController.h */,
 				B0AFDB7A11ADF87100CDDD3E /* DatePickerViewController.m */,
+				B0E067C311B6D9D7006AC173 /* DueDatesProject.h */,
+				B0E067C411B6D9D7006AC173 /* DueDatesProject.m */,
+				B0E067C611B6DA6E006AC173 /* OverdueProject.h */,
+				B0E067C711B6DA6E006AC173 /* OverdueProject.m */,
+				B0E068A911B74310006AC173 /* SomedayMaybeProject.h */,
+				B0E068AA11B74310006AC173 /* SomedayMaybeProject.m */,
+				B0E068AC11B74377006AC173 /* InboxProject.h */,
+				B0E068AD11B74377006AC173 /* InboxProject.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -196,6 +226,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B0E0688E11B741BA006AC173 /* Icons */,
 				B0CFBBD311A84F7800E02D89 /* icon.png */,
 				B0AFE1EB11A4A11D00ABB6DA /* selected.png */,
 				B0AFE1EC11A4A11D00ABB6DA /* unselected.png */,
@@ -224,6 +255,18 @@
 				2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B0E0688E11B741BA006AC173 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				B0E0688F11B741BA006AC173 /* All-mail-icon.png */,
+				B0E0689011B741BA006AC173 /* Baseball-icon.png */,
+				B0E0689111B741BA006AC173 /* iCal-icon.png */,
+				B0E0689211B741BA006AC173 /* money-bag-icon.png */,
+				B0E0689311B741BA006AC173 /* Star-icon.png */,
+			);
+			path = Icons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +333,11 @@
 				B00731EC11A74B6400689C9C /* ChooseProjectView.xib in Resources */,
 				B0CFBBD411A84F7800E02D89 /* icon.png in Resources */,
 				B0AFDB7711ADF7E100CDDD3E /* DatePickerView.xib in Resources */,
+				B0E0689411B741BA006AC173 /* All-mail-icon.png in Resources */,
+				B0E0689511B741BA006AC173 /* Baseball-icon.png in Resources */,
+				B0E0689611B741BA006AC173 /* iCal-icon.png in Resources */,
+				B0E0689711B741BA006AC173 /* money-bag-icon.png in Resources */,
+				B0E0689811B741BA006AC173 /* Star-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +367,10 @@
 				B0CFBC3111AB5A9700E02D89 /* UncompletedTasksProject.m in Sources */,
 				B0CFBC3411AB5ABA00E02D89 /* AggregateProject.m in Sources */,
 				B0AFDB7B11ADF87100CDDD3E /* DatePickerViewController.m in Sources */,
+				B0E067C511B6D9D7006AC173 /* DueDatesProject.m in Sources */,
+				B0E067C811B6DA6E006AC173 /* OverdueProject.m in Sources */,
+				B0E068AB11B74310006AC173 /* SomedayMaybeProject.m in Sources */,
+				B0E068AE11B74377006AC173 /* InboxProject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

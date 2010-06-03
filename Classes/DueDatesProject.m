@@ -1,34 +1,32 @@
 //
-//  NextOnDeckProject.m
+//  DueDatesProject.m
 //  NextOnDeck
 //
-//  Created by Robert Stewart on 5/22/10.
+//  Created by Robert Stewart on 6/2/10.
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "NextOnDeckProject.h"
+#import "DueDatesProject.h"
+#import "Project.h"
 #import "Task.h"
 
-@implementation NextOnDeckProject
+@implementation DueDatesProject
 
 - (id) initWithProjects:(NSArray*)projects
 {
 	if([super init])
 	{
 		self.projects=projects;
-		self.name=@"Next On Deck";
+		self.name=@"Scheduled Tasks";
 	}
 	return self;
 }
 - (UIImage*) image
 {
-	return [UIImage imageNamed:@"Baseball-icon.png"];
+	return [UIImage imageNamed:@"iCal-icon.png"];
 }
 - (NSMutableArray*) tasks
 {
-	NSLog(@"getTasks");
-	// get next task for each project...
-	// show next uncompleted task for each project
 	if(tasks)
 	{
 		[tasks release];
@@ -40,15 +38,14 @@
 	{
 		for(Task * task in project.tasks)
 		{
-			if(!task.completed)
+			if(task.dueDate)
 			{
 				[tasks addObject:task];
-				break;
 			}
 		}
 	}
 	
-	NSSortDescriptor * descriptor=[[NSSortDescriptor alloc] initWithKey:@"createdOn" ascending:YES];
+	NSSortDescriptor * descriptor=[[NSSortDescriptor alloc] initWithKey:@"dueDate" ascending:YES];
 	
 	// now sort by creation date 
 	[tasks sortUsingDescriptors:[NSArray arrayWithObject:descriptor]];

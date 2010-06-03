@@ -13,12 +13,13 @@
 
 @interface ProjectsViewController : UITableViewController {
     ProjectViewController *projectViewController;
-	NSMutableArray * projects;
-	Project * unassignedTasks;
+	NSMutableArray * userProjects;
+	NSMutableArray * builtinProjects;
 }
 
 @property (nonatomic, retain) IBOutlet ProjectViewController *projectViewController;
-@property (nonatomic,retain) NSMutableArray * projects;
-@property (nonatomic,retain) Project * unassignedTasks;
+@property (nonatomic,retain) NSMutableArray * userProjects;
+@property (nonatomic,retain) NSMutableArray * builtinProjects;
+
 
 @end
