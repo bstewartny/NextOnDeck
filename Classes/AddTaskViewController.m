@@ -11,7 +11,7 @@
 #import "Project.h"
 #import "DatePickerViewController.h"
 @implementation AddTaskViewController
-@synthesize tableView,task,navigationBar,prioritySegmentedControl,estimatedTimeSegmentedControl,formatter,actionButton,editMode,delegate,nameTextField,notesTextView,project,datePickerPopover,datePicker,projectPickerPopover,projectPicker;
+@synthesize tableView,pickedDate,task,navigationBar,prioritySegmentedControl,estimatedTimeSegmentedControl,formatter,actionButton,editMode,delegate,nameTextField,notesTextView,project,datePickerPopover,datePicker,projectPickerPopover,projectPicker;
 
 - (IBAction) cancel
 {
@@ -19,6 +19,70 @@
 }
 
 - (IBAction) done
+{
+	switch(addTaskMode)
+	{
+		case AddTaskModeSingle:
+			[self doneSingleMode];
+			break;
+		case AddTaskModeMultiple:
+			[self doneMultiMode];
+			break;
+	}
+}
+
+- (void) doneMultiMode
+{
+	if(self.notesTextView.text && [self.notesTextView.text length]>0)
+	{
+		// get multiple names from notes view...
+		NSArray * names=[self.notesTextView.text componentsSeparatedByString:@"\n"];
+		
+		//NSDate * dueDate=self.task.dueDate;
+		
+		for(NSString * name in names)
+		{
+			if(name==nil || [name length]==0) continue;
+			
+			self.task=[[Task  alloc] init];
+			 
+			self.task.name=name;
+			//self.task.note=self.notesTextView.text;
+			self.task.priority=self.prioritySegmentedControl.selectedSegmentIndex;
+			self.task.dueDate=self.pickedDate;
+			
+			switch(self.estimatedTimeSegmentedControl.selectedSegmentIndex)
+			{
+				case 0:// 2 min
+					self.task.estimatedTime=120;
+					break;
+				case 1:// 15 min
+					self.task.estimatedTime=240;
+					break;
+				case 2:// 1 hr
+					self.task.estimatedTime=3600;
+					break;
+				case 3:// 2 hr
+					self.task.estimatedTime=3600*2;
+					break;
+				case 4:// 4 hr
+					self.task.estimatedTime=3600*4;
+					break;
+				case 5:// 1 day
+					self.task.estimatedTime=3600*24;
+					break;
+			}
+		
+			if(delegate)
+			{
+				[delegate taskFormViewDone:self.task project:self.project editMode:self.editMode];
+			}
+		}
+	}
+	[[self parentViewController] dismissModalViewControllerAnimated:NO];
+}
+
+- (void) doneSingleMode
 {
 	if (self.nameTextField.text && [self.nameTextField.text length]>0) {
 	
@@ -30,7 +94,10 @@
 		self.task.name=self.nameTextField.text;
 		self.task.note=self.notesTextView.text;
 		self.task.priority=self.prioritySegmentedControl.selectedSegmentIndex;
-		
+		if(self.pickedDate)
+		{
+			self.task.dueDate=self.pickedDate;
+		}
 		switch(self.estimatedTimeSegmentedControl.selectedSegmentIndex)
 		{
 			case 0:// 2 min
@@ -52,8 +119,6 @@
 				self.task.estimatedTime=3600*24;
 				break;
 		}
-		
-		
 		
 		if(delegate)
 		{
@@ -78,15 +143,40 @@
 		self.navigationItem.title=@"New Task";
 		self.navigationBar.topItem.title=@"New Task";
 		
-		[self.actionButton setEnabled:NO];
+		UISegmentedControl * segmentedControl=[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Add One Task",@"Add Many Tasks",nil]];
+		segmentedControl.segmentedControlStyle=UISegmentedControlStyleBar;
+		[segmentedControl addTarget:self action:@selector(addTaskModeChanged:) forControlEvents:UIControlEventValueChanged];
+		segmentedControl.selectedSegmentIndex=0;
+		addTaskMode=AddTaskModeSingle;
+		self.navigationBar.topItem.titleView=segmentedControl;
 		
-
+		[segmentedControl release];
+		
+		[self.actionButton setEnabled:NO];
 	}
 	
+	//self.pickedDate=[NSDate date];
 	
 	formatter=[[NSDateFormatter alloc] init];
 	
 	[formatter setDateFormat:@"MMM d, yyyy h:mm a"];
+}
+
+- (void) addTaskModeChanged:(id)sender
+{
+	NSLog(@"addTaskModeChanged");
+	UISegmentedControl * segmentedControl=sender;
+	
+	switch(segmentedControl.selectedSegmentIndex)
+	{
+		case 0:
+			addTaskMode=AddTaskModeSingle;
+			break;
+		case 1:
+			addTaskMode=AddTaskModeMultiple;
+			break;
+	}
+	[tableView reloadData];
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -308,7 +398,54 @@
 	
 	return cell;
 }
-
+- (UITableViewCell*) getMultiNamesCell
+{
+	static NSString * cellIdentifier=@"getMultiNamesCell";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+	if(cell==nil)
+	{
+		cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.selectionStyle=UITableViewCellSelectionStyleNone;
+		
+		UILabel * label=[[UILabel alloc] initWithFrame:CGRectMake(10, 5, 250, 30)];
+		label.text=@"Titles (one per line):";
+		label.textColor=[UIColor grayColor];
+		label.backgroundColor=[UIColor clearColor];
+		label.font=[UIFont systemFontOfSize:18];
+		
+		//cell.textLabel.text=@"Notes:";
+		//cell.textLabel.frame=CGRectMake(5, 5, 100, 30);
+		UITextView * textView=[[UITextView alloc] initWithFrame:CGRectMake(5, 30, 450, 170)];
+		
+		textView.backgroundColor=[UIColor clearColor];
+		textView.font=[UIFont systemFontOfSize:14];
+		
+		self.notesTextView=textView;
+		
+		
+		[[self notesTextView] becomeFirstResponder];
+		//textView.delegate=self;
+		
+		/*if(self.editMode)
+		{
+			if(self.task)
+			{
+				textView.text=self.task.note;
+			}
+		}*/
+		
+		
+		[cell.contentView addSubview:textView];
+		[cell.contentView addSubview:label];
+		
+		[label release];
+		[textView release];
+	}
+	
+	return cell;
+}
 - (UITableViewCell*) getNotesCell
 {
 	static NSString * cellIdentifier=@"notesCell";
@@ -358,34 +495,101 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.section==2)
+	if(addTaskMode==AddTaskModeMultiple)
 	{
-		return 210;
+		if(indexPath.section==0)
+		{
+			return 210;
+		}
+		else 
+		{
+			return 44;
+		}
 	}
-	else 
-	{
-		return 44;
+	else {
+		if(indexPath.section==2)
+		{
+			return 210;
+		}
+		else 
+		{
+			return 44;
+		}
 	}
+
+	
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
-	return 3;
+	if(addTaskMode==AddTaskModeMultiple)
+	{
+		return 2;
+	}
+	else {
+		return 3;
+	}
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    switch (section) {
+    if(addTaskMode==AddTaskModeMultiple)
+	{
+		switch (section) {
 		case 0:
 			return 1;
 		case 1:
 			return 4;
-		case 2:
-			return 1;
 		default:
 			return 1;
+		}
 	}
+	else {
+		switch (section) {
+			case 0:
+				return 1;
+			case 1:
+				return 4;
+			case 2:
+				return 1;
+			default:
+				return 1;
+		}
+	}
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if(addTaskMode==AddTaskModeMultiple)
+	{
+		switch (indexPath.section) {
+				
+			case 0:
+				return [self getMultiNamesCell];
+				
+			case 1:
+			{
+				switch (indexPath.row) {
+					case 0:
+						return [self getProjectCell];
+					case 1:
+						return [self getPriorityCell];
+					case 2:
+						return [self getDueDateCell];
+					case 3:
+						return [self getEstimatedTimeCell];
+					default:
+						return nil;
+				}
+			}
+				
+			 
+				
+			default:
+				return nil;
+		}
+	}
+	else
+	
+	{
 		switch (indexPath.section) {
 				
 			case 0:
@@ -413,12 +617,14 @@
 			default:
 				return nil;
 		}
+	}
 }
 
 
 - (void) pickedDueDate:(NSDate*)dueDate
 {
 	self.task.dueDate=dueDate;
+	self.pickedDate=dueDate;
 	[self.datePickerPopover dismissPopoverAnimated:YES];
 
 	[self.tableView reloadData];
@@ -447,15 +653,25 @@
 													initWithContentViewController:datePicker];
 						//}
 						
-						self.datePicker.dueDate=self.task.dueDate;
+						
 						self.datePicker.delegate=self;
 						if(self.task.dueDate)
 						{
 							self.datePicker.datePicker.date=self.task.dueDate;
+							self.datePicker.dueDate=self.task.dueDate;
 						}
 						else 
 						{
-							self.datePicker.datePicker.date=[NSDate date];
+							if(self.pickedDate)
+							{
+								self.datePicker.datePicker.date=self.pickedDate;
+							}
+							else {
+								self.datePicker.datePicker.date=[NSDate date];
+							}
+
+							self.datePicker.dueDate=self.pickedDate;
+
 						}
 						[self.datePicker release];
 						
@@ -528,6 +744,7 @@
 	[projectPickerPopover release];
 	[datePickerPopover release];
 	[projectPicker release];
+	[pickedDate release];
 	[datePicker release];
 	[navigationBar release];
 	[actionButton release];

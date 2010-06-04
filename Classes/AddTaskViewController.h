@@ -14,9 +14,19 @@
 @class Task;
 @class Project;
 
+typedef enum
+{	
+	AddTaskModeSingle,
+	AddTaskModeMultiple
+}
+AddTaskMode;
+
+
+
 @interface AddTaskViewController : UIViewController <UITextViewDelegate> {
 	IBOutlet UITableView * tableView;
 	Task * task;
+	NSDate * pickedDate;
 	Project * project;
 	UITextField * nameTextField;
 	UITextView * notesTextView;
@@ -33,12 +43,13 @@
 	NSDateFormatter * formatter;
 	UISegmentedControl * prioritySegmentedControl;
 	UISegmentedControl * estimatedTimeSegmentedControl;
-	
+	AddTaskMode addTaskMode;
 }
 
 @property(nonatomic,retain) IBOutlet UITableView * tableView;
 @property(nonatomic,retain) Task * task;
 @property(nonatomic,retain) Project * project;
+@property(nonatomic,retain) NSDate * pickedDate;
 
 @property(nonatomic,assign) id delegate;
 @property(nonatomic,retain) UITextField * nameTextField;

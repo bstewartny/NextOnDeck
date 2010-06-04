@@ -29,6 +29,9 @@
 		B0AFE33711A7045900ABB6DA /* TextFieldTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AFE33611A7045900ABB6DA /* TextFieldTableViewCell.m */; };
 		B0AFE33B11A7070400ABB6DA /* TaskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AFE33A11A7070400ABB6DA /* TaskDetailViewController.m */; };
 		B0AFE33D11A707CA00ABB6DA /* TaskDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE33C11A707CA00ABB6DA /* TaskDetailView.xib */; };
+		B0BBCF6311B9789100C8FF2E /* Unchecked-Transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = B0BBCF6111B9789100C8FF2E /* Unchecked-Transparent.png */; };
+		B0BBCF6411B9789100C8FF2E /* GreenChecked-Transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = B0BBCF6211B9789100C8FF2E /* GreenChecked-Transparent.png */; };
+		B0BBCF7B11B97AC400C8FF2E /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0BBCF7A11B97AC400C8FF2E /* icon.png */; };
 		B0C03E461176256D00E356DA /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C03E451176256D00E356DA /* Task.m */; };
 		B0C03E4B1176257400E356DA /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C03E4A1176257400E356DA /* Project.m */; };
 		B0C03E5311762E3F00E356DA /* ProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C03E5211762E3F00E356DA /* ProjectViewController.m */; };
@@ -40,7 +43,6 @@
 		B0CD6C6911A43272003BCF02 /* ProjectFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CD6C6811A43272003BCF02 /* ProjectFormViewController.m */; };
 		B0CD6CA511A43DE3003BCF02 /* TaskFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CD6CA411A43DE3003BCF02 /* TaskFormViewController.m */; };
 		B0CD6CBB11A43F31003BCF02 /* TaskFormView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0CD6CBA11A43F31003BCF02 /* TaskFormView.xib */; };
-		B0CFBBD411A84F7800E02D89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0CFBBD311A84F7800E02D89 /* icon.png */; };
 		B0CFBBDA11A8504400E02D89 /* NextOnDeckProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CFBBD911A8504400E02D89 /* NextOnDeckProject.m */; };
 		B0CFBC3111AB5A9700E02D89 /* UncompletedTasksProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CFBC3011AB5A9700E02D89 /* UncompletedTasksProject.m */; };
 		B0CFBC3411AB5ABA00E02D89 /* AggregateProject.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CFBC3311AB5ABA00E02D89 /* AggregateProject.m */; };
@@ -89,6 +91,9 @@
 		B0AFE33911A7070400ABB6DA /* TaskDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDetailViewController.h; sourceTree = "<group>"; };
 		B0AFE33A11A7070400ABB6DA /* TaskDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDetailViewController.m; sourceTree = "<group>"; };
 		B0AFE33C11A707CA00ABB6DA /* TaskDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskDetailView.xib; sourceTree = "<group>"; };
+		B0BBCF6111B9789100C8FF2E /* Unchecked-Transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Unchecked-Transparent.png"; sourceTree = "<group>"; };
+		B0BBCF6211B9789100C8FF2E /* GreenChecked-Transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreenChecked-Transparent.png"; sourceTree = "<group>"; };
+		B0BBCF7A11B97AC400C8FF2E /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		B0C03E441176256D00E356DA /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
 		B0C03E451176256D00E356DA /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
 		B0C03E491176257400E356DA /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
@@ -107,7 +112,6 @@
 		B0CD6CA311A43DE3003BCF02 /* TaskFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskFormViewController.h; sourceTree = "<group>"; };
 		B0CD6CA411A43DE3003BCF02 /* TaskFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskFormViewController.m; sourceTree = "<group>"; };
 		B0CD6CBA11A43F31003BCF02 /* TaskFormView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskFormView.xib; sourceTree = "<group>"; };
-		B0CFBBD311A84F7800E02D89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		B0CFBBD811A8504400E02D89 /* NextOnDeckProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextOnDeckProject.h; sourceTree = "<group>"; };
 		B0CFBBD911A8504400E02D89 /* NextOnDeckProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextOnDeckProject.m; sourceTree = "<group>"; };
 		B0CFBC2F11AB5A9700E02D89 /* UncompletedTasksProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncompletedTasksProject.h; sourceTree = "<group>"; };
@@ -226,8 +230,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B0BBCF7A11B97AC400C8FF2E /* icon.png */,
+				B0BBCF6111B9789100C8FF2E /* Unchecked-Transparent.png */,
+				B0BBCF6211B9789100C8FF2E /* GreenChecked-Transparent.png */,
 				B0E0688E11B741BA006AC173 /* Icons */,
-				B0CFBBD311A84F7800E02D89 /* icon.png */,
 				B0AFE1EB11A4A11D00ABB6DA /* selected.png */,
 				B0AFE1EC11A4A11D00ABB6DA /* unselected.png */,
 				B0AFE17E11A47E7400ABB6DA /* checkbox_checked.png */,
@@ -331,13 +337,15 @@
 				B0AFE33D11A707CA00ABB6DA /* TaskDetailView.xib in Resources */,
 				B007318D11A7434600689C9C /* AddTaskView.xib in Resources */,
 				B00731EC11A74B6400689C9C /* ChooseProjectView.xib in Resources */,
-				B0CFBBD411A84F7800E02D89 /* icon.png in Resources */,
 				B0AFDB7711ADF7E100CDDD3E /* DatePickerView.xib in Resources */,
 				B0E0689411B741BA006AC173 /* All-mail-icon.png in Resources */,
 				B0E0689511B741BA006AC173 /* Baseball-icon.png in Resources */,
 				B0E0689611B741BA006AC173 /* iCal-icon.png in Resources */,
 				B0E0689711B741BA006AC173 /* money-bag-icon.png in Resources */,
 				B0E0689811B741BA006AC173 /* Star-icon.png in Resources */,
+				B0BBCF6311B9789100C8FF2E /* Unchecked-Transparent.png in Resources */,
+				B0BBCF6411B9789100C8FF2E /* GreenChecked-Transparent.png in Resources */,
+				B0BBCF7B11B97AC400C8FF2E /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

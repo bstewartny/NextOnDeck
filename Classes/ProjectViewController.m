@@ -289,10 +289,10 @@
 		
 		toggleButton=[UIButton buttonWithType:UIButtonTypeCustom];
 		
-		[toggleButton setImage:[UIImage imageNamed:@"unselected.png"] forState:UIControlStateNormal];
+		[toggleButton setImage:[UIImage imageNamed:@"Unchecked-Transparent.png"] forState:UIControlStateNormal];
 		[toggleButton addTarget:self action:@selector(toggleRow:) forControlEvents:UIControlEventTouchDown];
 		toggleButton.tag=1;
-		toggleButton.frame=CGRectMake(10, 10, 23, 23);
+		toggleButton.frame=CGRectMake(10, 10, 25, 25);
 		
 		[cell.contentView addSubview:toggleButton];
 		
@@ -349,12 +349,12 @@
 	
 	if(task.completed)
 	{
-		[toggleButton setImage:[UIImage imageNamed:@"selected.png"] forState:UIControlStateNormal];
+		[toggleButton setImage:[UIImage imageNamed:@"GreenChecked-Transparent.png"] forState:UIControlStateNormal];
 		nameLabel.textColor=[UIColor lightGrayColor];
 	}
 	else 
 	{
-		[toggleButton setImage:[UIImage imageNamed:@"unselected.png"] forState:UIControlStateNormal];
+		[toggleButton setImage:[UIImage imageNamed:@"Unchecked-Transparent.png"] forState:UIControlStateNormal];
 		nameLabel.textColor=[UIColor blackColor];
 	}
 	
@@ -386,13 +386,13 @@
 	
 	if (!task.completed) 
 	{
-		[button setImage:[UIImage imageNamed:@"selected.png"] forState:UIControlStateNormal];
+		[button setImage:[UIImage imageNamed:@"GreenChecked-Transparent.png"] forState:UIControlStateNormal];
 		task.completed=YES;
 		task.completedOn=[NSDate date];
 	}
 	else 
 	{
-		[button setImage:[UIImage imageNamed:@"unselected.png"] forState:UIControlStateNormal];
+		[button setImage:[UIImage imageNamed:@"Unchecked-Transparent.png"] forState:UIControlStateNormal];
 		task.completed=NO;
 		task.completedOn=nil;
 	}

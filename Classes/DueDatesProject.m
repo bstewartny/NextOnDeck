@@ -38,9 +38,12 @@
 	{
 		for(Task * task in project.tasks)
 		{
-			if(task.dueDate)
+			if(!task.completed)
 			{
-				[tasks addObject:task];
+				if(task.dueDate)
+				{
+					[tasks addObject:task];
+				}
 			}
 		}
 	}
