@@ -7,7 +7,7 @@
 //
 
 #import "NextOnDeckAppDelegate.h"
-
+#import <QuartzCore/QuartzCore.h>
 
 #import "ProjectsViewController.h"
 #import "ProjectViewController.h"
@@ -34,6 +34,7 @@
 	self.projectsViewController=[[ProjectsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	UINavigationController *projectsNavigationController = [[UINavigationController alloc] initWithRootViewController:projectsViewController];
     //projectsNavigationController.navigationBar.topItem.title=@"Projects";
+	//projectsNavigationController.navigationBar.barStyle=UIBarStyleBlack;
 	
 	NSMutableArray * allProjects=[NSMutableArray arrayWithArray:self.projects];
 	[allProjects addObject:self.unassignedTasks];
@@ -62,10 +63,19 @@
 	self.projectViewController.aggregateView=YES;
 	
 	self.navigationController=[[UINavigationController alloc] initWithRootViewController:projectViewController];
+	//navigationController.navigationBar.barStyle=UIBarStyleBlack;
+	
+	//self.navigationController.view.backgroundColor=[UIColor grayColor];
+	//self.navigationController.view.layer.cornerRadius=8;
+	//self.navigationController.view.layer.borderWidth=10;
+	//self.navigationController.view.layer.shadowRadius=4;
+	//self.navigationController.view.layer.shadowColor=[UIColor grayColor].CGColor;
+	
 	
 	self.splitViewController=[[UISplitViewController alloc] init];
 	
 	self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsNavigationController,navigationController,nil];
+	//self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsViewController,navigationController,nil];
 	self.splitViewController.delegate=self.projectViewController;
 	
     // Add the split view controller's view to the window and display.

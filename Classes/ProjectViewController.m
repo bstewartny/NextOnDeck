@@ -14,12 +14,28 @@
 #import "TaskFormViewController.h"
 #import "BlankToolbar.h"
 #import "AddTaskViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation ProjectViewController
 @synthesize  popoverController,project,taskTableView,aggregateView;
 
 - (void) viewWillAppear:(BOOL)animated
 {
+	
+	
+	
+	//self.taskTableView.frame=CGRectInset(self.view.bounds, 10, 10);
+	
+	//self.taskTableView.layer.cornerRadius=8;
+	//self.taskTableView.layer.borderWidth=10;
+	//self.taskTableView.layer.shadowRadius=4;
+	//self.taskTableView.layer.shadowColor=[UIColor lightGrayColor].CGColor;
+	
+	
+	
+	
+	
+	//[self.taskTableView setNeedsLayout];
 	[self.taskTableView reloadData];
 	[super viewWillAppear:animated];
 }
@@ -37,8 +53,15 @@
 		self.navigationItem.title=self.project.name;
 	}
 	
+	//self.view.backgroundColor=[UIColor grayColor];
+	
+	//self.view.layer.shadowColor=[UIColor blackColor].CGColor;
+	//self.view.layer.shadowOpacity=0.8;
+	//self.view.layer.shadowRadius=4;
+	//self.view.layer.shadowOffset = CGSizeMake(4.0f, 4.0f);
+	
 	// create a toolbar to have two buttons in the right
-	BlankToolbar* tools = [[BlankToolbar alloc] initWithFrame:CGRectMake(0, 0, 150, 44.01)];
+	BlankToolbar* tools = [[BlankToolbar alloc] initWithFrame:CGRectMake(0, 0, 250, 44.01)];
 	
 	tools.backgroundColor=[UIColor clearColor];
 	tools.opaque=NO;
@@ -52,6 +75,30 @@
 	// create a spacer to push items to the right
 	bi= [[UIBarButtonItem alloc]
 		 initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	[buttons addObject:bi];
+	[bi release];
+	
+	// refresh button
+	bi=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
+	[buttons addObject:bi];
+	[bi release];
+	
+	// create a spacer
+	bi = [[UIBarButtonItem alloc]
+		  initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	bi.width=10;
+	[buttons addObject:bi];
+	[bi release];
+	
+	// action button
+	bi=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(action:)];
+	[buttons addObject:bi];
+	[bi release];
+	
+	// create a spacer
+	bi = [[UIBarButtonItem alloc]
+		  initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	bi.width=10;
 	[buttons addObject:bi];
 	[bi release];
 	
@@ -89,6 +136,14 @@
 	[tools release];
 }
 
+- (void)refresh:(id)sender
+{
+}
+
+- (void)action:(id)sender
+{
+}
+
 - (void)edit:(id)sender
 {
 	UIBarButtonItem * editButton=(UIBarButtonItem*)sender;
@@ -118,7 +173,6 @@
 	}
 	else
 	{
-		
 		taskFormView.project=self.project;
 	}
 	
@@ -201,14 +255,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	//if(aggregateView)
-	//{
-	//	return 60;
-	//}
-	////else 
-	//{
-		return 44;
-	//}
+	return 44;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

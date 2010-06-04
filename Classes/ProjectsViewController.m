@@ -12,10 +12,12 @@
 #import "Project.h"
 #import "ProjectFormViewController.h"
 #import "NextOnDeckProject.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation ProjectsViewController
 
 @synthesize projectViewController,userProjects,builtinProjects;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -29,6 +31,8 @@
 	[self.navigationController.navigationBar.topItem setLeftBarButtonItem:editButton animated:NO];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:@"projectDataChanged" object:nil];
 	[editButton release];
+	
+		 
 }
 
 - (void)handleNotification:(NSNotification*)notification
@@ -80,8 +84,6 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
-	//[self.tableView setBackgroundView:nil];
-   // self.tableView.backgroundColor=[UIColor blackColor];
 	return 2;
 }
 
