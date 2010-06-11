@@ -19,6 +19,7 @@
 #import "OverdueProject.h"
 #import "SomedayMaybeProject.h"
 #import "InboxProject.h"
+#import "ProjectCollection.h"
 
 @implementation NextOnDeckAppDelegate
 
@@ -36,8 +37,13 @@
     //projectsNavigationController.navigationBar.topItem.title=@"Projects";
 	//projectsNavigationController.navigationBar.barStyle=UIBarStyleBlack;
 	
-	NSMutableArray * allProjects=[NSMutableArray arrayWithArray:self.projects];
-	[allProjects addObject:self.unassignedTasks];
+	ProjectCollection * allProjects=[[ProjectCollection alloc] init];
+	
+	[allProjects.projectArrays addObject:[NSArray arrayWithObject:self.unassignedTasks]];
+	[allProjects.projectArrays addObject:self.projects];
+	
+	//NSMutableArray * allProjects=[NSMutableArray arrayWithArray:self.projects];
+	//[allProjects addObject:self.unassignedTasks];
 	
 	nextOnDeckProject=[[NextOnDeckProject alloc] initWithProjects:allProjects];
 	uncompletedTasksProject=[[UncompletedTasksProject alloc] initWithProjects:allProjects];

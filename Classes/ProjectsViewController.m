@@ -73,6 +73,8 @@
 	// show new project in detail view
 	
 	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
+	
 	[self.tableView reloadData];
 	
 	//[self showProject:project];

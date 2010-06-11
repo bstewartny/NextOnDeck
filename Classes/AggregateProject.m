@@ -7,12 +7,12 @@
 //
 
 #import "AggregateProject.h"
-
+#import "ProjectCollection.h"
 
 @implementation AggregateProject
 @synthesize projects;
 
-- (id) initWithProjects:(NSArray*)projects
+- (id) initWithProjects:(ProjectCollection*)projects
 {
 	if([super init])
 	{

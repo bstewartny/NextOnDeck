@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "Project.h"
+@class ProjectCollection;
 
 @interface AggregateProject : Project {
-	NSArray * projects;
+	ProjectCollection * projects;
 }
-@property(nonatomic,retain) NSArray * projects;
+@property(nonatomic,retain) ProjectCollection * projects;
 
-- (id) initWithProjects:(NSArray*)projects;
+- (id) initWithProjects:(ProjectCollection*)projects;
 @end

@@ -19,6 +19,7 @@
 		B007318D11A7434600689C9C /* AddTaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B007318C11A7434600689C9C /* AddTaskView.xib */; };
 		B00731EA11A74AA900689C9C /* ProjectPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B00731E911A74AA900689C9C /* ProjectPickerViewController.m */; };
 		B00731EC11A74B6400689C9C /* ChooseProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00731EB11A74B6400689C9C /* ChooseProjectView.xib */; };
+		B050EE4311C1BFDE0070BA14 /* ProjectCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B050EE4211C1BFDE0070BA14 /* ProjectCollection.m */; };
 		B0AFDB7711ADF7E100CDDD3E /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */; };
 		B0AFDB7B11ADF87100CDDD3E /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AFDB7A11ADF87100CDDD3E /* DatePickerViewController.m */; };
 		B0AFE18011A47E7400ABB6DA /* checkbox_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE17E11A47E7400ABB6DA /* checkbox_checked.png */; };
@@ -77,6 +78,8 @@
 		B00731E811A74AA900689C9C /* ProjectPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectPickerViewController.h; sourceTree = "<group>"; };
 		B00731E911A74AA900689C9C /* ProjectPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectPickerViewController.m; sourceTree = "<group>"; };
 		B00731EB11A74B6400689C9C /* ChooseProjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseProjectView.xib; sourceTree = "<group>"; };
+		B050EE4111C1BFDE0070BA14 /* ProjectCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectCollection.h; sourceTree = "<group>"; };
+		B050EE4211C1BFDE0070BA14 /* ProjectCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectCollection.m; sourceTree = "<group>"; };
 		B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
 		B0AFDB7911ADF87100CDDD3E /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		B0AFDB7A11ADF87100CDDD3E /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
@@ -194,6 +197,8 @@
 				B0E068AA11B74310006AC173 /* SomedayMaybeProject.m */,
 				B0E068AC11B74377006AC173 /* InboxProject.h */,
 				B0E068AD11B74377006AC173 /* InboxProject.m */,
+				B050EE4111C1BFDE0070BA14 /* ProjectCollection.h */,
+				B050EE4211C1BFDE0070BA14 /* ProjectCollection.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -379,6 +384,7 @@
 				B0E067C811B6DA6E006AC173 /* OverdueProject.m in Sources */,
 				B0E068AB11B74310006AC173 /* SomedayMaybeProject.m in Sources */,
 				B0E068AE11B74377006AC173 /* InboxProject.m in Sources */,
+				B050EE4311C1BFDE0070BA14 /* ProjectCollection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

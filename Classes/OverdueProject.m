@@ -9,10 +9,11 @@
 #import "OverdueProject.h"
 #import "Project.h"
 #import "Task.h"
+#import "ProjectCollection.h"
 
 @implementation OverdueProject
 
-- (id) initWithProjects:(NSArray*)projects
+- (id) initWithProjects:(ProjectCollection*)projects
 {
 	if([super init])
 	{
@@ -34,7 +35,7 @@
 	
 	tasks=[[NSMutableArray alloc] init];
 	
-	for(Project * project in self.projects)
+	for(Project * project in self.projects.projects)
 	{
 		for(Task * task in project.tasks)
 		{
