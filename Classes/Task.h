@@ -7,39 +7,25 @@
 //
 
 #import <Foundation/Foundation.h>
-
-typedef enum
-{
-	TaskPriorityLow=0,
-	TaskPriorityNormal=1,
-	TaskPriorityHigh=2
-} TaskPriority;
-
-
+#import <CoreData/CoreData.h>
 
 @class Project;
-@interface Task : NSObject <NSCoding>{
-	NSString * name;
-	NSDate * createdOn;
-	NSDate * completedOn;
-	BOOL completed;
-	NSString * note;
-	NSDate * dueDate;
-	TaskPriority priority;
-	NSTimeInterval estimatedTime;
-	 
+@interface Task : NSManagedObject{
 }
 @property(nonatomic,retain) NSString * name;
 @property(nonatomic,retain) NSDate * createdOn;
 @property(nonatomic,retain) NSDate * completedOn;
 @property(nonatomic,retain) NSDate * dueDate;
-@property(nonatomic) TaskPriority priority;
-@property(nonatomic) NSTimeInterval estimatedTime;
-@property(nonatomic) BOOL completed;
+@property(nonatomic,retain) Project * project;
+@property(nonatomic,retain) NSNumber * completed;
 @property(nonatomic,retain) NSString * note;
 
-- (int) estimatedTimeMinutes;
 - (BOOL) isOverdue;
+
 - (NSString*) dueDateString;
+
+- (BOOL) isCompleted;
+
+//- (void) setCompleted:(BOOL)completed;
 
 @end

@@ -7,18 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <CoreData/CoreData.h>
 
 @class ProjectsViewController;
 @class ProjectViewController;
 @class Project;
 @class Task;
-@class NextOnDeckProject;
-@class UncompletedTasksProject;
-@class DueDatesProject;
-@class OverdueProject;
-@class InboxProject;
-@class SomedayMaybeProject;
+//@class NextOnDeckProject;
+//@class UncompletedTasksProject;
+///@class DueDatesProject;
+//@class OverdueProject;
+//@class InboxProject;
+//@class SomedayMaybeProject;
 
 
 @interface NextOnDeckAppDelegate : NSObject <UIApplicationDelegate> {
@@ -34,13 +34,17 @@
 	
 	NSMutableArray * projects;
 	
-	InboxProject * unassignedTasks;
-	SomedayMaybeProject * somedayMaybeTasks;
+	//InboxProject * unassignedTasks;
+	//SomedayMaybeProject * somedayMaybeTasks;
+	//
+	//NextOnDeckProject * nextOnDeckProject;
+	//UncompletedTasksProject * uncompletedTasksProject;
+	//DueDatesProject * dueDatesProject;
+	//OverdueProject * overdueProject;
 	
-	NextOnDeckProject * nextOnDeckProject;
-	UncompletedTasksProject * uncompletedTasksProject;
-	DueDatesProject * dueDatesProject;
-	OverdueProject * overdueProject;
+	NSManagedObjectModel *managedObjectModel;
+    NSManagedObjectContext *managedObjectContext;	    
+    NSPersistentStoreCoordinator *persistentStoreCoordinator;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -49,12 +53,12 @@
 @property (nonatomic, retain) IBOutlet ProjectsViewController *projectsViewController;
 @property (nonatomic, retain) IBOutlet ProjectViewController *projectViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-@property (nonatomic,retain) InboxProject * unassignedTasks;
-@property (nonatomic,retain) SomedayMaybeProject * somedayMaybeTasks;
-@property (nonatomic, retain) NextOnDeckProject * nextOnDeckProject;
-@property (nonatomic, retain) UncompletedTasksProject * uncompletedTasksProject;
-@property (nonatomic, retain) DueDatesProject * dueDatesProject;
-@property (nonatomic, retain) OverdueProject * overdueProject;
+//@property (nonatomic,retain) InboxProject * unassignedTasks;
+//@property (nonatomic,retain) SomedayMaybeProject * somedayMaybeTasks;
+//@property (nonatomic, retain) NextOnDeckProject * nextOnDeckProject;
+//@property (nonatomic, retain) UncompletedTasksProject * uncompletedTasksProject;
+//@property (nonatomic, retain) DueDatesProject * dueDatesProject;
+//@property (nonatomic, retain) OverdueProject * overdueProject;
 
 
 - (void) loadArchivedData;

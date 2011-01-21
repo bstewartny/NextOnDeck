@@ -19,6 +19,7 @@
 	{
 		self.projects=projects;
 		self.name=@"Today";
+		self.headerTitle=@"These tasks are due today.";
 	}
 	return self;
 }

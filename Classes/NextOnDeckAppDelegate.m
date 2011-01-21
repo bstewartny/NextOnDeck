@@ -13,17 +13,17 @@
 #import "ProjectViewController.h"
 #import "Project.h"
 #import "Task.h"
-#import "NextOnDeckProject.h"
-#import "UncompletedTasksProject.h"
-#import "DueDatesProject.h"
-#import "OverdueProject.h"
-#import "SomedayMaybeProject.h"
-#import "InboxProject.h"
+//#import "NextOnDeckProject.h"
+//#import "UncompletedTasksProject.h"
+//#import "DueDatesProject.h"
+//#import "OverdueProject.h"
+//#import "SomedayMaybeProject.h"
+//#import "InboxProject.h"
 #import "ProjectCollection.h"
 
 @implementation NextOnDeckAppDelegate
 
-@synthesize window, splitViewController, somedayMaybeTasks,overdueProject,dueDatesProject,nextOnDeckProject, uncompletedTasksProject,projectsViewController, unassignedTasks,projectViewController,navigationController,projects;
+@synthesize window, splitViewController,projectsViewController,projectViewController,navigationController,projects;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -39,23 +39,23 @@
 	
 	ProjectCollection * allProjects=[[ProjectCollection alloc] init];
 	
-	[allProjects.projectArrays addObject:[NSArray arrayWithObject:self.unassignedTasks]];
+	//[allProjects.projectArrays addObject:[NSArray arrayWithObject:self.unassignedTasks]];
 	[allProjects.projectArrays addObject:self.projects];
 	
 	//NSMutableArray * allProjects=[NSMutableArray arrayWithArray:self.projects];
 	//[allProjects addObject:self.unassignedTasks];
 	
-	nextOnDeckProject=[[NextOnDeckProject alloc] initWithProjects:allProjects];
-	uncompletedTasksProject=[[UncompletedTasksProject alloc] initWithProjects:allProjects];
-	dueDatesProject=[[DueDatesProject alloc] initWithProjects:allProjects];
-	overdueProject=[[OverdueProject alloc] initWithProjects:allProjects];
+	//nextOnDeckProject=[[NextOnDeckProject alloc] initWithProjects:allProjects];
+	//uncompletedTasksProject=[[UncompletedTasksProject alloc] initWithProjects:allProjects];
+	//dueDatesProject=[[DueDatesProject alloc] initWithProjects:allProjects];
+	//overdueProject=[[OverdueProject alloc] initWithProjects:allProjects];
 	
 	NSMutableArray * builtinProjects=[NSMutableArray new];
-	[builtinProjects addObject:unassignedTasks];
-	[builtinProjects addObject:overdueProject];
-	[builtinProjects addObject:nextOnDeckProject];
-	[builtinProjects addObject:dueDatesProject];
-	[builtinProjects addObject:somedayMaybeTasks];
+	//[builtinProjects addObject:unassignedTasks];
+	//[builtinProjects addObject:overdueProject];
+	//[builtinProjects addObject:nextOnDeckProject];
+	//[builtinProjects addObject:dueDatesProject];
+	//[builtinProjects addObject:somedayMaybeTasks];
 	
 	self.projectsViewController.userProjects=self.projects;
 	self.projectsViewController.builtinProjects=builtinProjects;
@@ -80,6 +80,19 @@
 	
 	self.splitViewController=[[UISplitViewController alloc] init];
 	
+	//splitViewController.view.layer.borderWidth=5.0;
+	//splitViewController.view.layer.borderColor=[UIColor blueColor].CGColor;
+	
+	//navigationController.view.layer.borderWidth=5.0;
+	//navigationController.view.layer.borderColor=[UIColor blackColor].CGColor;
+	//navigationController.view.layer.cornerRadius=10.0;
+	
+	//projectsNavigationController.view.layer.borderWidth=5.0;
+	//projectsNavigationController.view.layer.borderColor=[UIColor blackColor].CGColor;
+	//projectsNavigationController.view.layer.cornerRadius=10.0;
+	
+	
+	
 	self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsNavigationController,navigationController,nil];
 	//self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsViewController,navigationController,nil];
 	self.splitViewController.delegate=self.projectViewController;
@@ -91,37 +104,193 @@
     return YES;
 }
 
-- (Project*) findProjectForTask:(Task*)task
+-(Project*) inboxProject
 {
-	// a hack way to get the project for a task...
-	for(Project * project in self.projects)
+	return [self createNewProject:@"_inbox" description:@"These tasks are not added to any projects."]; 
+}
+
+-(Project*) somedayProject
+{
+	return [self createNewProject:@"_someday" description:@"These tasks are for the future."]; 
+}
+
+-(Project*) createNewProject:(NSString*)name description:(NSString*)description
+{
+	NSLog(@"createNewProject: %@",name);
+	Project * existing=[self getProjectByName:name];
+	if(existing) return existing;
+	Project * newProject=[NSEntityDescription insertNewObjectForEntityForName:@"Project" inManagedObjectContext:[self managedObjectContext]];
+	newProject.name=name;
+	newProject.description=description;
+	newProject.createdOn=[NSDate date];
+	[newProject save];
+	return newProject;
+}
+
+-(Project*) getProjectByName:(NSString*)name
+{
+	NSLog(@"getProjectByName: %@",name);
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"name=0",name ];
+	
+	NSArray * results= [self searchObjects:@"Project" predicate:predicate sortKey:@"createdOn" sortAscending:YES];
+	
+	if([results count]>0)
 	{
-		for(Task * t in project.tasks)
+		return [results objectAtIndex:0];
+	}
+	else 
+	{
+		NSLog(@"No project exists: %@",name);
+		return nil;
+	}
+}
+
+-(NSArray *) uncompletedTasks
+{
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"completed=0" ];
+	
+	return [self searchObjects:@"Task" predicate:predicate sortKey:@"createdOn" sortAscending:YES];
+}
+
+-(NSArray *) overdueTasks
+{
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"completed=0 AND dueDate <= @",[NSDate date]];
+	
+	return [self searchObjects:@"Task" predicate:predicate sortKey:@"createdOn" sortAscending:YES];
+}
+
+-(NSArray *) nextOnDeckTasks
+{
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"completed=0"];
+	
+	NSMutableArray * results=[[[NSMutableArray alloc] init] autorelease];
+	
+	for(Project * project in [self allProjects])
+	{
+		// pick one task per project 
+		// TODO: enumerate tasks in duedate/createdate order...
+		for(Task * task in project.tasks)
 		{
-			if([t isEqual:task])
+			if(!(task.isCompleted))
 			{
-				return project;
+				[results addObject:task];
 			}
 		}
 	}
 	
-	for(Task * t in somedayMaybeTasks.tasks)
-	{	
-		if([t isEqual:task])
-		{
-			return somedayMaybeTasks;
-		}
-	}
-	
-	return unassignedTasks;
+	return results;
 }
 
+- (NSArray*) allProjects
+{
+	return [self searchObjects:@"Project" predicate:nil sortKey:@"createdOn" sortAscending:YES];
+}
+
+-(NSArray *) completedTasks
+{
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"completed=1"];
+	
+	return [self searchObjects:@"Task" predicate:predicate sortKey:@"createdOn" sortAscending:YES];
+}
+
+-(NSArray *) todayTasks
+{
+	return [self tasksForDate:[NSDate date]];
+}
+
+-(NSArray *) tasksForDate:(NSDate*)date
+{
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"dueDate>=@ AND dueDate<@",date.date,[date.date addTimeInterval:60*60*24]];
+	
+	return [self searchObjects:@"Task" predicate:predicate sortKey:@"createdOn" sortAscending:YES];
+}
+
+-(NSArray *) searchObjects: (NSString*) entityName predicate: (NSPredicate *) predicate sortKey: (NSString*) sortKey sortAscending: (BOOL) sortAscending
+{
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:[self managedObjectContext]];
+	[request setEntity:entity];
+	
+	// If a predicate was passed, pass it to the query
+	if(predicate != nil)
+	{
+		[request setPredicate:predicate];
+	}
+	
+	// If a sort key was passed, use it for sorting.
+	if(sortKey != nil)
+	{
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:sortAscending];
+		NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+		[request setSortDescriptors:sortDescriptors];
+		[sortDescriptors release];
+		[sortDescriptor release];
+	}
+	
+	NSError *error;
+	
+	NSMutableArray *mutableFetchResults = [[[[self managedObjectContext] executeFetchRequest:request error:&error] mutableCopy] autorelease];
+	
+	[request release];
+	
+	return mutableFetchResults;
+}
 
 - (NSString *)dataFilePath
 {
 	NSArray * paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString * documentsDirectory = [paths objectAtIndex:0];
 	return [documentsDirectory stringByAppendingPathComponent:@"archive"];
+}
+
+- (NSManagedObjectModel*)managedObjectModel 
+{
+	if (managedObjectModel) return managedObjectModel;
+	
+	managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];    
+	
+	return managedObjectModel;
+}
+
+- (NSPersistentStoreCoordinator*)persistentStoreCoordinator 
+{
+	if (persistentStoreCoordinator) return persistentStoreCoordinator;
+	
+	NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"InfoNgen.sqlite"]];
+	
+	persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+	
+	NSError *error = nil;
+	[persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error];
+	
+	return persistentStoreCoordinator;
+}
+- (NSManagedObjectContext *) managedObjectContext {
+	
+    if (managedObjectContext != nil) {
+        return managedObjectContext;
+    }
+	managedObjectContext=[self createNewManagedObjectContext:NSMergeByPropertyStoreTrumpMergePolicy];
+	//managedObjectContext=[self createNewManagedObjectContext:NSRollbackMergePolicy];
+	
+	return managedObjectContext;
+}
+
+- (NSManagedObjectContext *) createNewManagedObjectContext:(id)mergePolicy
+{
+	NSManagedObjectContext * moc=nil;
+	NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+	if (coordinator != nil) {
+		moc = [[NSManagedObjectContext alloc] init];
+		[moc setPersistentStoreCoordinator: coordinator];
+		[moc setMergePolicy:mergePolicy];
+		//[moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+		//[moc setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
+		
+		
+		
+	}
+	return moc;
 }
 
 - (void) loadArchivedData
@@ -198,6 +367,9 @@
 #pragma mark Memory management
 
 - (void)dealloc {
+	[managedObjectContext release];
+    [managedObjectModel release];
+    [persistentStoreCoordinator release];
     [splitViewController release];
 	[navigationController release];
 	[projectsViewController release];

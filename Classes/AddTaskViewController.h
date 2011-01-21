@@ -9,7 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ProjectPickerViewController.h"
-#import "DatePickerViewController.h"
+#import "DateViewController.h"
 
 @class Task;
 @class Project;
@@ -23,7 +23,7 @@ AddTaskMode;
 
 
 
-@interface AddTaskViewController : UIViewController <UITextViewDelegate> {
+@interface AddTaskViewController : UIViewController <UITextViewDelegate,DateViewDelegate> {
 	IBOutlet UITableView * tableView;
 	Task * task;
 	NSDate * pickedDate;
@@ -33,7 +33,7 @@ AddTaskMode;
 	id delegate;
 	UIPopoverController * projectPickerPopover;
 	UIPopoverController * datePickerPopover;
-	DatePickerViewController * datePicker;
+	//DateViewController * datePicker;
 	ProjectPickerViewController * projectPicker;
 	BOOL editMode;
 	UIView * projectPickerOriginView;
@@ -41,8 +41,8 @@ AddTaskMode;
 	IBOutlet UINavigationBar * navigationBar;
 	IBOutlet UIBarButtonItem * actionButton;
 	NSDateFormatter * formatter;
-	UISegmentedControl * prioritySegmentedControl;
-	UISegmentedControl * estimatedTimeSegmentedControl;
+	//UISegmentedControl * prioritySegmentedControl;
+	//UISegmentedControl * estimatedTimeSegmentedControl;
 	AddTaskMode addTaskMode;
 }
 
@@ -58,20 +58,21 @@ AddTaskMode;
 @property(nonatomic,retain) UIPopoverController * datePickerPopover;
 
 @property(nonatomic,retain) ProjectPickerViewController * projectPicker;
-@property(nonatomic,retain) DatePickerViewController * datePicker;
+//@property(nonatomic,retain) DateViewController * datePicker;
 
 @property(nonatomic,retain) IBOutlet UINavigationBar * navigationBar;
 @property(nonatomic,retain) IBOutlet UIBarButtonItem * actionButton;
 @property(nonatomic,retain) NSDateFormatter * formatter;
 
-@property(nonatomic,retain) UISegmentedControl * prioritySegmentedControl;
-@property(nonatomic,retain) UISegmentedControl * estimatedTimeSegmentedControl;
+//@property(nonatomic,retain) UISegmentedControl * prioritySegmentedControl;
+//@property(nonatomic,retain) UISegmentedControl * estimatedTimeSegmentedControl;
 
 
 @property(nonatomic) BOOL editMode;
 
 - (IBAction) cancel;
 - (IBAction) done;
-
+- (void) pickedDate:(NSDate*) date;
+- (void) cancelledDatePicker;
 - (IBAction) actionTouch:(id)sender;
 @end

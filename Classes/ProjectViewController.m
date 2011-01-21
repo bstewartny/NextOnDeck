@@ -7,7 +7,7 @@
 //
 
 #import "ProjectViewController.h"
-#import "TaskViewController.h"
+//#import "TaskViewController.h"
 #import "Project.h"
 #import "Task.h"
 #import "TaskDetailViewController.h"
@@ -370,7 +370,12 @@
 			dueDateLabel.textColor=[UIColor blueColor];
 		}
 	}
-	
+	else 
+	{
+		dueDateLabel.text=[task completedOnString];
+		dueDateLabel.textColor=[UIColor greenColor];
+	}
+
 	cell.tag=task;
 	
 	[nameLabel setText:task.name];
@@ -514,7 +519,10 @@ moveRowAtIndexPath:(NSIndexPath*)fromIndexPath
 	
 	[task1 release];
 }
-
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	return self.project.description;
+}
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -529,7 +537,7 @@ moveRowAtIndexPath:(NSIndexPath*)fromIndexPath
 	[popoverController release];
     [project release];
 	[taskTableView release];
-	
+	//[headerTitle release];
     [super dealloc];
 }
 

@@ -25,7 +25,7 @@
 @property(nonatomic,retain) NSDateFormatter * formatter;
 
 
-
+- (IBAction) dateValueChanged;
 - (IBAction) done;
 - (IBAction) cancel;
 

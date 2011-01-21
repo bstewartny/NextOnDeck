@@ -16,6 +16,7 @@
 	if([super init])
 	{
 		self.name=@"Inbox";
+		self.description=@"These tasks are not added to any projects.";
 	}
 	return self;
 }

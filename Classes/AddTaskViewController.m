@@ -10,8 +10,9 @@
 #import "Task.h"
 #import "Project.h"
 #import "DatePickerViewController.h"
+
 @implementation AddTaskViewController
-@synthesize tableView,pickedDate,task,navigationBar,prioritySegmentedControl,estimatedTimeSegmentedControl,formatter,actionButton,editMode,delegate,nameTextField,notesTextView,project,datePickerPopover,datePicker,projectPickerPopover,projectPicker;
+@synthesize tableView,pickedDate,task,navigationBar,formatter,actionButton,editMode,delegate,nameTextField,notesTextView,project,datePickerPopover,projectPickerPopover,projectPicker;//prioritySegmentedControl,estimatedTimeSegmentedControl,
 
 - (IBAction) cancel
 {
@@ -38,41 +39,18 @@
 		// get multiple names from notes view...
 		NSArray * names=[self.notesTextView.text componentsSeparatedByString:@"\n"];
 		
-		//NSDate * dueDate=self.task.dueDate;
-		
 		for(NSString * name in names)
 		{
+			// TODO: strip trailing whitespace and trailing commas from tasks...
+			
 			if(name==nil || [name length]==0) continue;
 			
 			self.task=[[Task  alloc] init];
 			 
 			self.task.name=name;
-			//self.task.note=self.notesTextView.text;
-			self.task.priority=self.prioritySegmentedControl.selectedSegmentIndex;
+		
 			self.task.dueDate=self.pickedDate;
 			
-			switch(self.estimatedTimeSegmentedControl.selectedSegmentIndex)
-			{
-				case 0:// 2 min
-					self.task.estimatedTime=120;
-					break;
-				case 1:// 15 min
-					self.task.estimatedTime=240;
-					break;
-				case 2:// 1 hr
-					self.task.estimatedTime=3600;
-					break;
-				case 3:// 2 hr
-					self.task.estimatedTime=3600*2;
-					break;
-				case 4:// 4 hr
-					self.task.estimatedTime=3600*4;
-					break;
-				case 5:// 1 day
-					self.task.estimatedTime=3600*24;
-					break;
-			}
-		
 			if(delegate)
 			{
 				[delegate taskFormViewDone:self.task project:self.project editMode:self.editMode];
@@ -91,34 +69,13 @@
 			task=[[Task  alloc] init];
 		}
 		
-		self.task.name=self.nameTextField.text;
+		self.task.name=self.nameTextField.text; // TODO: strip trailing whitespace
 		self.task.note=self.notesTextView.text;
-		self.task.priority=self.prioritySegmentedControl.selectedSegmentIndex;
-		if(self.pickedDate)
-		{
+		
+		//if(self.pickedDate)
+		//{
 			self.task.dueDate=self.pickedDate;
-		}
-		switch(self.estimatedTimeSegmentedControl.selectedSegmentIndex)
-		{
-			case 0:// 2 min
-				self.task.estimatedTime=120;
-				break;
-			case 1:// 15 min
-				self.task.estimatedTime=240;
-				break;
-			case 2:// 1 hr
-				self.task.estimatedTime=3600;
-				break;
-			case 3:// 2 hr
-				self.task.estimatedTime=3600*2;
-				break;
-			case 4:// 4 hr
-				self.task.estimatedTime=3600*4;
-				break;
-			case 5:// 1 day
-				self.task.estimatedTime=3600*24;
-				break;
-		}
+		//}
 		
 		if(delegate)
 		{
@@ -155,11 +112,14 @@
 		[self.actionButton setEnabled:NO];
 	}
 	
-	//self.pickedDate=[NSDate date];
+	if(self.task)
+	{
+		self.pickedDate=self.task.dueDate;
+	}
 	
 	formatter=[[NSDateFormatter alloc] init];
 	
-	[formatter setDateFormat:@"MMM d, yyyy h:mm a"];
+	[formatter setDateFormat:@"MMM d, yyyy"];
 }
 
 - (void) addTaskModeChanged:(id)sender
@@ -196,96 +156,6 @@
 		
 	return YES;
 }
-
-- (UITableViewCell*) getPriorityCell
-{
-	static NSString * cellIdentifier=@"priorityCell";
-	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-	if(cell==nil)
-	{
-		cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-		cell.selectionStyle=UITableViewCellSelectionStyleNone;
-		
-		cell.textLabel.text=@"Priority:";
-		cell.textLabel.textColor=[UIColor grayColor];
-		cell.textLabel.font=[UIFont systemFontOfSize:18];
-		
-		prioritySegmentedControl=[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Low",@"Normal",@"High",nil]];
-		
-		prioritySegmentedControl.frame=CGRectMake(120,8,350,30);
-		
-		[cell.contentView addSubview:prioritySegmentedControl];
-	}
-	
-	if(self.task)
-	{
-		prioritySegmentedControl.selectedSegmentIndex=self.task.priority;
-	}
-	else 
-	{
-		prioritySegmentedControl.selectedSegmentIndex=TaskPriorityNormal;
-	}
-
-	
-	
-	return cell;
-}
-
-- (UITableViewCell*) getEstimatedTimeCell
-{
-	static NSString * cellIdentifier=@"estimatedTimeCell";
-	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-	if(cell==nil)
-	{
-		cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-		cell.selectionStyle=UITableViewCellSelectionStyleNone;
-		
-		cell.textLabel.text=@"Est. Time:";
-		cell.textLabel.textColor=[UIColor grayColor];
-		cell.textLabel.font=[UIFont systemFontOfSize:18];
-		
-		estimatedTimeSegmentedControl=[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"2min",@"15min",@"1hr",@"2hr",@"4hr",@"1day",nil]];
-		
-		estimatedTimeSegmentedControl.frame=CGRectMake(120,8,350,30);
-		
-		[cell.contentView addSubview:estimatedTimeSegmentedControl];
-	}
-	
-	if(self.task)
-	{
-		int minutes=[self.task estimatedTimeMinutes];
-		switch (minutes) {
-			case 2:
-				estimatedTimeSegmentedControl.selectedSegmentIndex=0;
-				break;
-			case 15:
-				estimatedTimeSegmentedControl.selectedSegmentIndex=1;
-				break;
-			case 60:
-				estimatedTimeSegmentedControl.selectedSegmentIndex=2;
-				break;
-			case 120:
-				estimatedTimeSegmentedControl.selectedSegmentIndex=3;
-				break;
-			case 240:
-				estimatedTimeSegmentedControl.selectedSegmentIndex=4;
-				break;
-			case 1440:
-				estimatedTimeSegmentedControl.selectedSegmentIndex=5;
-				break;
-			default:
-				estimatedTimeSegmentedControl.selectedSegmentIndex=1; // default to 15 mins
-				break;
-		}
-	}
-	
-	return cell;
-}
-
 - (UITableViewCell*) getNameCell
 {
 	static NSString * cellIdentifier=@"nameCell";
@@ -359,10 +229,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	// gather changes user made to properties...
-	//self.task.name='';
-	//self.task.note='';
-	
 	[super viewWillDisappear:animated];
 }
 
@@ -374,8 +240,6 @@
     
 	if(cell==nil)
 	{
-	
-	
 		cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
 		cell.selectionStyle=UITableViewCellSelectionStyleNone;
 		cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
@@ -385,14 +249,21 @@
 		cell.textLabel.font=[UIFont systemFontOfSize:18];
 
 	}
-	if(self.task.dueDate)
+	/*if(self.task.dueDate)
 	{
 		cell.detailTextLabel.text=[formatter stringFromDate:self.task.dueDate];
 	}
 	else
-	{
-		cell.detailTextLabel.text=@"(None)";
-	}
+	{*/
+		if(self.pickedDate)
+		{
+			cell.detailTextLabel.text=[formatter stringFromDate:self.pickedDate];
+		}
+		else 
+		{
+			cell.detailTextLabel.text=@"(No due date)";
+		}
+	//}
 	
 	datePickerOriginView=cell.detailTextLabel;
 	
@@ -415,8 +286,6 @@
 		label.backgroundColor=[UIColor clearColor];
 		label.font=[UIFont systemFontOfSize:18];
 		
-		//cell.textLabel.text=@"Notes:";
-		//cell.textLabel.frame=CGRectMake(5, 5, 100, 30);
 		UITextView * textView=[[UITextView alloc] initWithFrame:CGRectMake(5, 30, 450, 170)];
 		
 		textView.backgroundColor=[UIColor clearColor];
@@ -426,16 +295,6 @@
 		
 		
 		[[self notesTextView] becomeFirstResponder];
-		//textView.delegate=self;
-		
-		/*if(self.editMode)
-		{
-			if(self.task)
-			{
-				textView.text=self.task.note;
-			}
-		}*/
-		
 		
 		[cell.contentView addSubview:textView];
 		[cell.contentView addSubview:label];
@@ -463,8 +322,6 @@
 		label.backgroundColor=[UIColor clearColor];
 		label.font=[UIFont systemFontOfSize:18];
 		
-		//cell.textLabel.text=@"Notes:";
-		//cell.textLabel.frame=CGRectMake(5, 5, 100, 30);
 		UITextView * textView=[[UITextView alloc] initWithFrame:CGRectMake(5, 30, 450, 170)];
 	
 		textView.backgroundColor=[UIColor clearColor];
@@ -472,8 +329,6 @@
 	
 		self.notesTextView=textView;
 		
-		//textView.delegate=self;
-	
 		if(self.editMode)
 		{
 			if(self.task)
@@ -482,7 +337,6 @@
 			}
 		}
 	
-		
 		[cell.contentView addSubview:textView];
 		[cell.contentView addSubview:label];
 		
@@ -506,7 +360,8 @@
 			return 44;
 		}
 	}
-	else {
+	else 
+	{
 		if(indexPath.section==2)
 		{
 			return 210;
@@ -516,8 +371,6 @@
 			return 44;
 		}
 	}
-
-	
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
@@ -525,7 +378,8 @@
 	{
 		return 2;
 	}
-	else {
+	else 
+	{
 		return 3;
 	}
 }
@@ -533,79 +387,71 @@
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
     if(addTaskMode==AddTaskModeMultiple)
 	{
-		switch (section) {
+		switch (section) 
+		{
 		case 0:
 			return 1;
 		case 1:
-			return 4;
+			return 2;
 		default:
 			return 1;
 		}
 	}
 	else {
-		switch (section) {
+		switch (section) 
+		{
 			case 0:
 				return 1;
 			case 1:
-				return 4;
+				return 2;
 			case 2:
 				return 1;
 			default:
 				return 1;
 		}
 	}
-
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(addTaskMode==AddTaskModeMultiple)
 	{
-		switch (indexPath.section) {
-				
+		switch (indexPath.section) 
+		{
 			case 0:
 				return [self getMultiNamesCell];
 				
 			case 1:
 			{
-				switch (indexPath.row) {
+				switch (indexPath.row) 
+				{
 					case 0:
 						return [self getProjectCell];
 					case 1:
-						return [self getPriorityCell];
-					case 2:
 						return [self getDueDateCell];
-					case 3:
-						return [self getEstimatedTimeCell];
 					default:
 						return nil;
 				}
 			}
-				
-			 
 				
 			default:
 				return nil;
 		}
 	}
 	else
-	
 	{
-		switch (indexPath.section) {
-				
+		switch (indexPath.section) 
+		{
 			case 0:
 				return [self getNameCell];
 				
 			case 1:
 			{
-				switch (indexPath.row) {
+				switch (indexPath.row) 
+				{
 					case 0:
 						return [self getProjectCell];
 					case 1:
-						return [self getPriorityCell];
-					case 2:
 						return [self getDueDateCell];
-					case 3:
-						return [self getEstimatedTimeCell];
 					default:
 						return nil;
 				}
@@ -620,92 +466,90 @@
 	}
 }
 
-
-- (void) pickedDueDate:(NSDate*)dueDate
+- (void) pickedDate:(NSDate*)dueDate
 {
-	self.task.dueDate=dueDate;
+	/*if(self.task)
+	{
+		self.task.dueDate=dueDate;
+	}*/
 	self.pickedDate=dueDate;
 	[self.datePickerPopover dismissPopoverAnimated:YES];
 
 	[self.tableView reloadData];
 }
+
 - (void) cancelledDatePicker
 {
 	[self.datePickerPopover dismissPopoverAnimated:YES];
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-		switch (indexPath.section) {
-				
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	switch (indexPath.section) 
+	{
 			case 1:
-				
 			{
-				switch (indexPath.row) {
-					case 2:
+				switch (indexPath.row) 
+				{
+					case 1:
+					{
+						self.datePickerPopover=nil;
+						
 						// choose due date from date picker control
-						//if(datePicker==nil)
-						//{
-							self.datePicker=[[DatePickerViewController alloc] initWithNibName:@"DatePickerView" bundle:nil];
-							
-							
-							self.datePickerPopover=[[UIPopoverController alloc]
-													initWithContentViewController:datePicker];
-						//}
+						DateViewController * dateView=[[DateViewController alloc] init];
 						
+						dateView.delegate=self;
 						
-						self.datePicker.delegate=self;
-						if(self.task.dueDate)
+						/*if(self.task.dueDate)
 						{
-							self.datePicker.datePicker.date=self.task.dueDate;
-							self.datePicker.dueDate=self.task.dueDate;
+							dateView.date=self.task.dueDate;
 						}
 						else 
-						{
-							if(self.pickedDate)
-							{
-								self.datePicker.datePicker.date=self.pickedDate;
-							}
-							else {
-								self.datePicker.datePicker.date=[NSDate date];
-							}
-
-							self.datePicker.dueDate=self.pickedDate;
-
-						}
-						[self.datePicker release];
+						{*/
+							//if(self.pickedDate)
+							//{
+								dateView.date=self.pickedDate;
+							//}
+						//}
 						
-						[self.datePickerPopover presentPopoverFromRect:CGRectMake(5,5,20,20) inView:datePickerOriginView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+						UIPopoverController * datePopover=[[UIPopoverController alloc]
+														   initWithContentViewController:dateView];
+							
+						self.datePickerPopover=datePopover;
 						
+						[datePopover release];
+						
+						[dateView release];
+						
+						[self.datePickerPopover presentPopoverFromRect:CGRectMake(5,5,20,20) inView:datePickerOriginView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+					}
 						break;
 					case 0:
 						// choose project from list
-						//if (projectPicker == nil) {
-							self.projectPicker = [[ProjectPickerViewController alloc] 
+						self.projectPicker = [[ProjectPickerViewController alloc] 
 												  initWithStyle:UITableViewStylePlain];
-							self.projectPicker.delegate = self;
+						self.projectPicker.delegate = self;
 							
-							NSMutableArray * allProjects=[[NSMutableArray alloc] init];
+						NSMutableArray * allProjects=[[NSMutableArray alloc] init];
 							
-							[allProjects addObject:[[[UIApplication sharedApplication] delegate] unassignedTasks] ];
+						[allProjects addObject:[[[UIApplication sharedApplication] delegate] unassignedTasks] ];
 							
-							for (Project * p in [[[UIApplication sharedApplication] delegate] projects]) {
-								[allProjects addObject:p];
-							}
+						for (Project * p in [[[UIApplication sharedApplication] delegate] projects]) 
+						{
+							[allProjects addObject:p];
+						}
 							
-							self.projectPicker.projects=allProjects;
+						self.projectPicker.projects=allProjects;
 							
-							self.projectPickerPopover = [[UIPopoverController alloc] 
+						self.projectPickerPopover = [[UIPopoverController alloc] 
 														 initWithContentViewController:projectPicker];               
-						//}
+						
 						[self.projectPicker release];
 						
-						//[self.projectPickerPopover presentPopoverFromRect:CGRectMake(450, 150, 20, 20) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 						[self.projectPickerPopover presentPopoverFromRect:CGRectMake(5, 5, 20, 20) inView:projectPickerOriginView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 						
 				}
 			}
-				
 		}
 }
 
@@ -730,6 +574,7 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
+
 - (IBAction) actionTouch:(id)sender
 {
 	
@@ -745,12 +590,10 @@
 	[datePickerPopover release];
 	[projectPicker release];
 	[pickedDate release];
-	[datePicker release];
+	//[datePicker release];
 	[navigationBar release];
 	[actionButton release];
 	[formatter release];
-	[prioritySegmentedControl release];
-	[estimatedTimeSegmentedControl release];
     [super dealloc];
 }
 

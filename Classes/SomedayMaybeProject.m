@@ -16,6 +16,7 @@
 	if([super init])
 	{
 		self.name=@"Someday/Maybe";
+		self.headerTitle=@"These tasks are for the future.";
 	}
 	return self;
 }

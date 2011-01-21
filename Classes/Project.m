@@ -10,22 +10,30 @@
 #import "Task.h"
 
 @implementation Project
-@synthesize name,tasks;
+@synthesize name,tasks,notes,description,createdOn;
 
-- (id) init
+- (void) save
 {
-	if ([super init]) 
-	{
-		NSMutableArray * tmp=[[NSMutableArray alloc] init];
-		self.tasks=tmp;
-		[tmp release];
-		return self;
-	}
-	return nil;
+	[[self managedObjectContext] save];
 }
-- (UIImage*) image
+
+- (void) delete	
 {
-	return nil;
+	[[self managedObjectContext] deleteObject:self];
+}
+- (void) addNewTask:(NSString*)name note:(NSString*)note dueDate:(NSDate *)dueDate
+{
+	Task * task=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[self managedObjectContext]];
+	
+	task.name=name;
+	task.note=note;
+	task.dueDate=dueDate;
+	task.createdOn=[NSDate date];
+	task.completed=[NSNumber numberWithBool:NO];
+	task.project=self;
+	
+	[task save];
+	
 }
 - (int) countUncompleted
 {
@@ -41,27 +49,6 @@
 	 
 	return count;
 }
-- (void)encodeWithCoder:(NSCoder*)encoder
-{
-	[encoder encodeObject:name forKey:@"name"];
-	[encoder encodeObject:tasks forKey:@"tasks"];
-}
 
-- (id)initWithCoder:(NSCoder*)decoder
-{
-	if(self==[super init])
-	{
-		self.name=[decoder decodeObjectForKey:@"name"];
-		self.tasks=[decoder decodeObjectForKey:@"tasks"];
-	}
-	return self;
-}
-
-- (void) dealloc
-{
-	[name release];
-	[tasks release];
-	[super dealloc];
-}
 
 @end

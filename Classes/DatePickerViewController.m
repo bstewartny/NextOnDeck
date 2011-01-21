@@ -16,7 +16,11 @@
 {
 	[delegate pickedDueDate:self.dueDate];
 }
-
+- (IBAction) dateValueChanged
+{
+	NSLog(@"dateValueChanged");
+	self.dueDate=self.datePicker.date;
+}
 - (IBAction) cancel
 {
 	[delegate cancelledDatePicker];
@@ -25,6 +29,10 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	datePicker=[[UIDatePicker alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
+	//self.datePicker.autoresizingMask=UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	//[self.view addSubview:self.datePicker];
 	
 	if(dueDate!=nil)
 	{
@@ -37,7 +45,7 @@
 
 	formatter=[[NSDateFormatter alloc] init];
 
-	[formatter setDateFormat:@"MMM d, yyyy h:mm a"];
+	[formatter setDateFormat:@"MMM d, yyyy"];
 	
 }
 
@@ -56,7 +64,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -77,14 +85,24 @@
 		}
 		dueDateLabel=cell.detailTextLabel;
 	}
-	else 
+	if(indexPath.row==1)
 	{
+
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         cell.accessoryType = UITableViewCellAccessoryNone;
 		cell.selectionStyle=UITableViewCellSelectionStyleBlue;
 		cell.textLabel.text=@"No Due Date";
 	}
-	
+	if(indexPath.row==2)
+	{
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.selectionStyle=UITableViewCellSelectionStyleNone;
+		
+		[cell.contentView addSubview:datePicker];
+		
+		//cell.textLabel.text=@"No Due Date";
+	}
 	return cell;
 }
 

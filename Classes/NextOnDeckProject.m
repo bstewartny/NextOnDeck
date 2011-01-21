@@ -18,6 +18,7 @@
 	{
 		self.projects=projects;
 		self.name=@"Next On Deck";
+		self.description=@"These tasks should be performed next.";
 	}
 	return self;
 }

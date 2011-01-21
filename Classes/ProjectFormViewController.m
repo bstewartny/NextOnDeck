@@ -10,7 +10,7 @@
 #import "Project.h"
  
 @implementation ProjectFormViewController
-@synthesize textField,project,delegate;
+@synthesize textField,project,delegate,descriptionField;
 
 - (IBAction) cancel
 {
@@ -27,6 +27,7 @@
 		}
 	
 		self.project.name=self.textField.text;
+		self.project.description=self.descriptionField.text;
 	
 		if(delegate)
 		{
@@ -91,6 +92,7 @@
 
 - (void)dealloc {
 	[textField release];
+	[descriptionField release];
 	[project release];
     [super dealloc];
 }

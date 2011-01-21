@@ -9,23 +9,28 @@
 #import "Task.h"
 
 @implementation Task
-@synthesize name,createdOn,completedOn,note,completed,dueDate,estimatedTime,priority;
+@synthesize name,createdOn,completedOn,note,completed,dueDate;//,estimatedTime,priority;
 
-- (id) init
+- (BOOL) isCompleted
 {
-	if([super init])
-	{
-		self.createdOn=[NSDate date];
-		self.priority=TaskPriorityNormal;
-		return self;
-	}
-	return nil;
+	return [self.completed boolValue];
 }
 
-- (int) estimatedTimeMinutes
+/*- (void) setCompleted:(BOOL)completed
 {
-	return floor(self.estimatedTime/60.0);
+	self.completed=[NSNumber numberWithBool:completed];
+}*/
+
+- (void) save
+{
+	[[self managedObjectContext] save];
 }
+
+- (void) delete	
+{
+	[[self managedObjectContext] deleteObject:self];
+}
+
 - (BOOL) isOverdue
 {
 	if(self.dueDate)
@@ -37,6 +42,27 @@
 	
 	return NO;
 }
+
+- (NSString*) completedOnString
+{
+	if(self.completedOn==nil)
+	{
+		return nil;
+	}
+	else 
+	{
+		NSDateFormatter * formatter=[[NSDateFormatter alloc] init];
+		
+		[formatter setDateFormat:@"MMM d, yyyy"];
+		
+		NSString * tmp=[formatter stringFromDate:self.completedOn];
+		
+		[formatter release];
+		
+		return [@"Completed " stringByAppendingString:tmp];
+	}
+}
+
 - (NSString*) dueDateString
 {
 	if(self.dueDate==nil)
@@ -61,7 +87,7 @@
 				
 				NSDateFormatter * formatter=[[NSDateFormatter alloc] init];
 				
-				[formatter setDateFormat:@"MMM d"];
+				[formatter setDateFormat:@"MMM d, yyyy"];
 				
 				NSString * tmp=[formatter stringFromDate:self.dueDate];
 				
@@ -92,44 +118,6 @@
 			}
 		}
 	}
-}
-
-- (void)encodeWithCoder:(NSCoder*)encoder
-{
-	[encoder encodeObject:name forKey:@"name"];
-	[encoder encodeObject:createdOn forKey:@"createdOn"];
-	[encoder encodeObject:completedOn forKey:@"completedOn"];
-	[encoder encodeObject:note forKey:@"note"];
-	[encoder encodeBool:completed forKey:@"completed"];
-	[encoder encodeObject:dueDate forKey:@"dueDate"];
-	[encoder encodeInt:priority forKey:@"priority"];
-	[encoder encodeDouble:estimatedTime forKey:@"estimatedTime"];
-}
-
-- (id)initWithCoder:(NSCoder*)decoder
-{
-	if(self==[super init])
-	{
-		self.name=[decoder decodeObjectForKey:@"name"];
-		self.createdOn=[decoder decodeObjectForKey:@"createdOn"];
-		self.completedOn=[decoder decodeObjectForKey:@"completedOn"];
-		self.note=[decoder decodeObjectForKey:@"note"];
-		self.completed=[decoder decodeBoolForKey:@"completed"];
-		self.dueDate=[decoder decodeObjectForKey:@"dueDate"];
-		self.priority=[decoder decodeIntForKey:@"priority"];
-		self.estimatedTime=[decoder decodeDoubleForKey:@"estimatedTime"];
-	}
-	return self;
-}
- 
-- (void) dealloc
-{
-	[name release];
-	[createdOn release];
-	[completedOn release];
-	[note release];
-	[dueDate release];
-	[super dealloc];
 }
 
 @end

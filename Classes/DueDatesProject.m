@@ -19,6 +19,7 @@
 	{
 		self.projects=projects;
 		self.name=@"Scheduled Tasks";
+		self.headerTitle=@"These are all tasks which have due dates.";
 	}
 	return self;
 }

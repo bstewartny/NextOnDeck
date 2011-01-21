@@ -7,17 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
-
-@interface Project : NSObject <NSCoding>{
-	NSString * name;
-	NSMutableArray * tasks;
+@interface Project : NSManagedObject{
 }
-@property(nonatomic,retain) NSString * name;
-@property(nonatomic,retain) NSMutableArray * tasks;
 
+@property(nonatomic,retain) NSString * name;
+@property(nonatomic,retain) NSString * notes;
+@property(nonatomic,retain) NSString * description;
+@property(nonatomic,retain) NSSet * tasks;
+@property(nonatomic,retain) NSDate * createdOn;
 
 - (int) countUncompleted;
-- (UIImage*) image;
 
 @end

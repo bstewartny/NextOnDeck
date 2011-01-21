@@ -12,6 +12,7 @@
 
 @interface ProjectViewController : UIViewController <UIPopoverControllerDelegate, UISplitViewControllerDelegate>{
 	Project * project;
+	//NSString * headerTitle;
 	UIPopoverController * popoverController;
 	IBOutlet UITableView * taskTableView;
 	BOOL aggregateView;
@@ -19,6 +20,7 @@
 @property(nonatomic,retain) Project * project;
 @property(nonatomic,retain) IBOutlet UITableView * taskTableView;
 @property (nonatomic, retain) UIPopoverController *popoverController;
+//@property(nonatomic,retain) NSString * headerTitle;
 @property(nonatomic) BOOL aggregateView;
 
 - (void) taskFormViewDone:(Task*)newTask project:(Project*)newProject;
