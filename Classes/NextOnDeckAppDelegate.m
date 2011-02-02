@@ -25,29 +25,7 @@
 	
 	self.projectsViewController=[[ProjectsViewController alloc] initWithNibName:@"ProjectsView" bundle:nil];
 	
-	//UINavigationController *projectsNavigationController = [[UINavigationController alloc] initWithRootViewController:projectsViewController];
-	
-	//ProjectCollection * allProjects=[[ProjectCollection alloc] init];
-	
-	//[allProjects.projectArrays addObject:self.projects];
-	
-	//NSMutableArray * builtinProjects=[NSMutableArray new];
-//
-	//[builtinProjects addObject:[self inboxProject]];
-	//[builtinProjects addObject:[self somedayProject]];
-	
-	//self.projectsViewController.userProjects=self.projects;
-	//self.projectsViewController.builtinProjects=builtinProjects;
-	
-	//[builtinProjects release];
-	
 	self.projectViewController=[[ProjectViewController alloc] initWithNibName:@"ProjectView" bundle:nil];
-	
-	//self.projectsViewController.projectViewController=self.projectViewController;
-	//self.projectViewController.project=[self inboxProject];
-	//self.projectViewController.aggregateView=YES;
-	
-	//self.navigationController=[[UINavigationController alloc] initWithRootViewController:ç];
 	
 	self.splitViewController=[[MGSplitViewController alloc] init];
 	self.splitViewController.dividerStyle=MGSplitViewDividerStyleNone;
@@ -63,22 +41,10 @@
     
     return YES;
 }
-/*
--(Project*) inboxProject
-{
-	return [self createNewProject:@"_inbox" description:@"These tasks are not added to any projects."]; 
-}
-
--(Project*) somedayProject
-{
-	return [self createNewProject:@"_someday" description:@"These tasks are for the future."]; 
-}*/
 
 -(Project*) createNewProject:(NSString*)name description:(NSString*)description
 {
 	NSLog(@"createNewProject: %@",name);
-	//Project * existing=[self getProjectByName:name];
-	//if(existing) return existing;
 	Project * newProject=[NSEntityDescription insertNewObjectForEntityForName:@"Project" inManagedObjectContext:[self managedObjectContext]];
 	newProject.name=name;
 	newProject.description=description;
@@ -190,11 +156,11 @@
 	
 	NSError *error;
 	
-	NSMutableArray *mutableFetchResults = [[[[self managedObjectContext] executeFetchRequest:request error:&error] mutableCopy] autorelease];
+	NSArray * results=[[self managedObjectContext] executeFetchRequest:request error:&error];
 	
 	[request release];
 	
-	return mutableFetchResults;
+	return results;
 }
 
 - (NSString *)dataFilePath
@@ -229,12 +195,11 @@
 
 - (NSManagedObjectContext *) managedObjectContext 
 {
-	
     if (managedObjectContext != nil) 
 	{
         return managedObjectContext;
     }
-	managedObjectContext=[self createNewManagedObjectContext:NSMergeByPropertyStoreTrumpMergePolicy];
+	managedObjectContext=[self createNewManagedObjectContext:NSOverwriteMergePolicy];
 	
 	return managedObjectContext;
 }
@@ -310,11 +275,9 @@
     [managedObjectModel release];
     [persistentStoreCoordinator release];
     [splitViewController release];
-	//[navigationController release];
 	[projectsViewController release];
 	[projectViewController release];
     [window release];
-	//[projects release];
     [super dealloc];
 }
 

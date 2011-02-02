@@ -88,6 +88,14 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 	[super setSelected:selected animated:animated];
+	if(selected)
+	{
+		self.backgroundView.alpha=0.5;
+	}
+	else 
+	{
+		self.backgroundView.alpha=0.3;
+	}
 	[badge setNeedsDisplay];
 }
 

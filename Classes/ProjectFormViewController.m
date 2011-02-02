@@ -15,7 +15,7 @@
 		
 		if(project==nil)
 		{
-			project=[[[UIApplication sharedApplication] delegate] createNewProject:textField.text description:descriptionField.text];
+			self.project=[[[UIApplication sharedApplication] delegate] createNewProject:textField.text description:descriptionField.text];
 		}
 		else 
 		{

@@ -5,6 +5,7 @@
 {
 	IBOutlet UITableView * tableView;
 	IBOutlet BlankToolbar * blankToolbar;
+	NSArray * allProjects;
 }
 @property(nonatomic,retain) UITableView * tableView;
 @property(nonatomic,retain) BlankToolbar * blankToolbar;

@@ -15,8 +15,9 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-    //self.clearsSelectionOnViewWillAppear = NO;
-    self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+    
+	self.contentSizeForViewInPopover = CGSizeMake(340.0, 600.0);
+	self.tableView.allowsSelectionDuringEditing=YES;
 	
 	blankToolbar.opaque=NO;
 	blankToolbar.backgroundColor=[UIColor clearColor];
@@ -27,16 +28,7 @@
 	
 	self.view.backgroundColor=[UIColor clearColor];
 	
-	
 	NSMutableArray * tools=[[NSMutableArray alloc] init];
-	
-	UIBarButtonItem * addButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
-	[tools addObject:addButton];
-	[addButton release];
-	
-	UIBarButtonItem * spacer=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	[tools addObject:spacer];
-	[spacer release];
 	
 	UIBarButtonItem * editButton=[[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
 	[tools addObject:editButton];
@@ -46,7 +38,6 @@
 	[tools release];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:@"projectDataChanged" object:nil];
-	//[editButton release];
 }
 
 - (void)handleNotification:(NSNotification*)notification
@@ -59,13 +50,13 @@
 	UIBarButtonItem * editButton=(UIBarButtonItem*)sender;
 	if(self.tableView.editing)
 	{
-		self.tableView.editing=NO;
+		[self.tableView setEditing:NO animated:YES];
 		[editButton setStyle:UIBarButtonItemStyleBordered];
 		[editButton setTitle:@"Edit"];
 	}
 	else 
 	{
-		self.tableView.editing=YES;
+		[self.tableView setEditing:YES animated:YES];
 		[editButton setTitle:@"Done"];
 		[editButton setStyle:UIBarButtonItemStyleDone];
 	}
@@ -93,18 +84,41 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
+	[allProjects release];
+	allProjects=[[[[UIApplication sharedApplication] delegate] allProjects] retain];
 	return 2;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-	switch(section)
-	{
-		case 0:
-			return nil;
-		case 1:
-			return @"Projects";
-	}
+	return 30;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	if(section==0) return nil;
+	
+	UIView * v=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+	v.backgroundColor=[UIColor clearColor];
+	
+	UILabel * label=[[UILabel alloc] init];
+	
+	label.textColor=[UIColor whiteColor];
+	label.text=@"Projects";
+	label.backgroundColor=[UIColor clearColor];
+	
+	[label sizeToFit];
+	
+	CGRect f=label.frame;
+	f.origin.x=15;
+	f.origin.y=5;
+	label.frame=f;
+	
+	[v addSubview:label];
+	
+	[label release];
+	
+	return [v autorelease];
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
@@ -113,7 +127,7 @@
 		case 0:
 			return 2;
 		case 1:
-			return [[[[UIApplication sharedApplication] delegate] allProjects] count];
+			return [allProjects count]+1;
 	}
 }
 
@@ -121,14 +135,14 @@
 {
     static NSString *CellIdentifier = @"CellIdentifier";
     
-    BadgedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BadgedTableViewCell *cell =nil;// [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
    
 	if (cell == nil) 
 	{
         cell = [[[BadgedTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
         cell.accessoryType = UITableViewCellAccessoryNone;
 	}
-	
+	cell.selectionStyle=UITableViewCellSelectionStyleNone;
 	cell.backgroundColor=[UIColor clearColor];
 	
 	CustomCellBackgroundView * gbView=[[[CustomCellBackgroundView alloc] initWithFrame:CGRectZero] autorelease];
@@ -138,8 +152,9 @@
 	gbView.fillColor=[UIColor blackColor]; 
 	gbView.borderColor=[UIColor grayColor];
 	
-	cell.backgroundView.alpha=0.5;
+	cell.backgroundView.alpha=0.3;
 	
+	cell.textLabel.textColor=[UIColor whiteColor];
 	if(indexPath.section==0)
 	{
 		if(indexPath.row==0)
@@ -156,36 +171,63 @@
 	}
 	else 
 	{
-		NSArray * allProjects=[[[UIApplication sharedApplication] delegate] allProjects];
-		
-		if (indexPath.row==0) 
+		if(indexPath.row==[allProjects count])
 		{
-			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionTop];
-		}
-		else 
-		{
-			if(indexPath.row==[allProjects count]-1)
+			// add project row
+			if([allProjects count]==0)
+			{
+				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionSingle];
+			}
+			else 
 			{
 				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionBottom];
+			}
+			cell.textLabel.textColor=[UIColor lightGrayColor];
+			cell.textLabel.text=@"Add Project";
+		}
+		else
+		{
+			if (indexPath.row==0) 
+			{
+				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionTop];
 			}
 			else 
 			{
 				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionMiddle];
 			}
-		}
-
-		Project  * project=[allProjects objectAtIndex:indexPath.row];
 			
-		cell.textLabel.text=project.name;
-		cell.badgeString=[NSString stringWithFormat:@"%d",[project countUncompleted]];
+			Project  * project=[allProjects objectAtIndex:indexPath.row];
+	
+			cell.textLabel.text=project.name;
+			cell.badgeString=[NSString stringWithFormat:@"%d",[project countUncompleted]];
+		}
 	}
 	
 	return cell;
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(indexPath.section==1)
+	{
+		if (indexPath.row ==[allProjects count]) 
+		{
+			return UITableViewCellEditingStyleInsert;
+		}
+		else 
+		{
+			return UITableViewCellEditingStyleDelete;
+		}
+	}
+	else 
+	{
+		return UITableViewCellEditingStyleNone;
+	}
+}
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    return (indexPath.section>0); 
+    return (indexPath.section==1);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -194,10 +236,14 @@
 	{
 		if (editingStyle == UITableViewCellEditingStyleDelete) 
 		{
-			Project  * project=[[[[UIApplication sharedApplication] delegate] allProjects] objectAtIndex:indexPath.row];
+			Project  * project=[allProjects objectAtIndex:indexPath.row];
 			[project delete];
 			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
+		}
+		if(editingStyle==UITableViewCellEditingStyleInsert)
+		{
+			[self add:nil];
 		}
 	}
 }
@@ -217,8 +263,16 @@
 	}
 	else 
 	{
-		Project  * project=[[[[UIApplication sharedApplication] delegate] allProjects] objectAtIndex:indexPath.row];
-		[self showProject:project];
+		if(indexPath.row==[allProjects count])
+		{
+			// add new project
+			[self add:nil];
+		}
+		else 
+		{
+			Project  * project=[allProjects objectAtIndex:indexPath.row];
+			[self showProject:project];
+		}
 	}
 }
 
@@ -229,6 +283,7 @@
 
 - (void) dealloc
 {	
+	[allProjects release];
 	[tableView release];
 	[blankToolbar release];
 	[super dealloc];

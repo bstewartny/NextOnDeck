@@ -2,7 +2,7 @@
 #import "Task.h"
 
 @implementation Project
-@synthesize name,tasks,notes,description,createdOn;
+@dynamic name,tasks,notes,description,createdOn;
 
 - (void) save
 {
