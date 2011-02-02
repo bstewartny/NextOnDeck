@@ -1,11 +1,3 @@
-    //
-//  DateViewController.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 10/20/10.
-//  Copyright 2010 Evernote. All rights reserved.
-//
-
 #import "DateViewController.h"
 
 @implementation DateViewController
@@ -35,7 +27,6 @@
     UIView *theView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view = theView;
     [theView release];
-	
 	
     UITableView *theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 44.0, 320.0, 105.0) style:UITableViewStyleGrouped];
     theTableView.delegate = self;
@@ -103,8 +94,7 @@
     [date release];
     [super dealloc];
 }
-#pragma mark -
-#pragma mark Table View Methods
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = nil;

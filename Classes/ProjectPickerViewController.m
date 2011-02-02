@@ -1,14 +1,5 @@
-    //
-//  ChooseProjectViewController.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 5/21/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "ProjectPickerViewController.h"
 #import "Project.h"
-
 
 @implementation ProjectPickerViewController
 @synthesize projects,delegate;
@@ -60,7 +51,6 @@
 		[delegate projectSelected:p];
 	}
 }
-
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.

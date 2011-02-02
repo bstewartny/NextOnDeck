@@ -1,11 +1,3 @@
-//
-//  Task.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 4/14/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "Task.h"
 
 @implementation Task
@@ -16,14 +8,10 @@
 	return [self.completed boolValue];
 }
 
-/*- (void) setCompleted:(BOOL)completed
-{
-	self.completed=[NSNumber numberWithBool:completed];
-}*/
-
 - (void) save
 {
-	[[self managedObjectContext] save];
+	NSError * error=nil;
+	[[self managedObjectContext] save:&error];
 }
 
 - (void) delete	

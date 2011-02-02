@@ -1,100 +1,60 @@
-//
-//  NextOnDeckAppDelegate.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 4/14/10.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
-//
-
 #import "NextOnDeckAppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
-
 #import "ProjectsViewController.h"
 #import "ProjectViewController.h"
 #import "Project.h"
 #import "Task.h"
-//#import "NextOnDeckProject.h"
-//#import "UncompletedTasksProject.h"
-//#import "DueDatesProject.h"
-//#import "OverdueProject.h"
-//#import "SomedayMaybeProject.h"
-//#import "InboxProject.h"
-#import "ProjectCollection.h"
+#import "MGSplitViewController.h"
 
 @implementation NextOnDeckAppDelegate
+@synthesize window, splitViewController,projectsViewController,projectViewController;
 
-@synthesize window, splitViewController,projectsViewController,projectViewController,navigationController,projects;
+- (NSString *)applicationDocumentsDirectory {
+	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+}
 
-#pragma mark -
-#pragma mark Application lifecycle
+- (void) showProject:(Project*)project
+{
+	projectViewController.project = project;
+	[projectViewController.taskTableView reloadData];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
 	[self loadArchivedData];
 	
-	self.projectsViewController=[[ProjectsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-	UINavigationController *projectsNavigationController = [[UINavigationController alloc] initWithRootViewController:projectsViewController];
-    //projectsNavigationController.navigationBar.topItem.title=@"Projects";
-	//projectsNavigationController.navigationBar.barStyle=UIBarStyleBlack;
+	self.projectsViewController=[[ProjectsViewController alloc] initWithNibName:@"ProjectsView" bundle:nil];
 	
-	ProjectCollection * allProjects=[[ProjectCollection alloc] init];
+	//UINavigationController *projectsNavigationController = [[UINavigationController alloc] initWithRootViewController:projectsViewController];
 	
-	//[allProjects.projectArrays addObject:[NSArray arrayWithObject:self.unassignedTasks]];
-	[allProjects.projectArrays addObject:self.projects];
+	//ProjectCollection * allProjects=[[ProjectCollection alloc] init];
 	
-	//NSMutableArray * allProjects=[NSMutableArray arrayWithArray:self.projects];
-	//[allProjects addObject:self.unassignedTasks];
+	//[allProjects.projectArrays addObject:self.projects];
 	
-	//nextOnDeckProject=[[NextOnDeckProject alloc] initWithProjects:allProjects];
-	//uncompletedTasksProject=[[UncompletedTasksProject alloc] initWithProjects:allProjects];
-	//dueDatesProject=[[DueDatesProject alloc] initWithProjects:allProjects];
-	//overdueProject=[[OverdueProject alloc] initWithProjects:allProjects];
+	//NSMutableArray * builtinProjects=[NSMutableArray new];
+//
+	//[builtinProjects addObject:[self inboxProject]];
+	//[builtinProjects addObject:[self somedayProject]];
 	
-	NSMutableArray * builtinProjects=[NSMutableArray new];
-	//[builtinProjects addObject:unassignedTasks];
-	//[builtinProjects addObject:overdueProject];
-	//[builtinProjects addObject:nextOnDeckProject];
-	//[builtinProjects addObject:dueDatesProject];
-	//[builtinProjects addObject:somedayMaybeTasks];
+	//self.projectsViewController.userProjects=self.projects;
+	//self.projectsViewController.builtinProjects=builtinProjects;
 	
-	self.projectsViewController.userProjects=self.projects;
-	self.projectsViewController.builtinProjects=builtinProjects;
-	
-	[builtinProjects release];
+	//[builtinProjects release];
 	
 	self.projectViewController=[[ProjectViewController alloc] initWithNibName:@"ProjectView" bundle:nil];
 	
-	self.projectsViewController.projectViewController=self.projectViewController;
-	self.projectViewController.project=nextOnDeckProject;
-	self.projectViewController.aggregateView=YES;
+	//self.projectsViewController.projectViewController=self.projectViewController;
+	//self.projectViewController.project=[self inboxProject];
+	//self.projectViewController.aggregateView=YES;
 	
-	self.navigationController=[[UINavigationController alloc] initWithRootViewController:projectViewController];
-	//navigationController.navigationBar.barStyle=UIBarStyleBlack;
+	//self.navigationController=[[UINavigationController alloc] initWithRootViewController:ç];
 	
-	//self.navigationController.view.backgroundColor=[UIColor grayColor];
-	//self.navigationController.view.layer.cornerRadius=8;
-	//self.navigationController.view.layer.borderWidth=10;
-	//self.navigationController.view.layer.shadowRadius=4;
-	//self.navigationController.view.layer.shadowColor=[UIColor grayColor].CGColor;
+	self.splitViewController=[[MGSplitViewController alloc] init];
+	self.splitViewController.dividerStyle=MGSplitViewDividerStyleNone;
+	self.splitViewController.view.backgroundColor=[UIColor scrollViewTexturedBackgroundColor];
 	
+	self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsViewController,projectViewController,nil];
 	
-	self.splitViewController=[[UISplitViewController alloc] init];
-	
-	//splitViewController.view.layer.borderWidth=5.0;
-	//splitViewController.view.layer.borderColor=[UIColor blueColor].CGColor;
-	
-	//navigationController.view.layer.borderWidth=5.0;
-	//navigationController.view.layer.borderColor=[UIColor blackColor].CGColor;
-	//navigationController.view.layer.cornerRadius=10.0;
-	
-	//projectsNavigationController.view.layer.borderWidth=5.0;
-	//projectsNavigationController.view.layer.borderColor=[UIColor blackColor].CGColor;
-	//projectsNavigationController.view.layer.cornerRadius=10.0;
-	
-	
-	
-	self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsNavigationController,navigationController,nil];
-	//self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsViewController,navigationController,nil];
 	self.splitViewController.delegate=self.projectViewController;
 	
     // Add the split view controller's view to the window and display.
@@ -103,7 +63,7 @@
     
     return YES;
 }
-
+/*
 -(Project*) inboxProject
 {
 	return [self createNewProject:@"_inbox" description:@"These tasks are not added to any projects."]; 
@@ -112,13 +72,13 @@
 -(Project*) somedayProject
 {
 	return [self createNewProject:@"_someday" description:@"These tasks are for the future."]; 
-}
+}*/
 
 -(Project*) createNewProject:(NSString*)name description:(NSString*)description
 {
 	NSLog(@"createNewProject: %@",name);
-	Project * existing=[self getProjectByName:name];
-	if(existing) return existing;
+	//Project * existing=[self getProjectByName:name];
+	//if(existing) return existing;
 	Project * newProject=[NSEntityDescription insertNewObjectForEntityForName:@"Project" inManagedObjectContext:[self managedObjectContext]];
 	newProject.name=name;
 	newProject.description=description;
@@ -130,7 +90,7 @@
 -(Project*) getProjectByName:(NSString*)name
 {
 	NSLog(@"getProjectByName: %@",name);
-	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"name=0",name ];
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"name=%@",name ];
 	
 	NSArray * results= [self searchObjects:@"Project" predicate:predicate sortKey:@"createdOn" sortAscending:YES];
 	
@@ -161,23 +121,17 @@
 
 -(NSArray *) nextOnDeckTasks
 {
-	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"completed=0"];
-	
 	NSMutableArray * results=[[[NSMutableArray alloc] init] autorelease];
 	
 	for(Project * project in [self allProjects])
 	{
-		// pick one task per project 
-		// TODO: enumerate tasks in duedate/createdate order...
-		for(Task * task in project.tasks)
+		Task * nextTask=[project nextOnDeck];
+		if(nextTask)
 		{
-			if(!(task.isCompleted))
-			{
-				[results addObject:task];
-			}
+			[results addObject:nextTask];
 		}
 	}
-	
+	[results sortUsingSelector:@selector(createdOn)];
 	return results;
 }
 
@@ -193,6 +147,13 @@
 	return [self searchObjects:@"Task" predicate:predicate sortKey:@"createdOn" sortAscending:YES];
 }
 
+-(NSArray *) unassignedTasks
+{
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"project=NULL"];
+	
+	return [self searchObjects:@"Task" predicate:predicate sortKey:@"createdOn" sortAscending:NO];
+}
+
 -(NSArray *) todayTasks
 {
 	return [self tasksForDate:[NSDate date]];
@@ -200,7 +161,7 @@
 
 -(NSArray *) tasksForDate:(NSDate*)date
 {
-	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"dueDate>=@ AND dueDate<@",date.date,[date.date addTimeInterval:60*60*24]];
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"dueDate>=@ AND dueDate<@",date,[date addTimeInterval:60*60*24]];
 	
 	return [self searchObjects:@"Task" predicate:predicate sortKey:@"createdOn" sortAscending:YES];
 }
@@ -265,13 +226,15 @@
 	
 	return persistentStoreCoordinator;
 }
-- (NSManagedObjectContext *) managedObjectContext {
+
+- (NSManagedObjectContext *) managedObjectContext 
+{
 	
-    if (managedObjectContext != nil) {
+    if (managedObjectContext != nil) 
+	{
         return managedObjectContext;
     }
 	managedObjectContext=[self createNewManagedObjectContext:NSMergeByPropertyStoreTrumpMergePolicy];
-	//managedObjectContext=[self createNewManagedObjectContext:NSRollbackMergePolicy];
 	
 	return managedObjectContext;
 }
@@ -284,11 +247,6 @@
 		moc = [[NSManagedObjectContext alloc] init];
 		[moc setPersistentStoreCoordinator: coordinator];
 		[moc setMergePolicy:mergePolicy];
-		//[moc setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-		//[moc setMergePolicy:NSMergeByPropertyStoreTrumpMergePolicy];
-		
-		
-		
 	}
 	return moc;
 }
@@ -303,10 +261,7 @@
 		NSKeyedUnarchiver * unarchiver = [[NSKeyedUnarchiver alloc]
 										  initForReadingWithData:data];
 		
-		self.projects=[unarchiver decodeObjectForKey:@"projects"];
-		
-		self.unassignedTasks=[unarchiver decodeObjectForKey:@"unassignedTasks"];
-		self.somedayMaybeTasks=[unarchiver decodeObjectForKey:@"somedayMaybeTasks"];
+		//self.projects=[unarchiver decodeObjectForKey:@"projects"];
 		
 		[unarchiver finishDecoding];
 		
@@ -314,19 +269,10 @@
 		
 		[data release];
 	}
-	if(projects==nil)
-	{
-		projects=[[NSMutableArray alloc] init];
-	}
-	if(unassignedTasks==nil)
-	{
-		unassignedTasks=[[InboxProject alloc] init];
-		 
-	}
-	if(somedayMaybeTasks==nil)
-	{
-		somedayMaybeTasks=[[SomedayMaybeProject alloc] init];
-	}
+	//if(projects==nil)
+	//{
+	//	projects=[[NSMutableArray alloc] init];
+	//}
 }
 
 - (void) saveData
@@ -337,13 +283,10 @@
 	{
 		NSKeyedArchiver * archiver=[[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
 		
-		if(projects!=nil)
-		{
-			[archiver encodeObject:projects	forKey:@"projects"];
-		}
-		
-		[archiver encodeObject:unassignedTasks forKey:@"unassignedTasks"];
-		[archiver encodeObject:somedayMaybeTasks forKey:@"somedayMaybeTasks"];
+		//if(projects!=nil)
+		//{
+		///	[archiver encodeObject:projects	forKey:@"projects"];
+		//}
 		
 		[archiver finishEncoding];
 		
@@ -362,26 +305,16 @@
 	[self saveData];
 }
 
-
-#pragma mark -
-#pragma mark Memory management
-
 - (void)dealloc {
 	[managedObjectContext release];
     [managedObjectModel release];
     [persistentStoreCoordinator release];
     [splitViewController release];
-	[navigationController release];
+	//[navigationController release];
 	[projectsViewController release];
 	[projectViewController release];
     [window release];
-	[projects release];
-	[unassignedTasks release];
-	[nextOnDeckProject release];
-	[uncompletedTasksProject release];
-	[somedayMaybeTasks release];
-	[overdueProject release];
-	[dueDatesProject release];
+	//[projects release];
     [super dealloc];
 }
 

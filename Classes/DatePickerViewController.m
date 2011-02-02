@@ -1,13 +1,4 @@
-    //
-//  DatePickerViewController.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 5/26/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "DatePickerViewController.h"
-
 
 @implementation DatePickerViewController
 @synthesize tableView,datePicker,dueDate,delegate,formatter;
@@ -31,8 +22,6 @@
     [super viewDidLoad];
 	
 	datePicker=[[UIDatePicker alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
-	//self.datePicker.autoresizingMask=UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	//[self.view addSubview:self.datePicker];
 	
 	if(dueDate!=nil)
 	{
@@ -100,8 +89,6 @@
 		cell.selectionStyle=UITableViewCellSelectionStyleNone;
 		
 		[cell.contentView addSubview:datePicker];
-		
-		//cell.textLabel.text=@"No Due Date";
 	}
 	return cell;
 }
@@ -125,21 +112,6 @@
     // Return YES for supported orientations
     return YES;
 }
-
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
 
 - (void)dealloc {
 	[tableView release];

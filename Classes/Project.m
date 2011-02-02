@@ -1,11 +1,3 @@
-//
-//  Project.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 4/14/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "Project.h"
 #import "Task.h"
 
@@ -14,13 +6,15 @@
 
 - (void) save
 {
-	[[self managedObjectContext] save];
+	NSError * error=nil;
+	[[self managedObjectContext] save:&error];
 }
 
 - (void) delete	
 {
 	[[self managedObjectContext] deleteObject:self];
 }
+
 - (void) addNewTask:(NSString*)name note:(NSString*)note dueDate:(NSDate *)dueDate
 {
 	Task * task=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[self managedObjectContext]];
@@ -32,9 +26,35 @@
 	task.completed=[NSNumber numberWithBool:NO];
 	task.project=self;
 	
-	[task save];
-	
+	[task save];	
 }
+
+- (Task*) nextOnDeck
+{
+	for(Task * task in [self orderedTasks])
+	{
+		if(![task isCompleted])
+		{
+			return task;
+		}
+	}
+	return nil;
+}
+
+- (NSArray*) orderedTasks
+{
+	NSMutableArray * tmp=[[NSMutableArray alloc] init];
+	
+	for(Task * t in self.tasks)
+	{
+		[tmp addObject:t];
+	}
+	
+	[tmp sortUsingSelector:@selector(createdOn)];
+	
+	return [tmp autorelease];
+}
+
 - (int) countUncompleted
 {
 	int count=0;
@@ -49,6 +69,5 @@
 	 
 	return count;
 }
-
 
 @end

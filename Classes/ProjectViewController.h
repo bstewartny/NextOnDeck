@@ -1,28 +1,20 @@
-//
-//  ProjectViewController.h
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 4/14/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 @class Project;
 @class Task;
 
 @interface ProjectViewController : UIViewController <UIPopoverControllerDelegate, UISplitViewControllerDelegate>{
 	Project * project;
-	//NSString * headerTitle;
 	UIPopoverController * popoverController;
 	IBOutlet UITableView * taskTableView;
-	BOOL aggregateView;
+	//BOOL aggregateView;
+	IBOutlet UIToolbar * topToolbar;
 }
 @property(nonatomic,retain) Project * project;
 @property(nonatomic,retain) IBOutlet UITableView * taskTableView;
+@property(nonatomic,retain) IBOutlet UIToolbar * topToolbar;
 @property (nonatomic, retain) UIPopoverController *popoverController;
-//@property(nonatomic,retain) NSString * headerTitle;
-@property(nonatomic) BOOL aggregateView;
+//@property(nonatomic) BOOL aggregateView;
 
-- (void) taskFormViewDone:(Task*)newTask project:(Project*)newProject;
+- (void) taskFormViewDone;
 
 @end

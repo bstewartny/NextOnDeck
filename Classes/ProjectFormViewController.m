@@ -1,11 +1,3 @@
-    //
-//  ProjectFormViewController.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 5/19/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "ProjectFormViewController.h"
 #import "Project.h"
  
@@ -23,71 +15,35 @@
 		
 		if(project==nil)
 		{
-			project=[[Project alloc] init];
+			project=[[[UIApplication sharedApplication] delegate] createNewProject:textField.text description:descriptionField.text];
 		}
-	
-		self.project.name=self.textField.text;
-		self.project.description=self.descriptionField.text;
-	
-		if(delegate)
+		else 
 		{
-			[delegate projectFormViewDone:self.project];
+			self.project.name=self.textField.text;
+			self.project.description=self.descriptionField.text;
 		}
+			
+		[delegate projectFormViewDone];
 	}
-	[[self parentViewController] dismissModalViewControllerAnimated:NO];
+	[[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
-- (BOOL)textFieldShouldReturn:(UITextField *)theTextField {
-	NSLog(@"textFieldShouldReturn");
-	
+
+- (BOOL)textFieldShouldReturn:(UITextField *)theTextField 
+{
 	[theTextField resignFirstResponder];
 	[self done];
 	return YES;
 }
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-}
-*/
-
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-
 	self.textField.delegate=self;
 	[[self textField] becomeFirstResponder];
 }
 
-
-
-// Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
     return YES;
-}
-
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (void)dealloc {
@@ -96,6 +52,5 @@
 	[project release];
     [super dealloc];
 }
-
 
 @end

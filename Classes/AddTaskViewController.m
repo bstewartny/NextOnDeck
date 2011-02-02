@@ -1,11 +1,3 @@
-//
-//  TaskDetailViewController.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 5/21/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "AddTaskViewController.h"
 #import "Task.h"
 #import "Project.h"
@@ -32,6 +24,21 @@
 	}
 }
 
+- (Project*)selectedProject
+{
+	Project * p=self.project;
+	if(p==nil)
+	{
+		//p=[[[UIApplication sharedApplication] delegate] inboxProject];
+	}
+	return p;
+}
+
+- (void) addNewTask:(NSString*)name note:(NSString*)note dueDate:(NSDate*)dueDate
+{
+	[[self selectedProject] addNewTask:name note:note dueDate:dueDate];
+}
+
 - (void) doneMultiMode
 {
 	if(self.notesTextView.text && [self.notesTextView.text length]>0)
@@ -45,48 +52,38 @@
 			
 			if(name==nil || [name length]==0) continue;
 			
-			self.task=[[Task  alloc] init];
-			 
-			self.task.name=name;
-		
-			self.task.dueDate=self.pickedDate;
-			
-			if(delegate)
-			{
-				[delegate taskFormViewDone:self.task project:self.project editMode:self.editMode];
-			}
+			[self addNewTask:name note:nil dueDate:self.pickedDate];
 		}
+		[delegate taskFormViewDone];
 	}
 	[[self parentViewController] dismissModalViewControllerAnimated:NO];
 }
 
 - (void) doneSingleMode
 {
-	if (self.nameTextField.text && [self.nameTextField.text length]>0) {
-	
-		if(task ==nil)
+	if (self.nameTextField.text && [self.nameTextField.text length]>0) 
+	{
+		if(task==nil)
 		{
-			task=[[Task  alloc] init];
+			[self addNewTask:self.nameTextField.text note:self.notesTextView.text dueDate:self.pickedDate];
 		}
-		
-		self.task.name=self.nameTextField.text; // TODO: strip trailing whitespace
-		self.task.note=self.notesTextView.text;
-		
-		//if(self.pickedDate)
-		//{
+		else 
+		{
+			self.task.name=self.nameTextField.text; // TODO: strip trailing whitespace
+			self.task.note=self.notesTextView.text;
 			self.task.dueDate=self.pickedDate;
-		//}
-		
-		if(delegate)
-		{
-			[delegate taskFormViewDone:self.task project:self.project editMode:self.editMode];
+			self.task.project=[self selectedProject];
+			[self.task save];
 		}
+		
+		[delegate taskFormViewDone];
 	}
 	[[self parentViewController] dismissModalViewControllerAnimated:NO];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
 	if(self.editMode)
 	{
@@ -139,9 +136,7 @@
 	[tableView reloadData];
 }
 
-// Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
     return YES;
 }
 
@@ -156,6 +151,7 @@
 		
 	return YES;
 }
+
 - (UITableViewCell*) getNameCell
 {
 	static NSString * cellIdentifier=@"nameCell";
@@ -209,14 +205,11 @@
 	if(cell==nil)
 	{
 		cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
-		
 		cell.selectionStyle=UITableViewCellSelectionStyleNone;
 		cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-	
 		cell.textLabel.text=@"Project:";
 		cell.textLabel.textColor=[UIColor grayColor];
 		cell.textLabel.font=[UIFont systemFontOfSize:18];
-	
 	}
 	
 	cell.detailTextLabel.text=self.project.name;
@@ -225,7 +218,6 @@
 
 	return cell;
 }
-
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -249,26 +241,21 @@
 		cell.textLabel.font=[UIFont systemFontOfSize:18];
 
 	}
-	/*if(self.task.dueDate)
+
+	if(self.pickedDate)
 	{
-		cell.detailTextLabel.text=[formatter stringFromDate:self.task.dueDate];
+		cell.detailTextLabel.text=[formatter stringFromDate:self.pickedDate];
 	}
-	else
-	{*/
-		if(self.pickedDate)
-		{
-			cell.detailTextLabel.text=[formatter stringFromDate:self.pickedDate];
-		}
-		else 
-		{
-			cell.detailTextLabel.text=@"(No due date)";
-		}
-	//}
-	
+	else 
+	{
+		cell.detailTextLabel.text=@"(No due date)";
+	}
+
 	datePickerOriginView=cell.detailTextLabel;
 	
 	return cell;
 }
+
 - (UITableViewCell*) getMultiNamesCell
 {
 	static NSString * cellIdentifier=@"getMultiNamesCell";
@@ -292,8 +279,7 @@
 		textView.font=[UIFont systemFontOfSize:14];
 		
 		self.notesTextView=textView;
-		
-		
+				
 		[[self notesTextView] becomeFirstResponder];
 		
 		[cell.contentView addSubview:textView];
@@ -305,6 +291,7 @@
 	
 	return cell;
 }
+
 - (UITableViewCell*) getNotesCell
 {
 	static NSString * cellIdentifier=@"notesCell";
@@ -468,10 +455,6 @@
 
 - (void) pickedDate:(NSDate*)dueDate
 {
-	/*if(self.task)
-	{
-		self.task.dueDate=dueDate;
-	}*/
 	self.pickedDate=dueDate;
 	[self.datePickerPopover dismissPopoverAnimated:YES];
 
@@ -500,17 +483,7 @@
 						
 						dateView.delegate=self;
 						
-						/*if(self.task.dueDate)
-						{
-							dateView.date=self.task.dueDate;
-						}
-						else 
-						{*/
-							//if(self.pickedDate)
-							//{
-								dateView.date=self.pickedDate;
-							//}
-						//}
+						dateView.date=self.pickedDate;
 						
 						UIPopoverController * datePopover=[[UIPopoverController alloc]
 														   initWithContentViewController:dateView];
@@ -524,22 +497,14 @@
 						[self.datePickerPopover presentPopoverFromRect:CGRectMake(5,5,20,20) inView:datePickerOriginView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 					}
 						break;
+					
 					case 0:
 						// choose project from list
 						self.projectPicker = [[ProjectPickerViewController alloc] 
 												  initWithStyle:UITableViewStylePlain];
 						self.projectPicker.delegate = self;
 							
-						NSMutableArray * allProjects=[[NSMutableArray alloc] init];
-							
-						[allProjects addObject:[[[UIApplication sharedApplication] delegate] unassignedTasks] ];
-							
-						for (Project * p in [[[UIApplication sharedApplication] delegate] projects]) 
-						{
-							[allProjects addObject:p];
-						}
-							
-						self.projectPicker.projects=allProjects;
+						self.projectPicker.projects=[[[UIApplication sharedApplication] delegate] allProjects];
 							
 						self.projectPickerPopover = [[UIPopoverController alloc] 
 														 initWithContentViewController:projectPicker];               
@@ -562,19 +527,6 @@
 	[self.tableView reloadData];
 }
 
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
 - (IBAction) actionTouch:(id)sender
 {
 	
@@ -590,7 +542,6 @@
 	[datePickerPopover release];
 	[projectPicker release];
 	[pickedDate release];
-	//[datePicker release];
 	[navigationBar release];
 	[actionButton release];
 	[formatter release];

@@ -15,22 +15,27 @@
 		2804203C108E9BAB000629CD /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2804203B108E9BAB000629CD /* DetailView.xib */; };
 		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
+		B003B3C012F99F33005F26C8 /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B3BF12F99F33005F26C8 /* Task.m */; };
+		B003B46512F9BDEC005F26C8 /* ProjectsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B003B46412F9BDEC005F26C8 /* ProjectsView.xib */; };
+		B003B4D012F9C1A2005F26C8 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B4CA12F9C1A2005F26C8 /* MGSplitCornersView.m */; };
+		B003B4D112F9C1A2005F26C8 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B4CC12F9C1A2005F26C8 /* MGSplitDividerView.m */; };
+		B003B4D212F9C1A2005F26C8 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B4CE12F9C1A2005F26C8 /* MGSplitViewController.m */; };
+		B003B4D512F9C1C3005F26C8 /* CustomCellBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B4D412F9C1C3005F26C8 /* CustomCellBackgroundView.m */; };
+		B003B4D812F9C1DC005F26C8 /* BadgedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B4D712F9C1DC005F26C8 /* BadgedTableViewCell.m */; };
+		B003B4DB12F9C1EE005F26C8 /* BadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B4DA12F9C1EE005F26C8 /* BadgeView.m */; };
 		B007318B11A741B500689C9C /* AddTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B007318A11A741B500689C9C /* AddTaskViewController.m */; };
 		B007318D11A7434600689C9C /* AddTaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B007318C11A7434600689C9C /* AddTaskView.xib */; };
 		B00731EA11A74AA900689C9C /* ProjectPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B00731E911A74AA900689C9C /* ProjectPickerViewController.m */; };
 		B00731EC11A74B6400689C9C /* ChooseProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00731EB11A74B6400689C9C /* ChooseProjectView.xib */; };
 		B03FA7A61285ABB400AC3534 /* nextondeck.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = B03FA7A51285ABB400AC3534 /* nextondeck.xcdatamodel */; };
 		B03FA7AE1285ACAB00AC3534 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B03FA7AD1285ACAB00AC3534 /* CoreData.framework */; };
-		B050EE4311C1BFDE0070BA14 /* ProjectCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B050EE4211C1BFDE0070BA14 /* ProjectCollection.m */; };
 		B0AFDB7711ADF7E100CDDD3E /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */; };
-		B0AFDB7B11ADF87100CDDD3E /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AFDB7A11ADF87100CDDD3E /* DatePickerViewController.m */; };
 		B0AFE18011A47E7400ABB6DA /* checkbox_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE17E11A47E7400ABB6DA /* checkbox_checked.png */; };
 		B0AFE18111A47E7400ABB6DA /* checkbox_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE17F11A47E7400ABB6DA /* checkbox_unchecked.png */; };
 		B0AFE1ED11A4A11D00ABB6DA /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE1EB11A4A11D00ABB6DA /* selected.png */; };
 		B0AFE1EE11A4A11D00ABB6DA /* unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE1EC11A4A11D00ABB6DA /* unselected.png */; };
 		B0AFE2EF11A61D6D00ABB6DA /* BlankToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AFE2EE11A61D6D00ABB6DA /* BlankToolbar.m */; };
 		B0AFE33711A7045900ABB6DA /* TextFieldTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AFE33611A7045900ABB6DA /* TextFieldTableViewCell.m */; };
-		B0AFE33B11A7070400ABB6DA /* TaskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0AFE33A11A7070400ABB6DA /* TaskDetailViewController.m */; };
 		B0AFE33D11A707CA00ABB6DA /* TaskDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE33C11A707CA00ABB6DA /* TaskDetailView.xib */; };
 		B0B95F60126F51DB00373795 /* DateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B95F5F126F51DB00373795 /* DateViewController.m */; };
 		B0BBCF6311B9789100C8FF2E /* Unchecked-Transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = B0BBCF6111B9789100C8FF2E /* Unchecked-Transparent.png */; };
@@ -38,12 +43,10 @@
 		B0BBCF7B11B97AC400C8FF2E /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0BBCF7A11B97AC400C8FF2E /* icon.png */; };
 		B0C03E4B1176257400E356DA /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C03E4A1176257400E356DA /* Project.m */; };
 		B0C03E5311762E3F00E356DA /* ProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C03E5211762E3F00E356DA /* ProjectViewController.m */; };
-		B0C03E5911762E6500E356DA /* NextOnDeckViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C03E5811762E6500E356DA /* NextOnDeckViewController.m */; };
 		B0C03E5D1176315600E356DA /* ProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0C03E5C1176315600E356DA /* ProjectView.xib */; };
 		B0C03F3311763D8A00E356DA /* TaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0C03F3211763D8A00E356DA /* TaskView.xib */; };
 		B0CD6C6311A42FF2003BCF02 /* ProjectFormView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0CD6C6211A42FF2003BCF02 /* ProjectFormView.xib */; };
 		B0CD6C6911A43272003BCF02 /* ProjectFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CD6C6811A43272003BCF02 /* ProjectFormViewController.m */; };
-		B0CD6CA511A43DE3003BCF02 /* TaskFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CD6CA411A43DE3003BCF02 /* TaskFormViewController.m */; };
 		B0CD6CBB11A43F31003BCF02 /* TaskFormView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0CD6CBA11A43F31003BCF02 /* TaskFormView.xib */; };
 		B0E0689411B741BA006AC173 /* All-mail-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0688F11B741BA006AC173 /* All-mail-icon.png */; };
 		B0E0689511B741BA006AC173 /* Baseball-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0689011B741BA006AC173 /* Baseball-icon.png */; };
@@ -66,6 +69,20 @@
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* NextOnDeck-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NextOnDeck-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B003B3BF12F99F33005F26C8 /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
+		B003B46412F9BDEC005F26C8 /* ProjectsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectsView.xib; sourceTree = "<group>"; };
+		B003B4C912F9C1A2005F26C8 /* MGSplitCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitCornersView.h; sourceTree = "<group>"; };
+		B003B4CA12F9C1A2005F26C8 /* MGSplitCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitCornersView.m; sourceTree = "<group>"; };
+		B003B4CB12F9C1A2005F26C8 /* MGSplitDividerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitDividerView.h; sourceTree = "<group>"; };
+		B003B4CC12F9C1A2005F26C8 /* MGSplitDividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitDividerView.m; sourceTree = "<group>"; };
+		B003B4CD12F9C1A2005F26C8 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitViewController.h; sourceTree = "<group>"; };
+		B003B4CE12F9C1A2005F26C8 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitViewController.m; sourceTree = "<group>"; };
+		B003B4D312F9C1C3005F26C8 /* CustomCellBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellBackgroundView.h; sourceTree = "<group>"; };
+		B003B4D412F9C1C3005F26C8 /* CustomCellBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellBackgroundView.m; sourceTree = "<group>"; };
+		B003B4D612F9C1DC005F26C8 /* BadgedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgedTableViewCell.h; sourceTree = "<group>"; };
+		B003B4D712F9C1DC005F26C8 /* BadgedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgedTableViewCell.m; sourceTree = "<group>"; };
+		B003B4D912F9C1EE005F26C8 /* BadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeView.h; sourceTree = "<group>"; };
+		B003B4DA12F9C1EE005F26C8 /* BadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeView.m; sourceTree = "<group>"; };
 		B007318911A741B500689C9C /* AddTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTaskViewController.h; sourceTree = "<group>"; };
 		B007318A11A741B500689C9C /* AddTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTaskViewController.m; sourceTree = "<group>"; };
 		B007318C11A7434600689C9C /* AddTaskView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddTaskView.xib; sourceTree = "<group>"; };
@@ -74,11 +91,7 @@
 		B00731EB11A74B6400689C9C /* ChooseProjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseProjectView.xib; sourceTree = "<group>"; };
 		B03FA7A51285ABB400AC3534 /* nextondeck.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = nextondeck.xcdatamodel; sourceTree = "<group>"; };
 		B03FA7AD1285ACAB00AC3534 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		B050EE4111C1BFDE0070BA14 /* ProjectCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectCollection.h; sourceTree = "<group>"; };
-		B050EE4211C1BFDE0070BA14 /* ProjectCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectCollection.m; sourceTree = "<group>"; };
 		B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
-		B0AFDB7911ADF87100CDDD3E /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
-		B0AFDB7A11ADF87100CDDD3E /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		B0AFE17E11A47E7400ABB6DA /* checkbox_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_checked.png; sourceTree = "<group>"; };
 		B0AFE17F11A47E7400ABB6DA /* checkbox_unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_unchecked.png; sourceTree = "<group>"; };
 		B0AFE1EB11A4A11D00ABB6DA /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
@@ -87,8 +100,6 @@
 		B0AFE2EE11A61D6D00ABB6DA /* BlankToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlankToolbar.m; sourceTree = "<group>"; };
 		B0AFE33511A7045900ABB6DA /* TextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldTableViewCell.h; sourceTree = "<group>"; };
 		B0AFE33611A7045900ABB6DA /* TextFieldTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldTableViewCell.m; sourceTree = "<group>"; };
-		B0AFE33911A7070400ABB6DA /* TaskDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDetailViewController.h; sourceTree = "<group>"; };
-		B0AFE33A11A7070400ABB6DA /* TaskDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDetailViewController.m; sourceTree = "<group>"; };
 		B0AFE33C11A707CA00ABB6DA /* TaskDetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskDetailView.xib; sourceTree = "<group>"; };
 		B0B95F5E126F51DB00373795 /* DateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateViewController.h; sourceTree = "<group>"; };
 		B0B95F5F126F51DB00373795 /* DateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateViewController.m; sourceTree = "<group>"; };
@@ -100,15 +111,11 @@
 		B0C03E4A1176257400E356DA /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
 		B0C03E5111762E3F00E356DA /* ProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectViewController.h; sourceTree = "<group>"; };
 		B0C03E5211762E3F00E356DA /* ProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectViewController.m; sourceTree = "<group>"; };
-		B0C03E5711762E6500E356DA /* NextOnDeckViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextOnDeckViewController.h; sourceTree = "<group>"; };
-		B0C03E5811762E6500E356DA /* NextOnDeckViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextOnDeckViewController.m; sourceTree = "<group>"; };
 		B0C03E5C1176315600E356DA /* ProjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectView.xib; sourceTree = "<group>"; };
 		B0C03F3211763D8A00E356DA /* TaskView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskView.xib; sourceTree = "<group>"; };
 		B0CD6C6211A42FF2003BCF02 /* ProjectFormView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectFormView.xib; sourceTree = "<group>"; };
 		B0CD6C6711A43272003BCF02 /* ProjectFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectFormViewController.h; sourceTree = "<group>"; };
 		B0CD6C6811A43272003BCF02 /* ProjectFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectFormViewController.m; sourceTree = "<group>"; };
-		B0CD6CA311A43DE3003BCF02 /* TaskFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskFormViewController.h; sourceTree = "<group>"; };
-		B0CD6CA411A43DE3003BCF02 /* TaskFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskFormViewController.m; sourceTree = "<group>"; };
 		B0CD6CBA11A43F31003BCF02 /* TaskFormView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskFormView.xib; sourceTree = "<group>"; };
 		B0E0688F11B741BA006AC173 /* All-mail-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "All-mail-icon.png"; sourceTree = "<group>"; };
 		B0E0689011B741BA006AC173 /* Baseball-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Baseball-icon.png"; sourceTree = "<group>"; };
@@ -135,35 +142,33 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B003B4C712F9C150005F26C8 /* MGSplitViewController */,
+				B003B4D912F9C1EE005F26C8 /* BadgeView.h */,
+				B003B4DA12F9C1EE005F26C8 /* BadgeView.m */,
+				B003B4D612F9C1DC005F26C8 /* BadgedTableViewCell.h */,
+				B003B4D712F9C1DC005F26C8 /* BadgedTableViewCell.m */,
+				B003B4D312F9C1C3005F26C8 /* CustomCellBackgroundView.h */,
+				B003B4D412F9C1C3005F26C8 /* CustomCellBackgroundView.m */,
 				1D3623240D0F684500981E51 /* NextOnDeckAppDelegate.h */,
 				1D3623250D0F684500981E51 /* NextOnDeckAppDelegate.m */,
 				28042007108E984D000629CD /* ProjectsViewController.h */,
 				28042008108E984D000629CD /* ProjectsViewController.m */,
 				B0C03E441176256D00E356DA /* Task.h */,
+				B003B3BF12F99F33005F26C8 /* Task.m */,
 				B0C03E491176257400E356DA /* Project.h */,
 				B0C03E4A1176257400E356DA /* Project.m */,
 				B0C03E5111762E3F00E356DA /* ProjectViewController.h */,
 				B0C03E5211762E3F00E356DA /* ProjectViewController.m */,
-				B0C03E5711762E6500E356DA /* NextOnDeckViewController.h */,
-				B0C03E5811762E6500E356DA /* NextOnDeckViewController.m */,
 				B0CD6C6711A43272003BCF02 /* ProjectFormViewController.h */,
 				B0CD6C6811A43272003BCF02 /* ProjectFormViewController.m */,
-				B0CD6CA311A43DE3003BCF02 /* TaskFormViewController.h */,
-				B0CD6CA411A43DE3003BCF02 /* TaskFormViewController.m */,
 				B0AFE2ED11A61D6D00ABB6DA /* BlankToolbar.h */,
 				B0AFE2EE11A61D6D00ABB6DA /* BlankToolbar.m */,
 				B0AFE33511A7045900ABB6DA /* TextFieldTableViewCell.h */,
 				B0AFE33611A7045900ABB6DA /* TextFieldTableViewCell.m */,
-				B0AFE33911A7070400ABB6DA /* TaskDetailViewController.h */,
-				B0AFE33A11A7070400ABB6DA /* TaskDetailViewController.m */,
 				B007318911A741B500689C9C /* AddTaskViewController.h */,
 				B007318A11A741B500689C9C /* AddTaskViewController.m */,
 				B00731E811A74AA900689C9C /* ProjectPickerViewController.h */,
 				B00731E911A74AA900689C9C /* ProjectPickerViewController.m */,
-				B0AFDB7911ADF87100CDDD3E /* DatePickerViewController.h */,
-				B0AFDB7A11ADF87100CDDD3E /* DatePickerViewController.m */,
-				B050EE4111C1BFDE0070BA14 /* ProjectCollection.h */,
-				B050EE4211C1BFDE0070BA14 /* ProjectCollection.m */,
 				B0B95F5E126F51DB00373795 /* DateViewController.h */,
 				B0B95F5F126F51DB00373795 /* DateViewController.m */,
 			);
@@ -222,6 +227,7 @@
 				B00731EB11A74B6400689C9C /* ChooseProjectView.xib */,
 				B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */,
 				B03FA7A51285ABB400AC3534 /* nextondeck.xcdatamodel */,
+				B003B46412F9BDEC005F26C8 /* ProjectsView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -235,6 +241,19 @@
 				B03FA7AD1285ACAB00AC3534 /* CoreData.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B003B4C712F9C150005F26C8 /* MGSplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B003B4C912F9C1A2005F26C8 /* MGSplitCornersView.h */,
+				B003B4CA12F9C1A2005F26C8 /* MGSplitCornersView.m */,
+				B003B4CB12F9C1A2005F26C8 /* MGSplitDividerView.h */,
+				B003B4CC12F9C1A2005F26C8 /* MGSplitDividerView.m */,
+				B003B4CD12F9C1A2005F26C8 /* MGSplitViewController.h */,
+				B003B4CE12F9C1A2005F26C8 /* MGSplitViewController.m */,
+			);
+			name = MGSplitViewController;
 			sourceTree = "<group>";
 		};
 		B0E0688E11B741BA006AC173 /* Icons */ = {
@@ -321,6 +340,7 @@
 				B0BBCF6311B9789100C8FF2E /* Unchecked-Transparent.png in Resources */,
 				B0BBCF6411B9789100C8FF2E /* GreenChecked-Transparent.png in Resources */,
 				B0BBCF7B11B97AC400C8FF2E /* icon.png in Resources */,
+				B003B46512F9BDEC005F26C8 /* ProjectsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,18 +356,20 @@
 				2804200B108E984D000629CD /* ProjectsViewController.m in Sources */,
 				B0C03E4B1176257400E356DA /* Project.m in Sources */,
 				B0C03E5311762E3F00E356DA /* ProjectViewController.m in Sources */,
-				B0C03E5911762E6500E356DA /* NextOnDeckViewController.m in Sources */,
 				B0CD6C6911A43272003BCF02 /* ProjectFormViewController.m in Sources */,
-				B0CD6CA511A43DE3003BCF02 /* TaskFormViewController.m in Sources */,
 				B0AFE2EF11A61D6D00ABB6DA /* BlankToolbar.m in Sources */,
 				B0AFE33711A7045900ABB6DA /* TextFieldTableViewCell.m in Sources */,
-				B0AFE33B11A7070400ABB6DA /* TaskDetailViewController.m in Sources */,
 				B007318B11A741B500689C9C /* AddTaskViewController.m in Sources */,
 				B00731EA11A74AA900689C9C /* ProjectPickerViewController.m in Sources */,
-				B0AFDB7B11ADF87100CDDD3E /* DatePickerViewController.m in Sources */,
-				B050EE4311C1BFDE0070BA14 /* ProjectCollection.m in Sources */,
 				B0B95F60126F51DB00373795 /* DateViewController.m in Sources */,
 				B03FA7A61285ABB400AC3534 /* nextondeck.xcdatamodel in Sources */,
+				B003B3C012F99F33005F26C8 /* Task.m in Sources */,
+				B003B4D012F9C1A2005F26C8 /* MGSplitCornersView.m in Sources */,
+				B003B4D112F9C1A2005F26C8 /* MGSplitDividerView.m in Sources */,
+				B003B4D212F9C1A2005F26C8 /* MGSplitViewController.m in Sources */,
+				B003B4D512F9C1C3005F26C8 /* CustomCellBackgroundView.m in Sources */,
+				B003B4D812F9C1DC005F26C8 /* BadgedTableViewCell.m in Sources */,
+				B003B4DB12F9C1EE005F26C8 /* BadgeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,14 +406,15 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"ARCHS[sdk=iphoneos*]" = armv7;
-				"ARCHS[sdk=iphonesimulator*]" = i386;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD_32_BIT)";
+				"ARCHS[sdk=iphonesimulator*]" = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos4.2;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;

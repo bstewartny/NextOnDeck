@@ -1,11 +1,3 @@
-//
-//  RootViewController.m
-//  NextOnDeck
-//
-//  Created by Robert Stewart on 4/14/10.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
-//
-
 #import "ProjectsViewController.h"
 #import "ProjectViewController.h"
 #import "Task.h"
@@ -13,26 +5,48 @@
 #import "ProjectFormViewController.h"
 #import "NextOnDeckProject.h"
 #import <QuartzCore/QuartzCore.h>
+#import "BadgedTableViewCell.h"
+#import "CustomCellBackgroundView.h"
+#import "BlankToolbar.h"
 
 @implementation ProjectsViewController
+@synthesize tableView, blankToolbar;
 
-@synthesize projectViewController,userProjects,builtinProjects;
-
-
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
-	//self.tableView.
-    self.clearsSelectionOnViewWillAppear = NO;
+    //self.clearsSelectionOnViewWillAppear = NO;
     self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+	
+	blankToolbar.opaque=NO;
+	blankToolbar.backgroundColor=[UIColor clearColor];
+	
+	tableView.opaque=NO;
+	tableView.backgroundColor=[UIColor clearColor];
+	tableView.backgroundView=nil;
+	
+	self.view.backgroundColor=[UIColor clearColor];
+	
+	
+	NSMutableArray * tools=[[NSMutableArray alloc] init];
+	
 	UIBarButtonItem * addButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
-	[self.navigationController.navigationBar.topItem setRightBarButtonItem:addButton animated:NO];
+	[tools addObject:addButton];
 	[addButton release];
+	
+	UIBarButtonItem * spacer=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	[tools addObject:spacer];
+	[spacer release];
+	
 	UIBarButtonItem * editButton=[[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
-	[self.navigationController.navigationBar.topItem setLeftBarButtonItem:editButton animated:NO];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:@"projectDataChanged" object:nil];
+	[tools addObject:editButton];
 	[editButton release];
 	
-		 
+	[blankToolbar setItems:tools];
+	[tools release];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:@"projectDataChanged" object:nil];
+	//[editButton release];
 }
 
 - (void)handleNotification:(NSNotification*)notification
@@ -63,22 +77,15 @@
 	projectFormView.delegate=self;
 	[projectFormView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
 	[projectFormView setModalPresentationStyle:UIModalPresentationFormSheet];
-	[self.splitViewController presentModalViewController:projectFormView animated:YES];
+	[[[[UIApplication sharedApplication] delegate] splitViewController] presentModalViewController:projectFormView animated:YES];
 	[projectFormView release];
 }
 
-- (void) projectFormViewDone:(Project*)project
+- (void) projectFormViewDone
 {
-	[self.userProjects addObject:project];
-	// show new project in detail view
-	
-	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
 	
 	[self.tableView reloadData];
-	
-	//[self showProject:project];
-	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -104,79 +111,128 @@
 	switch(section)
 	{
 		case 0:
-			return [self.builtinProjects count];
+			return 2;
 		case 1:
-			return [self.userProjects count];
+			return [[[[UIApplication sharedApplication] delegate] allProjects] count];
 	}
 }
 
-- (Project*) getProjectForIndexPath:(NSIndexPath*)indexPath{
-	switch(indexPath.section)
-	{
-		case 0:
-			return [self.builtinProjects objectAtIndex:indexPath.row];
-		case 1:
-			return [self.userProjects objectAtIndex:indexPath.row];
-		default:
-			return nil;
-	}
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     static NSString *CellIdentifier = @"CellIdentifier";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BadgedTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
    
-	if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+	if (cell == nil) 
+	{
+        cell = [[[BadgedTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
         cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 	
-	Project  * project=[self getProjectForIndexPath:indexPath];
+	cell.backgroundColor=[UIColor clearColor];
+	
+	CustomCellBackgroundView * gbView=[[[CustomCellBackgroundView alloc] initWithFrame:CGRectZero] autorelease];
+	
+	cell.backgroundView=gbView;
+	
+	gbView.fillColor=[UIColor blackColor]; 
+	gbView.borderColor=[UIColor grayColor];
+	
+	cell.backgroundView.alpha=0.5;
+	
+	if(indexPath.section==0)
+	{
+		if(indexPath.row==0)
+		{
+			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionTop];
+			cell.textLabel.text=@"Inbox";
+			cell.badgeString=@"123";
+		}
+		else 
+		{
+			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionBottom];
+			cell.textLabel.text=@"Next on deck";
+		}
+	}
+	else 
+	{
+		NSArray * allProjects=[[[UIApplication sharedApplication] delegate] allProjects];
+		
+		if (indexPath.row==0) 
+		{
+			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionTop];
+		}
+		else 
+		{
+			if(indexPath.row==[allProjects count]-1)
+			{
+				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionBottom];
+			}
+			else 
+			{
+				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionMiddle];
+			}
+		}
+
+		Project  * project=[allProjects objectAtIndex:indexPath.row];
 			
-	cell.textLabel.text=project.name;
-	cell.detailTextLabel.text=[NSString stringWithFormat:@"%d",[project countUncompleted]];
-		 
-	cell.imageView.image=[project image];
+		cell.textLabel.text=project.name;
+		cell.badgeString=[NSString stringWithFormat:@"%d",[project countUncompleted]];
+	}
 	
 	return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
+{
     return (indexPath.section>0); 
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.section>0){
-		if (editingStyle == UITableViewCellEditingStyleDelete) {
-			[self.userProjects removeObjectAtIndex:indexPath.row];
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    if(indexPath.section>0)
+	{
+		if (editingStyle == UITableViewCellEditingStyleDelete) 
+		{
+			Project  * project=[[[[UIApplication sharedApplication] delegate] allProjects] objectAtIndex:indexPath.row];
+			[project delete];
 			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
 		}
 	}
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-	Project  * project=[self getProjectForIndexPath:indexPath];
-	[self showProject:project];
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{    
+	if(indexPath.section==0)
+	{
+		if(indexPath.row==0)
+		{
+			// show inbox
+		}
+		else 
+		{
+			// show next on deck
+		}
+	}
+	else 
+	{
+		Project  * project=[[[[UIApplication sharedApplication] delegate] allProjects] objectAtIndex:indexPath.row];
+		[self showProject:project];
+	}
 }
 
 - (void) showProject:(Project*)project
 {
-	projectViewController.project = project;
-	projectViewController.aggregateView=[project isKindOfClass:[AggregateProject class]];
-	[projectViewController.taskTableView reloadData];
-	[projectViewController.navigationController popToRootViewControllerAnimated:YES];
+	[[[UIApplication sharedApplication] delegate] showProject:project];
 }
 
-- (void)dealloc {
-    [projectViewController release];
-	[userProjects release];
-	[builtinProjects release];
+- (void) dealloc
+{	
+	[tableView release];
+	[blankToolbar release];
 	[super dealloc];
 }
-
 
 @end
 
