@@ -8,6 +8,10 @@
 	IBOutlet UITableView * taskTableView;
 	//BOOL aggregateView;
 	IBOutlet UIToolbar * topToolbar;
+	NSArray * tasks;
+	SEL _selector;
+	id _target;
+	id _object;
 }
 @property(nonatomic,retain) Project * project;
 @property(nonatomic,retain) IBOutlet UITableView * taskTableView;
@@ -16,5 +20,6 @@
 //@property(nonatomic) BOOL aggregateView;
 
 - (void) taskFormViewDone;
+- (void) setTaskSelector:(SEL)selector withObject:(id)object withTarget:(id)target;
 
 @end

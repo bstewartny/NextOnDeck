@@ -13,10 +13,53 @@
 	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
+- (void) showInbox
+{
+	[projectViewController setTaskSelector:@selector(getInboxTasks:) withObject:nil withTarget:self];
+	projectViewController.project =nil;
+	projectViewController.title=@"Inbox - These are unassigned tasks...";
+	[projectViewController.taskTableView reloadData];
+}
+
+- (void) showNextOnDeck
+{
+	[projectViewController setTaskSelector:@selector(getNextOnDeckTasks:) withObject:nil withTarget:self];
+	projectViewController.project =nil;
+	
+	projectViewController.title=@"Next On Deck - You should perform these tasks next...";
+	[projectViewController.taskTableView reloadData];
+}
+
 - (void) showProject:(Project*)project
 {
+	[projectViewController setTaskSelector:@selector(getProjectTasks:) withObject:project withTarget:self];
 	projectViewController.project = project;
+	
+	if([project.summary length]>0)
+	{
+		projectViewController.title= [NSString stringWithFormat:@"%@ - %@",project.name,project.summary];
+	}
+	else 
+	{
+		projectViewController.title= project.name;
+	}
+	
 	[projectViewController.taskTableView reloadData];
+}
+
+- (NSArray*) getProjectTasks:(Project*)project
+{
+	return [project orderedTasks];
+}
+
+-(NSArray*) getNextOnDeckTasks:(id)na
+{
+	return [self nextOnDeckTasks];
+}
+
+- (NSArray*)getInboxTasks:(id)na
+{
+	return [self unassignedTasks];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
@@ -42,12 +85,12 @@
     return YES;
 }
 
--(Project*) createNewProject:(NSString*)name description:(NSString*)description
+-(Project*) createNewProject:(NSString*)name summary:(NSString*)summary
 {
 	NSLog(@"createNewProject: %@",name);
 	Project * newProject=[NSEntityDescription insertNewObjectForEntityForName:@"Project" inManagedObjectContext:[self managedObjectContext]];
 	newProject.name=name;
-	newProject.description=description;
+	newProject.summary=summary;
 	newProject.createdOn=[NSDate date];
 	[newProject save];
 	return newProject;

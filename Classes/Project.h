@@ -7,7 +7,7 @@
 
 @property(nonatomic,retain) NSString * name;
 @property(nonatomic,retain) NSString * notes;
-@property(nonatomic,retain) NSString * description;
+@property(nonatomic,retain) NSString * summary;
 @property(nonatomic,retain) NSSet * tasks;
 @property(nonatomic,retain) NSDate * createdOn;
 

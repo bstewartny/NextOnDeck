@@ -17,6 +17,8 @@
 - (void) delete	
 {
 	[[self managedObjectContext] deleteObject:self];
+	NSError * error=nil;
+	[[self managedObjectContext] save:&error];
 }
 
 - (BOOL) isOverdue

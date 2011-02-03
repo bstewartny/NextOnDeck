@@ -238,7 +238,7 @@
 		{
 			Project  * project=[allProjects objectAtIndex:indexPath.row];
 			[project delete];
-			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
 		}
 		if(editingStyle==UITableViewCellEditingStyleInsert)
@@ -255,10 +255,12 @@
 		if(indexPath.row==0)
 		{
 			// show inbox
+			[[[UIApplication sharedApplication] delegate] showInbox];
 		}
 		else 
 		{
 			// show next on deck
+			[[[UIApplication sharedApplication] delegate] showNextOnDeck];
 		}
 	}
 	else 

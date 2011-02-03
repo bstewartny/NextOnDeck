@@ -2,7 +2,7 @@
 #import "Task.h"
 
 @implementation Project
-@dynamic name,tasks,notes,description,createdOn;
+@dynamic name,tasks,notes,summary,createdOn;
 
 - (void) save
 {
@@ -13,6 +13,8 @@
 - (void) delete	
 {
 	[[self managedObjectContext] deleteObject:self];
+	NSError * error=nil;
+	[[self managedObjectContext] save:&error];
 }
 
 - (void) addNewTask:(NSString*)name note:(NSString*)note dueDate:(NSDate *)dueDate
@@ -33,9 +35,12 @@
 {
 	for(Task * task in [self orderedTasks])
 	{
-		if(![task isCompleted])
+		if(![task isDeleted])
 		{
-			return task;
+			if(![task isCompleted])
+			{
+				return task;
+			}
 		}
 	}
 	return nil;
@@ -47,7 +52,10 @@
 	
 	for(Task * t in self.tasks)
 	{
-		[tmp addObject:t];
+		if(![t isDeleted])
+		{
+			[tmp addObject:t];
+		}
 	}
 	
 	[tmp sortUsingSelector:@selector(createdOn)];
@@ -61,9 +69,12 @@
 	 
 	for(Task * t in self.tasks)
 	{
-		if(!t.completed)
+		if(![t isDeleted])
 		{
-			count++;
+			if(![t isCompleted])
+			{
+				count++;
+			}
 		}
 	}
 	 

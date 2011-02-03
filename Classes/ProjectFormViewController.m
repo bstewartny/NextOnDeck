@@ -2,7 +2,7 @@
 #import "Project.h"
  
 @implementation ProjectFormViewController
-@synthesize textField,project,delegate,descriptionField;
+@synthesize textField,project,delegate,summaryField;
 
 - (IBAction) cancel
 {
@@ -15,12 +15,12 @@
 		
 		if(project==nil)
 		{
-			self.project=[[[UIApplication sharedApplication] delegate] createNewProject:textField.text description:descriptionField.text];
+			self.project=[[[UIApplication sharedApplication] delegate] createNewProject:textField.text summary:summaryField.text];
 		}
 		else 
 		{
 			self.project.name=self.textField.text;
-			self.project.description=self.descriptionField.text;
+			self.project.summary=self.summaryField.text;
 		}
 			
 		[delegate projectFormViewDone];
@@ -48,7 +48,7 @@
 
 - (void)dealloc {
 	[textField release];
-	[descriptionField release];
+	[summaryField release];
 	[project release];
     [super dealloc];
 }
