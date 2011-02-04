@@ -161,12 +161,13 @@
 		{
 			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionTop];
 			cell.textLabel.text=@"Inbox";
-			cell.badgeString=@"123";
+			cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] unassignedTasks] count]];
 		}
 		else 
 		{
 			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionBottom];
 			cell.textLabel.text=@"Next on deck";
+			cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] nextOnDeckTasks] count]];
 		}
 	}
 	else 
@@ -267,6 +268,7 @@
 	{
 		if(indexPath.row==[allProjects count])
 		{
+			[aTableView deselectRowAtIndexPath:indexPath animated:YES];
 			// add new project
 			[self add:nil];
 		}

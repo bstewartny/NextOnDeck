@@ -27,6 +27,7 @@
 		B007318D11A7434600689C9C /* AddTaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B007318C11A7434600689C9C /* AddTaskView.xib */; };
 		B00731EA11A74AA900689C9C /* ProjectPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B00731E911A74AA900689C9C /* ProjectPickerViewController.m */; };
 		B00731EC11A74B6400689C9C /* ChooseProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00731EB11A74B6400689C9C /* ChooseProjectView.xib */; };
+		B00B8AC412FBA2EB00E1E471 /* TaskTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B00B8AC312FBA2EB00E1E471 /* TaskTableViewCell.m */; };
 		B03FA7A61285ABB400AC3534 /* nextondeck.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = B03FA7A51285ABB400AC3534 /* nextondeck.xcdatamodel */; };
 		B03FA7AE1285ACAB00AC3534 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B03FA7AD1285ACAB00AC3534 /* CoreData.framework */; };
 		B0AFDB7711ADF7E100CDDD3E /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */; };
@@ -45,6 +46,7 @@
 		B0C03E5311762E3F00E356DA /* ProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0C03E5211762E3F00E356DA /* ProjectViewController.m */; };
 		B0C03E5D1176315600E356DA /* ProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0C03E5C1176315600E356DA /* ProjectView.xib */; };
 		B0C03F3311763D8A00E356DA /* TaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0C03F3211763D8A00E356DA /* TaskView.xib */; };
+		B0C2B1A612FB630800D53F92 /* accept.png in Resources */ = {isa = PBXBuildFile; fileRef = B0C2B1A512FB630800D53F92 /* accept.png */; };
 		B0CD6C6311A42FF2003BCF02 /* ProjectFormView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0CD6C6211A42FF2003BCF02 /* ProjectFormView.xib */; };
 		B0CD6C6911A43272003BCF02 /* ProjectFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0CD6C6811A43272003BCF02 /* ProjectFormViewController.m */; };
 		B0CD6CBB11A43F31003BCF02 /* TaskFormView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0CD6CBA11A43F31003BCF02 /* TaskFormView.xib */; };
@@ -89,6 +91,8 @@
 		B00731E811A74AA900689C9C /* ProjectPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectPickerViewController.h; sourceTree = "<group>"; };
 		B00731E911A74AA900689C9C /* ProjectPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectPickerViewController.m; sourceTree = "<group>"; };
 		B00731EB11A74B6400689C9C /* ChooseProjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChooseProjectView.xib; sourceTree = "<group>"; };
+		B00B8AC212FBA2EB00E1E471 /* TaskTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskTableViewCell.h; sourceTree = "<group>"; };
+		B00B8AC312FBA2EB00E1E471 /* TaskTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskTableViewCell.m; sourceTree = "<group>"; };
 		B03FA7A51285ABB400AC3534 /* nextondeck.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = nextondeck.xcdatamodel; sourceTree = "<group>"; };
 		B03FA7AD1285ACAB00AC3534 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 		B0C03E5211762E3F00E356DA /* ProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectViewController.m; sourceTree = "<group>"; };
 		B0C03E5C1176315600E356DA /* ProjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectView.xib; sourceTree = "<group>"; };
 		B0C03F3211763D8A00E356DA /* TaskView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskView.xib; sourceTree = "<group>"; };
+		B0C2B1A512FB630800D53F92 /* accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept.png; sourceTree = "<group>"; };
 		B0CD6C6211A42FF2003BCF02 /* ProjectFormView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectFormView.xib; sourceTree = "<group>"; };
 		B0CD6C6711A43272003BCF02 /* ProjectFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectFormViewController.h; sourceTree = "<group>"; };
 		B0CD6C6811A43272003BCF02 /* ProjectFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectFormViewController.m; sourceTree = "<group>"; };
@@ -171,6 +176,8 @@
 				B00731E911A74AA900689C9C /* ProjectPickerViewController.m */,
 				B0B95F5E126F51DB00373795 /* DateViewController.h */,
 				B0B95F5F126F51DB00373795 /* DateViewController.m */,
+				B00B8AC212FBA2EB00E1E471 /* TaskTableViewCell.h */,
+				B00B8AC312FBA2EB00E1E471 /* TaskTableViewCell.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -207,6 +214,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B0C2B1A512FB630800D53F92 /* accept.png */,
 				B0BBCF7A11B97AC400C8FF2E /* icon.png */,
 				B0BBCF6111B9789100C8FF2E /* Unchecked-Transparent.png */,
 				B0BBCF6211B9789100C8FF2E /* GreenChecked-Transparent.png */,
@@ -341,6 +349,7 @@
 				B0BBCF6411B9789100C8FF2E /* GreenChecked-Transparent.png in Resources */,
 				B0BBCF7B11B97AC400C8FF2E /* icon.png in Resources */,
 				B003B46512F9BDEC005F26C8 /* ProjectsView.xib in Resources */,
+				B0C2B1A612FB630800D53F92 /* accept.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +379,7 @@
 				B003B4D512F9C1C3005F26C8 /* CustomCellBackgroundView.m in Sources */,
 				B003B4D812F9C1DC005F26C8 /* BadgedTableViewCell.m in Sources */,
 				B003B4DB12F9C1EE005F26C8 /* BadgeView.m in Sources */,
+				B00B8AC412FBA2EB00E1E471 /* TaskTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,9 +6,10 @@
 #import "AddTaskViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MGSplitViewController.h"
+#import "TaskTableViewCell.h"
 
 @implementation ProjectViewController
-@synthesize  popoverController,topToolbar,project,taskTableView;//,aggregateView;
+@synthesize  popoverController,topToolbar,wrapperView,project,taskTableView;
 
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -21,9 +22,19 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad 
+{
     [super viewDidLoad];
 	self.view.backgroundColor=[UIColor clearColor];
+	
+	self.wrapperView.layer.shadowRadius=10;
+	self.wrapperView.layer.shadowOffset=CGSizeMake(0,0);
+	self.wrapperView.layer.shadowColor=[UIColor blackColor].CGColor;
+	self.wrapperView.layer.shadowOpacity=0.8;
+	
+	NSLog(@"bounds for path=%@",NSStringFromCGRect(self.wrapperView.bounds));
+	UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.wrapperView.bounds];
+	self.wrapperView.layer.shadowPath = path.CGPath;
 	
 	// create the array to hold the buttons, which then gets added to the toolbar
 	NSMutableArray* buttons = [[NSMutableArray alloc] init];
@@ -38,9 +49,9 @@
 	[bi release];
 	
 	// action button
-	bi=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(action:)];
-	[buttons addObject:bi];
-	[bi release];
+	//bi=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(action:)];
+	//[buttons addObject:bi];
+	//[bi release];
 	
 	// create a spacer
 	bi = [[UIBarButtonItem alloc]
@@ -78,13 +89,13 @@
 	UIBarButtonItem * editButton=(UIBarButtonItem*)sender;
 	if(self.taskTableView.editing)
 	{
-		self.taskTableView.editing=NO;
+		[self.taskTableView setEditing:NO animated:YES];
 		[editButton setStyle:UIBarButtonItemStyleBordered];
 		[editButton setTitle:@"Edit"];
 	}
 	else 
 	{
-		self.taskTableView.editing=YES;
+		[self.taskTableView setEditing:YES animated:YES];
 		[editButton setTitle:@"Done"];
 		[editButton setStyle:UIBarButtonItemStyleDone];
 	}
@@ -110,8 +121,6 @@
 - (void) taskFormViewDone
 {
 	[self sendProjectDataChangedNotification];
-
-	// redraw
 	[self.taskTableView reloadData];
 }
 
@@ -124,7 +133,8 @@
 		[tasks release];
 		tasks=nil;
 	}
-	if (popoverController!=nil) {
+	if (popoverController!=nil) 
+	{
 		[popoverController dismissPopoverAnimated:YES];
 	}
 }
@@ -132,146 +142,91 @@
 - (void) loadTasks
 {
 	[tasks release];
-	
 	tasks=[[_target performSelector:_selector withObject:_object] retain];
-	
-	
-	//tasks=[[self.project orderedTasks] retain];
 }
 
-- (void)splitViewController: (MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc {
+- (void)splitViewController: (MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc 
+{
     barButtonItem.title = @"Projects";
 	//[[self.navigationController.navigationBar.items objectAtIndex:0] setLeftBarButtonItem:barButtonItem animated:YES];
 	self.popoverController = pc;
 }
 
-- (void)splitViewController: (MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
+- (void)splitViewController: (MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem 
+{
     //[[self.navigationController.navigationBar.items objectAtIndex:0] setLeftBarButtonItem:nil animated:YES];
 	self.popoverController = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     return YES;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView 
+{
     [self loadTasks];	
 	return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"numberOfRowsInSection");
-	return [tasks count];
+    return [tasks count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return tableView.rowHeight;
+	return 55;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	static NSString *CellIdentifier = @"TaskTableViewCellIdentifier";
+	
+    TaskTableViewCell *cell = nil;//(TaskTableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-	NSLog(@"cellForRowAtIndexPath");
-	
-    static NSString *CellIdentifier = @"CellIdentifier";
-	
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-	UIButton * toggleButton;
-	UILabel * nameLabel;
-	UILabel * projectLabel;
-	UILabel * dueDateLabel;
-	
 	if (cell == nil) 
 	{
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        cell = [[[TaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        
+		cell.selectionStyle=UITableViewCellSelectionStyleGray;
 		
-		toggleButton=[UIButton buttonWithType:UIButtonTypeCustom];
-		
-		[toggleButton setImage:[UIImage imageNamed:@"Unchecked-Transparent.png"] forState:UIControlStateNormal];
-		[toggleButton addTarget:self action:@selector(toggleRow:) forControlEvents:UIControlEventTouchDown];
-		toggleButton.tag=1;
-		toggleButton.frame=CGRectMake(10, 10, 25, 25);
-		
-		[cell.contentView addSubview:toggleButton];
-		
-		/*if(aggregateView)
-		{
-			projectLabel=[[UILabel alloc] init];
-			projectLabel.font=[UIFont boldSystemFontOfSize:14];
-			projectLabel.textColor=[UIColor grayColor];
-			projectLabel.tag=4;
-			projectLabel.frame=CGRectMake(43, 2, 650, 14);
-			
-			[cell.contentView addSubview:projectLabel];
-			
-			nameLabel=[[UILabel alloc] init];
-			nameLabel.font=[UIFont boldSystemFontOfSize:20];
-			nameLabel.tag=2;
-			nameLabel.frame=CGRectMake(43, 16, 650, 28);
-			
-			[cell.contentView addSubview:nameLabel];
-		}
-		else 
-		{*/
-			nameLabel=[[UILabel alloc] init];
-			nameLabel.font=[UIFont boldSystemFontOfSize:20];
-			nameLabel.tag=2;
-			nameLabel.frame=CGRectMake(43, 8, 650, 28);
-			
-			[cell.contentView addSubview:nameLabel];
-		//}
-		dueDateLabel=cell.detailTextLabel;
+		[cell.checkButton addTarget:self action:@selector(toggleRow:) forControlEvents:UIControlEventTouchDown];
 	}
     
 	Task * task=[tasks objectAtIndex:indexPath.row];
 	
-	toggleButton=(UIButton*)[cell.contentView viewWithTag:1];
-	nameLabel=(UILabel*)[cell.contentView viewWithTag:2];
-	dueDateLabel=cell.detailTextLabel;
-	
-	/*if(aggregateView)
-	{
-		projectLabel=(UILabel*)[cell.contentView viewWithTag:4];
+	cell.noteLabel.text=task.note;
+	cell.nameLabel.text=task.name;
 		
-		Project * task_project=[[[UIApplication sharedApplication] delegate] findProjectForTask:task];
-		
-		if(task_project)
-		{
-			projectLabel.text =task_project.name;
-		}
-		else 
-		{
-			projectLabel.text=@"Inbox";
-		}
-	}*/
-	
 	if([task isCompleted])
 	{
-		[toggleButton setImage:[UIImage imageNamed:@"GreenChecked-Transparent.png"] forState:UIControlStateNormal];
-		nameLabel.textColor=[UIColor lightGrayColor];
-		dueDateLabel.text=[task completedOnString];
-		dueDateLabel.textColor=[UIColor greenColor];
+		[cell.checkButton setImage:[UIImage imageNamed:@"accept.png"] forState:UIControlStateNormal];
+		
+		cell.nameLabel.textColor=[UIColor lightGrayColor];
+		
+		cell.badgeString=[task completedOnString];
+		
+		cell.badgeColor=[UIColor greenColor];
 	}
 	else 
 	{
-		[toggleButton setImage:[UIImage imageNamed:@"Unchecked-Transparent.png"] forState:UIControlStateNormal];
-		nameLabel.textColor=[UIColor blackColor];
-		dueDateLabel.text=[task dueDateString];
+		[cell.checkButton setImage:[UIImage imageNamed:@"Unchecked-Transparent.png"] forState:UIControlStateNormal];
+		
+		cell.nameLabel.textColor=[UIColor blackColor];
+		
+		cell.badgeString=[task dueDateString];
+		
 		if([task isOverdue])
 		{
-			dueDateLabel.textColor=[UIColor redColor];
+			cell.badgeColor=[UIColor redColor];
 		}
 		else 
 		{
-			dueDateLabel.textColor=[UIColor blueColor];
+			cell.badgeColor=[UIColor blueColor];
 		}
 	}
 
 	cell.tag=task;
-	
-	[nameLabel setText:task.name];
 	
     return cell;
 }
@@ -284,7 +239,7 @@
 	
 	if (![task isCompleted]) 
 	{
-		[button setImage:[UIImage imageNamed:@"GreenChecked-Transparent.png"] forState:UIControlStateNormal];
+		[button setImage:[UIImage imageNamed:@"accept.png"] forState:UIControlStateNormal];
 		task.completed=[NSNumber numberWithBool:YES];
 		task.completedOn=[NSDate date];
 	}
@@ -295,45 +250,27 @@
 		task.completedOn=nil;
 	}
 	[task save];
-	// if in aggregate view then setting row to completed should remove it from the table
-	// since we only show uncompleted tasks in the aggregate views
-	/*if(self.aggregateView)
-	{
-		[self.taskTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-	}
-	else 
-	{*/
-		[self.taskTableView reloadData];
-	//}
-
-	[self sendProjectDataChangedNotification];
 	
+	[self.taskTableView reloadData];
+	
+    [self sendProjectDataChangedNotification];
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    /*if(self.aggregateView)
-	{
-		return NO;
-	}
-	else
-	{*/
-		return YES;
-	//}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	return YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
 {    
-	//if(!self.aggregateView)
-	//{
-		if (editingStyle == UITableViewCellEditingStyleDelete) 
-		{
-			Task * task=[tasks objectAtIndex:indexPath.row];
-			[task delete];
-			[self loadTasks];
-			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-			[self sendProjectDataChangedNotification];
-		}
-	//}
+	if (editingStyle == UITableViewCellEditingStyleDelete) 
+	{
+		Task * task=[tasks objectAtIndex:indexPath.row];
+		[task delete];
+		[self loadTasks];
+		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[self sendProjectDataChangedNotification];
+	}
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -358,6 +295,7 @@
 	
 	[taskViewController release];
 }
+
 /*
 - (BOOL) tableView:(UITableView*)tableView
 canMoveRowAtIndexPath:(NSIndexPath*)indexPath
@@ -395,32 +333,19 @@ moveRowAtIndexPath:(NSIndexPath*)fromIndexPath
 	_target=target;
 }
 
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	return self.title;
-	/*
-	if([self.project.summary length]>0)
-	{
-		return [NSString stringWithFormat:@"%@ - %@",self.project.name,self.project.summary];
-	}
-	else 
-	{
-		return self.project.name;
-	}*/
-}
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc that aren't in use.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload 
+{
     self.popoverController = nil;
 }
 
 - (void)dealloc {
 	[tasks release];
+	[wrapperView release];
 	[popoverController release];
     [project release];
 	[taskTableView release];

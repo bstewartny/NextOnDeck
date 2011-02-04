@@ -8,6 +8,7 @@
 	IBOutlet UITableView * taskTableView;
 	//BOOL aggregateView;
 	IBOutlet UIToolbar * topToolbar;
+	IBOutlet UIView * wrapperView;
 	NSArray * tasks;
 	SEL _selector;
 	id _target;
@@ -16,6 +17,8 @@
 @property(nonatomic,retain) Project * project;
 @property(nonatomic,retain) IBOutlet UITableView * taskTableView;
 @property(nonatomic,retain) IBOutlet UIToolbar * topToolbar;
+@property(nonatomic,retain) IBOutlet UIView * wrapperView;
+
 @property (nonatomic, retain) UIPopoverController *popoverController;
 //@property(nonatomic) BOOL aggregateView;
 

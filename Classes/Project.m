@@ -17,6 +17,7 @@
 	[[self managedObjectContext] save:&error];
 }
 
+
 - (void) addNewTask:(NSString*)name note:(NSString*)note dueDate:(NSDate *)dueDate
 {
 	Task * task=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[self managedObjectContext]];

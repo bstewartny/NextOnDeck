@@ -36,7 +36,24 @@
 
 - (void) addNewTask:(NSString*)name note:(NSString*)note dueDate:(NSDate*)dueDate
 {
-	[[self selectedProject] addNewTask:name note:note dueDate:dueDate];
+	Project * p=[self selectedProject];
+	if(p)
+	{
+		[p addNewTask:name note:note dueDate:dueDate];
+	}
+	else 
+	{
+		Task * t=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[[[UIApplication sharedApplication] delegate] managedObjectContext]];
+		
+		t.name=name;
+		t.note=note;
+		t.dueDate=dueDate;
+		t.createdOn=[NSDate date];
+		t.completed=[NSNumber numberWithBool:NO];
+		t.project=nil;
+		
+		[t save];
+	}	
 }
 
 - (void) doneMultiMode
@@ -212,7 +229,14 @@
 		cell.textLabel.font=[UIFont systemFontOfSize:18];
 	}
 	
-	cell.detailTextLabel.text=self.project.name;
+	if(self.project==nil)
+	{
+		cell.detailTextLabel.text=@"Inbox";
+	}
+	else
+	{
+		cell.detailTextLabel.text=self.project.name;
+	}
 	
 	projectPickerOriginView=cell.detailTextLabel;
 

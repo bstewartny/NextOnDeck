@@ -158,7 +158,8 @@
 
 -(NSArray *) unassignedTasks
 {
-	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"project=NULL"];
+	NSLog(@"unassignedTasks");
+	NSPredicate * predicate=[NSPredicate predicateWithFormat:@"project==%@",nil];
 	
 	return [self searchObjects:@"Task" predicate:predicate sortKey:@"createdOn" sortAscending:NO];
 }

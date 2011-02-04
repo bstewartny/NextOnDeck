@@ -22,7 +22,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-    return [self.projects count];
+    return [self.projects count]+1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -36,16 +36,29 @@
 		cell.accessoryType=UITableViewCellAccessoryNone;
 	}
     
-	Project * p=[projects objectAtIndex:indexPath.row];
+	if(indexPath.row>0)
+	{
+		Project * p=[projects objectAtIndex:indexPath.row-1];
 	
-	cell.textLabel.text=p.name;
+		cell.textLabel.text=p.name;
+	}
+	else {
+		cell.textLabel.text=@"Inbox";
+	}
 
 	return cell;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	Project * p=[projects objectAtIndex:indexPath.row];
+	Project * p=nil;
 	
+	if(indexPath.row>0)
+	{
+		p=[projects objectAtIndex:indexPath.row-1];
+	}
+	
+	
+
 	if(delegate)
 	{
 		[delegate projectSelected:p];

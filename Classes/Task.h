@@ -15,6 +15,7 @@
 - (BOOL) isOverdue;
 
 - (NSString*) dueDateString;
+- (NSString*) completedOnString;
 
 - (BOOL) isCompleted;
 
