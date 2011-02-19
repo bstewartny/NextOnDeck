@@ -14,7 +14,7 @@
 		2804200B108E984D000629CD /* ProjectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28042008108E984D000629CD /* ProjectsViewController.m */; };
 		2804203C108E9BAB000629CD /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2804203B108E9BAB000629CD /* DetailView.xib */; };
 		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
-		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
+		28AD73600D9D9599002E5188 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow-iPad.xib */; };
 		B003B3C012F99F33005F26C8 /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B3BF12F99F33005F26C8 /* Task.m */; };
 		B003B46512F9BDEC005F26C8 /* ProjectsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B003B46412F9BDEC005F26C8 /* ProjectsView.xib */; };
 		B003B4D012F9C1A2005F26C8 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = B003B4CA12F9C1A2005F26C8 /* MGSplitCornersView.m */; };
@@ -55,12 +55,15 @@
 		B0E0689611B741BA006AC173 /* iCal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0689111B741BA006AC173 /* iCal-icon.png */; };
 		B0E0689711B741BA006AC173 /* money-bag-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0689211B741BA006AC173 /* money-bag-icon.png */; };
 		B0E0689811B741BA006AC173 /* Star-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B0E0689311B741BA006AC173 /* Star-icon.png */; };
+		B0FF3F08130F56B00046B0DA /* NextOnDeckAppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = B0FF3F07130F56B00046B0DA /* NextOnDeckAppDelegate_iPhone.m */; };
+		B0FF3F0B130F56C10046B0DA /* NextOnDeckAppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = B0FF3F0A130F56C10046B0DA /* NextOnDeckAppDelegate_iPad.m */; };
+		B0FF3F65130F5CA00046B0DA /* MainWindow-iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0FF3F64130F5CA00046B0DA /* MainWindow-iPhone.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* NextOnDeckAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextOnDeckAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* NextOnDeckAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextOnDeckAppDelegate.m; sourceTree = "<group>"; };
+		1D3623240D0F684500981E51 /* NextOnDeckAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NextOnDeckAppDelegate.h; path = ../Classes/NextOnDeckAppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* NextOnDeckAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NextOnDeckAppDelegate.m; path = ../Classes/NextOnDeckAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* NextOnDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NextOnDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28042007108E984D000629CD /* ProjectsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectsViewController.h; sourceTree = "<group>"; };
@@ -68,7 +71,7 @@
 		2804203B108E9BAB000629CD /* DetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28A0AAE50D9B0CCF005BE974 /* NextOnDeck_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextOnDeck_Prefix.pch; sourceTree = "<group>"; };
-		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		28AD735F0D9D9599002E5188 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* NextOnDeck-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "NextOnDeck-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		B003B3BF12F99F33005F26C8 /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
@@ -127,6 +130,11 @@
 		B0E0689111B741BA006AC173 /* iCal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iCal-icon.png"; sourceTree = "<group>"; };
 		B0E0689211B741BA006AC173 /* money-bag-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "money-bag-icon.png"; sourceTree = "<group>"; };
 		B0E0689311B741BA006AC173 /* Star-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Star-icon.png"; sourceTree = "<group>"; };
+		B0FF3F06130F56B00046B0DA /* NextOnDeckAppDelegate_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextOnDeckAppDelegate_iPhone.h; sourceTree = "<group>"; };
+		B0FF3F07130F56B00046B0DA /* NextOnDeckAppDelegate_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextOnDeckAppDelegate_iPhone.m; sourceTree = "<group>"; };
+		B0FF3F09130F56C10046B0DA /* NextOnDeckAppDelegate_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextOnDeckAppDelegate_iPad.h; sourceTree = "<group>"; };
+		B0FF3F0A130F56C10046B0DA /* NextOnDeckAppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextOnDeckAppDelegate_iPad.m; sourceTree = "<group>"; };
+		B0FF3F64130F5CA00046B0DA /* MainWindow-iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "MainWindow-iPhone.xib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,15 +155,12 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				B003B4C712F9C150005F26C8 /* MGSplitViewController */,
 				B003B4D912F9C1EE005F26C8 /* BadgeView.h */,
 				B003B4DA12F9C1EE005F26C8 /* BadgeView.m */,
 				B003B4D612F9C1DC005F26C8 /* BadgedTableViewCell.h */,
 				B003B4D712F9C1DC005F26C8 /* BadgedTableViewCell.m */,
 				B003B4D312F9C1C3005F26C8 /* CustomCellBackgroundView.h */,
 				B003B4D412F9C1C3005F26C8 /* CustomCellBackgroundView.m */,
-				1D3623240D0F684500981E51 /* NextOnDeckAppDelegate.h */,
-				1D3623250D0F684500981E51 /* NextOnDeckAppDelegate.m */,
 				28042007108E984D000629CD /* ProjectsViewController.h */,
 				28042008108E984D000629CD /* ProjectsViewController.m */,
 				B0C03E441176256D00E356DA /* Task.h */,
@@ -193,6 +198,10 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				B0FF3F05130F564E0046B0DA /* Externals */,
+				B0FF3F04130F56120046B0DA /* AppDelegate-iPhone */,
+				B0FF3F03130F55EF0046B0DA /* AppDelegate-iPad */,
+				B0FF3F02130F55D10046B0DA /* AppDelegate-Shared */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -223,7 +232,7 @@
 				B0AFE1EC11A4A11D00ABB6DA /* unselected.png */,
 				B0AFE17E11A47E7400ABB6DA /* checkbox_checked.png */,
 				B0AFE17F11A47E7400ABB6DA /* checkbox_unchecked.png */,
-				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
+				28AD735F0D9D9599002E5188 /* MainWindow-iPad.xib */,
 				2804203B108E9BAB000629CD /* DetailView.xib */,
 				8D1107310486CEB800E47090 /* NextOnDeck-Info.plist */,
 				B0C03E5C1176315600E356DA /* ProjectView.xib */,
@@ -236,6 +245,7 @@
 				B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */,
 				B03FA7A51285ABB400AC3534 /* nextondeck.xcdatamodel */,
 				B003B46412F9BDEC005F26C8 /* ProjectsView.xib */,
+				B0FF3F64130F5CA00046B0DA /* MainWindow-iPhone.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -262,6 +272,7 @@
 				B003B4CE12F9C1A2005F26C8 /* MGSplitViewController.m */,
 			);
 			name = MGSplitViewController;
+			path = ../Classes;
 			sourceTree = "<group>";
 		};
 		B0E0688E11B741BA006AC173 /* Icons */ = {
@@ -274,6 +285,41 @@
 				B0E0689311B741BA006AC173 /* Star-icon.png */,
 			);
 			path = Icons;
+			sourceTree = "<group>";
+		};
+		B0FF3F02130F55D10046B0DA /* AppDelegate-Shared */ = {
+			isa = PBXGroup;
+			children = (
+				1D3623240D0F684500981E51 /* NextOnDeckAppDelegate.h */,
+				1D3623250D0F684500981E51 /* NextOnDeckAppDelegate.m */,
+			);
+			path = "AppDelegate-Shared";
+			sourceTree = "<group>";
+		};
+		B0FF3F03130F55EF0046B0DA /* AppDelegate-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				B0FF3F09130F56C10046B0DA /* NextOnDeckAppDelegate_iPad.h */,
+				B0FF3F0A130F56C10046B0DA /* NextOnDeckAppDelegate_iPad.m */,
+			);
+			path = "AppDelegate-iPad";
+			sourceTree = "<group>";
+		};
+		B0FF3F04130F56120046B0DA /* AppDelegate-iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				B0FF3F06130F56B00046B0DA /* NextOnDeckAppDelegate_iPhone.h */,
+				B0FF3F07130F56B00046B0DA /* NextOnDeckAppDelegate_iPhone.m */,
+			);
+			path = "AppDelegate-iPhone";
+			sourceTree = "<group>";
+		};
+		B0FF3F05130F564E0046B0DA /* Externals */ = {
+			isa = PBXGroup;
+			children = (
+				B003B4C712F9C150005F26C8 /* MGSplitViewController */,
+			);
+			path = Externals;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -326,7 +372,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
+				28AD73600D9D9599002E5188 /* MainWindow-iPad.xib in Resources */,
 				2804203C108E9BAB000629CD /* DetailView.xib in Resources */,
 				B0C03E5D1176315600E356DA /* ProjectView.xib in Resources */,
 				B0C03F3311763D8A00E356DA /* TaskView.xib in Resources */,
@@ -350,6 +396,7 @@
 				B0BBCF7B11B97AC400C8FF2E /* icon.png in Resources */,
 				B003B46512F9BDEC005F26C8 /* ProjectsView.xib in Resources */,
 				B0C2B1A612FB630800D53F92 /* accept.png in Resources */,
+				B0FF3F65130F5CA00046B0DA /* MainWindow-iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +427,8 @@
 				B003B4D812F9C1DC005F26C8 /* BadgedTableViewCell.m in Sources */,
 				B003B4DB12F9C1EE005F26C8 /* BadgeView.m in Sources */,
 				B00B8AC412FBA2EB00E1E471 /* TaskTableViewCell.m in Sources */,
+				B0FF3F08130F56B00046B0DA /* NextOnDeckAppDelegate_iPhone.m in Sources */,
+				B0FF3F0B130F56C10046B0DA /* NextOnDeckAppDelegate_iPad.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,15 +473,15 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.2;
-				TARGETED_DEVICE_FAMILY = 2;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"ARCHS[sdk=iphoneos*]" = armv7;
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_STANDARD_32_BIT)";
 				"ARCHS[sdk=iphonesimulator*]" = i386;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -440,8 +489,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
-				TARGETED_DEVICE_FAMILY = 2;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
