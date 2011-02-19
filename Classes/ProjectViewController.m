@@ -9,12 +9,28 @@
 #import "TaskTableViewCell.h"
 
 @implementation ProjectViewController
-@synthesize  popoverController,topToolbar,wrapperView,project,taskTableView;
+@synthesize  popoverController,topToolbar,wrapperView,project,taskTableView,leftToolbar;
 
 - (void) viewWillAppear:(BOOL)animated
 {
+	
 	[self.taskTableView reloadData];
 	[super viewWillAppear:animated];
+	
+	
+	
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+	NSLog(@"frame for wrapperView=%@",NSStringFromCGRect(self.wrapperView.frame));
+	
+	NSLog(@"bounds for wrapperView=%@",NSStringFromCGRect(self.wrapperView.bounds));
+	
+	NSLog(@"bounds for wrapperView.layer=%@",NSStringFromCGRect(self.wrapperView.layer.bounds));
+	self.wrapperView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.wrapperView.layer.bounds].CGPath;
+	[super viewDidAppear:animated];
+	
 }
 
 - (void) sendProjectDataChangedNotification
@@ -31,10 +47,13 @@
 	self.wrapperView.layer.shadowOffset=CGSizeMake(0,0);
 	self.wrapperView.layer.shadowColor=[UIColor blackColor].CGColor;
 	self.wrapperView.layer.shadowOpacity=0.8;
+	 
+	NSLog(@"frame for wrapperView=%@",NSStringFromCGRect(self.wrapperView.frame));
 	
-	NSLog(@"bounds for path=%@",NSStringFromCGRect(self.wrapperView.bounds));
-	UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.wrapperView.bounds];
-	self.wrapperView.layer.shadowPath = path.CGPath;
+	NSLog(@"bounds for wrapperView=%@",NSStringFromCGRect(self.wrapperView.bounds));
+	
+	NSLog(@"bounds for wrapperView.layer=%@",NSStringFromCGRect(self.wrapperView.layer.bounds));
+	self.wrapperView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.wrapperView.layer.bounds].CGPath;
 	
 	// create the array to hold the buttons, which then gets added to the toolbar
 	NSMutableArray* buttons = [[NSMutableArray alloc] init];
@@ -42,6 +61,16 @@
 	// create a standard "action" button
 	UIBarButtonItem* bi;
 	
+	leftToolbar=[[BlankToolbar alloc] init];
+	leftToolbar.frame=CGRectMake(0, 0, 150, 44);
+	leftToolbar.opaque=NO;
+	leftToolbar.backgroundColor=[UIColor clearColor];
+	
+	bi=[[UIBarButtonItem alloc] initWithCustomView:leftToolbar];
+	[buttons addObject:bi];
+	[bi release];
+	
+
 	// create a spacer to push items to the right
 	bi= [[UIBarButtonItem alloc]
 		 initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -148,6 +177,10 @@
 - (void)splitViewController: (MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc 
 {
     barButtonItem.title = @"Projects";
+	NSLog(@"set lefttoolbar button") ;
+	
+	[leftToolbar setItems:[NSArray arrayWithObjects:barButtonItem,[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],nil]];
+	
 	//[[self.navigationController.navigationBar.items objectAtIndex:0] setLeftBarButtonItem:barButtonItem animated:YES];
 	self.popoverController = pc;
 }
@@ -155,12 +188,31 @@
 - (void)splitViewController: (MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem 
 {
     //[[self.navigationController.navigationBar.items objectAtIndex:0] setLeftBarButtonItem:nil animated:YES];
+	NSLog(@"remove lefttoolbar button") ;
+
+	[leftToolbar setItems:nil];
+	
 	self.popoverController = nil;
 }
+
+
+
+
+
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
     return YES;
+}
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	NSLog(@"frame for wrapperView=%@",NSStringFromCGRect(self.wrapperView.frame));
+	
+	NSLog(@"bounds for wrapperView=%@",NSStringFromCGRect(self.wrapperView.bounds));
+	
+	NSLog(@"bounds for wrapperView.layer=%@",NSStringFromCGRect(self.wrapperView.layer.bounds));
+	self.wrapperView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.wrapperView.layer.bounds].CGPath;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView 
@@ -188,7 +240,7 @@
 	{
         cell = [[[TaskTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         
-		cell.selectionStyle=UITableViewCellSelectionStyleGray;
+		cell.selectionStyle=UITableViewCellSelectionStyleNone;
 		
 		[cell.checkButton addTarget:self action:@selector(toggleRow:) forControlEvents:UIControlEventTouchDown];
 	}
@@ -350,6 +402,7 @@ moveRowAtIndexPath:(NSIndexPath*)fromIndexPath
     [project release];
 	[taskTableView release];
 	[topToolbar release];
+	[leftToolbar release];
     [super dealloc];
 }
 

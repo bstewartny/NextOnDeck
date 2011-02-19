@@ -1,8 +1,10 @@
 #import <UIKit/UIKit.h>
+#import "MGSplitViewController.h"
+
 @class Project;
 @class Task;
 
-@interface ProjectViewController : UIViewController <UIPopoverControllerDelegate, UISplitViewControllerDelegate>{
+@interface ProjectViewController : UIViewController <UIPopoverControllerDelegate,MGSplitViewControllerDelegate>{
 	Project * project;
 	UIPopoverController * popoverController;
 	IBOutlet UITableView * taskTableView;
@@ -13,12 +15,14 @@
 	SEL _selector;
 	id _target;
 	id _object;
+	
+	UIToolbar * leftToolbar;
 }
 @property(nonatomic,retain) Project * project;
 @property(nonatomic,retain) IBOutlet UITableView * taskTableView;
 @property(nonatomic,retain) IBOutlet UIToolbar * topToolbar;
 @property(nonatomic,retain) IBOutlet UIView * wrapperView;
-
+@property(nonatomic,retain) UIToolbar * leftToolbar;
 @property (nonatomic, retain) UIPopoverController *popoverController;
 //@property(nonatomic) BOOL aggregateView;
 

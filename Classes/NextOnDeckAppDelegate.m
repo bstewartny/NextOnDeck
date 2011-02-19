@@ -73,7 +73,7 @@
 	self.splitViewController=[[MGSplitViewController alloc] init];
 	self.splitViewController.dividerStyle=MGSplitViewDividerStyleNone;
 	self.splitViewController.view.backgroundColor=[UIColor scrollViewTexturedBackgroundColor];
-	
+	self.splitViewController.showsMasterInPortrait=YES;
 	self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsViewController,projectViewController,nil];
 	
 	self.splitViewController.delegate=self.projectViewController;
