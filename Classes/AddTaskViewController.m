@@ -44,11 +44,12 @@
 	else 
 	{
 		Task * t=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[[[UIApplication sharedApplication] delegate] managedObjectContext]];
-		
+		t.uid=...;
 		t.name=name;
 		t.note=note;
 		t.dueDate=dueDate;
 		t.createdOn=[NSDate date];
+		t.modifiedOn=t.createdOn;
 		t.completed=[NSNumber numberWithBool:NO];
 		t.project=nil;
 		
@@ -90,6 +91,7 @@
 			self.task.note=self.notesTextView.text;
 			self.task.dueDate=self.pickedDate;
 			self.task.project=[self selectedProject];
+			self.task.modifiedOn=[NSDate date];
 			[self.task save];
 		}
 		
@@ -114,7 +116,7 @@
 		self.navigationItem.title=@"New Task";
 		self.navigationBar.topItem.title=@"New Task";
 		
-		UISegmentedControl * segmentedControl=[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Add One Task",@"Add Many Tasks",nil]];
+		UISegmentedControl * segmentedControl=[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Add One",@"Add Many",nil]];
 		segmentedControl.segmentedControlStyle=UISegmentedControlStyleBar;
 		[segmentedControl addTarget:self action:@selector(addTaskModeChanged:) forControlEvents:UIControlEventValueChanged];
 		segmentedControl.selectedSegmentIndex=0;
@@ -509,6 +511,7 @@
 						
 						dateView.date=self.pickedDate;
 						
+						dateView.contentSizeForViewInPopover = CGSizeMake(320.0, 365.0);
 						UIPopoverController * datePopover=[[UIPopoverController alloc]
 														   initWithContentViewController:dateView];
 							

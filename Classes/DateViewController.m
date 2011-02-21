@@ -24,9 +24,13 @@
 }
 - (void)loadView
 {
+	NSLog(@"DateViewController loadView");
+	 
     UIView *theView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view = theView;
     [theView release];
+	
+	NSLog(@"Create table");
 	
     UITableView *theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 44.0, 320.0, 105.0) style:UITableViewStyleGrouped];
     theTableView.delegate = self;
@@ -35,12 +39,15 @@
     self.dateTableView = theTableView;
     [theTableView release];
 	
+	NSLog(@"Create UIDatePicker");
     UIDatePicker *theDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 149.0, 320.0, 216.0)];
     theDatePicker.datePickerMode = UIDatePickerModeDate;
     self.datePicker = theDatePicker;
     [theDatePicker release];
     [datePicker addTarget:self action:@selector(dateChanged) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:datePicker];
+	
+	NSLog(@"Create UINavigationBar");
 	
 	UINavigationBar *navBar=[[UINavigationBar alloc] initWithFrame:CGRectMake(0,0,320.0,44)];
 	
@@ -71,12 +78,15 @@
 	
 	[saveButton release];
 	
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-	self.contentSizeForViewInPopover = CGSizeMake(320.0, 365.0);
+   // self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+	
+	NSLog(@"loadView done");
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	NSLog(@"viewWillAppear");
 	if(self.date==nil) self.date=[NSDate date];
 	[self.datePicker setDate:date animated:NO];
 	[super viewWillAppear:animated];
@@ -97,6 +107,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	NSLog(@"cellForRowAtIndexPath");
+	
 	UITableViewCell *cell = nil;
     
 	if(indexPath.row==0)
@@ -108,11 +120,11 @@
 		
 		if(date)
 		{
-			cell.text = [formatter stringFromDate:date];
+			cell.textLabel.text= [formatter stringFromDate:date];
 		}
 		else 
 		{
-			cell.text="No date selected.";
+			cell.textLabel.text=@"No date selected.";
 		}
 
 		[formatter release];
@@ -125,16 +137,19 @@
 		cell.text=@"Tap to use no date";	
 	}
 	 	
+	NSLog(@"cellForRowAtIndexPath done");
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	NSLog(@"numberOfRowsInSection");
     return 2;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+	NSLog(@"didSelectRowAtIndexPath");
 	if(indexPath.row==1)
 	{
 		// use no due date

@@ -1,7 +1,7 @@
 #import "Task.h"
 
 @implementation Task
-@dynamic name,createdOn,completedOn,note,completed,dueDate;//,estimatedTime,priority;
+@dynamic name,createdOn,completedOn,note,completed,dueDate,modifiedOn,uid;//,estimatedTime,priority;
 
 - (BOOL) isCompleted
 {

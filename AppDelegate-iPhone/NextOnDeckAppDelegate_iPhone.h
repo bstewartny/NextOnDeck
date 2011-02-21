@@ -4,6 +4,7 @@
 @class ProjectsViewController;
 @interface NextOnDeckAppDelegate_iPhone : NextOnDeckAppDelegate 
 {
+	UINavigationController * navController;
 	ProjectsViewController *projectsViewController;
 }
 @property (nonatomic, retain) IBOutlet ProjectsViewController *projectsViewController;

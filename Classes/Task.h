@@ -4,6 +4,8 @@
 @class Project;
 @interface Task : NSManagedObject{
 }
+@property(nonatomic,retain) NSString * uid;
+@property(nonatomic,retain) NSDate * modifiedOn;
 @property(nonatomic,retain) NSString * name;
 @property(nonatomic,retain) NSDate * createdOn;
 @property(nonatomic,retain) NSDate * completedOn;

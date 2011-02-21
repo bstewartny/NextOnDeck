@@ -14,7 +14,16 @@
 
 - (void)viewDidLoad 
 {
+	NSLog(@"ProjectsViewController viewDidLoad");
     [super viewDidLoad];
+    
+	[self setupView];
+	
+}
+
+- (void) setupView
+{
+	NSLog(@"ProjectsViewController setupView");
     
 	self.contentSizeForViewInPopover = CGSizeMake(340.0, 600.0);
 	self.tableView.allowsSelectionDuringEditing=YES;
@@ -68,7 +77,8 @@
 	projectFormView.delegate=self;
 	[projectFormView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
 	[projectFormView setModalPresentationStyle:UIModalPresentationFormSheet];
-	[[[[UIApplication sharedApplication] delegate] splitViewController] presentModalViewController:projectFormView animated:YES];
+	
+	[self.parentViewController presentModalViewController:projectFormView animated:YES];
 	[projectFormView release];
 }
 

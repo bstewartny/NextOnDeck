@@ -21,6 +21,7 @@
 		{
 			self.project.name=self.textField.text;
 			self.project.summary=self.summaryField.text;
+			self.project.modifiedOn=[NSDate date];
 		}
 			
 		[delegate projectFormViewDone];

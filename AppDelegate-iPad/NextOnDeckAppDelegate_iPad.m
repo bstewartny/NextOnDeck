@@ -46,17 +46,18 @@
 - (void) setUpWindow
 {
 	NSLog(@"iPad setUpWindow");
-	self.projectsViewController=[[ProjectsViewController alloc] initWithNibName:@"ProjectsView" bundle:nil];
+	
+	projectsViewController=[[ProjectsViewController alloc] initWithNibName:@"ProjectsView" bundle:nil];
 
-	self.projectViewController=[[ProjectViewController alloc] initWithNibName:@"ProjectView" bundle:nil];
+	projectViewController=[[ProjectViewController alloc] initWithNibName:@"ProjectView" bundle:nil];
 
-	self.splitViewController=[[MGSplitViewController alloc] init];
-	self.splitViewController.dividerStyle=MGSplitViewDividerStyleNone;
-	self.splitViewController.view.backgroundColor=[UIColor scrollViewTexturedBackgroundColor];
-	self.splitViewController.showsMasterInPortrait=YES;
-	self.splitViewController.viewControllers=[NSArray arrayWithObjects:projectsViewController,projectViewController,nil];
+	splitViewController=[[MGSplitViewController alloc] init];
+	splitViewController.dividerStyle=MGSplitViewDividerStyleNone;
+	splitViewController.view.backgroundColor=[UIColor scrollViewTexturedBackgroundColor];
+	splitViewController.showsMasterInPortrait=YES;
+	splitViewController.viewControllers=[NSArray arrayWithObjects:projectsViewController,projectViewController,nil];
 
-	self.splitViewController.delegate=self.projectViewController;
+	splitViewController.delegate=projectViewController;
 
 	// Add the split view controller's view to the window and display.
 	[window addSubview:splitViewController.view];

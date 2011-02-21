@@ -10,6 +10,66 @@
 	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
+- (void) synchronize
+{
+	// fetch projects from server
+	
+	// need to keep revision number in database - increment on sync...
+	
+	/*
+		A = local database
+		B = remote database
+	 
+		if B > A:
+			foreach i in B:
+				insert or update i in A
+			
+			foreach j in A:
+				if NOT in B:
+					if j.modified > B.revisionDate
+						insert to B
+					else	
+						delete j from A
+		
+		else:
+			reverse algorithm
+	 
+		if only modified A:
+			make revision = B (if B>A) and set date
+		
+		if only modified B:
+			make revision = A (if A>B) and set date
+	 
+		if modified both:
+			make same (bigger one) and increment both and set dates
+			
+		
+		DB table:
+			revision #
+			revision date
+	 
+		use GUID for UID of projects/tasks
+	 
+		JSON API on GAE:
+			
+			get all projects/tasks with revision # and revision date
+			add/modify/delete project
+			add/modify/delete tasks
+			batch commands: add/modify/delete multiple in one request
+			update revision # and date
+	 
+		
+		
+	 
+	 
+	 
+	 
+	 */
+	
+}
+
+
+
 - (void) setUpWindow
 {
 	// subclass
@@ -58,9 +118,11 @@
 {
 	NSLog(@"createNewProject: %@",name);
 	Project * newProject=[NSEntityDescription insertNewObjectForEntityForName:@"Project" inManagedObjectContext:[self managedObjectContext]];
+	newProject.uid=...;
 	newProject.name=name;
 	newProject.summary=summary;
 	newProject.createdOn=[NSDate date];
+	newProject.modifiedOn=newProject.createdOn;
 	[newProject save];
 	return newProject;
 }

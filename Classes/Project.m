@@ -2,7 +2,7 @@
 #import "Task.h"
 
 @implementation Project
-@dynamic name,tasks,notes,summary,createdOn;
+@dynamic name,tasks,notes,summary,createdOn,modifiedOn,uid;
 
 - (void) save
 {
@@ -17,15 +17,15 @@
 	[[self managedObjectContext] save:&error];
 }
 
-
 - (void) addNewTask:(NSString*)name note:(NSString*)note dueDate:(NSDate *)dueDate
 {
 	Task * task=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[self managedObjectContext]];
-	
+	task.uid=...;
 	task.name=name;
 	task.note=note;
 	task.dueDate=dueDate;
 	task.createdOn=[NSDate date];
+	task.modifiedOn=task.createdOn;
 	task.completed=[NSNumber numberWithBool:NO];
 	task.project=self;
 	
