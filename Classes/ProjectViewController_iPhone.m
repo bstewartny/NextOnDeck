@@ -7,6 +7,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "TaskTableViewCell.h"
 #import "AddTaskViewController_iPhone.h"
+
 @implementation ProjectViewController_iPhone
 @synthesize  project,taskTableView;
 
@@ -24,7 +25,6 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-	
 	
 	// create the array to hold the buttons, which then gets added to the toolbar
 	//NSMutableArray* buttons = [[NSMutableArray alloc] init];
@@ -80,17 +80,27 @@
 
 - (void)add:(id)sender
 {
-	AddTaskViewController_iPhone * taskFormView=[[AddTaskViewController_iPhone alloc] initWithNibName:@"AddTaskView" bundle:nil];
+	AddTaskViewController_iPhone * taskFormView=[[AddTaskViewController_iPhone alloc] init ];//nitWithNibName:@"AddTaskView-iPhone" bundle:nil];
 	
 	taskFormView.delegate=self;
 	
 	taskFormView.project=self.project;
 	
-	[taskFormView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	//[taskFormView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
 	
-	[taskFormView setModalPresentationStyle:UIModalPresentationFormSheet];
+	//[taskFormView setModalPresentationStyle:UIModalPresentationFormSheet];
 	
-	[self presentModalViewController:taskFormView animated:YES];
+	//[self presentModalViewController:taskFormView animated:YES];
+	
+	UINavigationController * nav=[[UINavigationController alloc] initWithRootViewController:taskFormView];
+	
+	[nav setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	
+	[nav setModalPresentationStyle:UIModalPresentationFormSheet];
+	
+	[self presentModalViewController:nav animated:YES];
+	
+	[nav release];
 	
 	[taskFormView release];
 }
@@ -180,7 +190,32 @@
 	Task * task=[tasks objectAtIndex:indexPath.row];
 	
 	cell.noteLabel.text=task.note;
+	/*if([task.note length]>0)
+	{
+		if(task.project)
+		{
+			cell.noteLabel.text=[NSString stringWithFormat:@"%@: %@",task.project.name,task.note];
+		}
+		else
+		{
+			cell.noteLabel.text=[NSString stringWithFormat:@"Inbox: %@",task.note];;
+		}
+	}
+	else 
+	{*/
+		if(task.project)
+		{
+			cell.noteLabel.text=task.project.name;
+		}
+		else
+		{
+			cell.noteLabel.text=@"Inbox";
+		}
+
+	//}
+
 	cell.nameLabel.text=task.name;
+	cell.nameLabel.font=[UIFont boldSystemFontOfSize:17];
 	
 	if([task isCompleted])
 	{
@@ -188,9 +223,10 @@
 		
 		cell.nameLabel.textColor=[UIColor lightGrayColor];
 		
-		cell.badgeString=[task completedOnString];
+		cell.badgeString=[task shortCompletedOnString];
 		
 		cell.badgeColor=[UIColor greenColor];
+		cell.badgeColorHighlighted=[UIColor greenColor];
 	}
 	else 
 	{
@@ -198,15 +234,17 @@
 		
 		cell.nameLabel.textColor=[UIColor blackColor];
 		
-		cell.badgeString=[task dueDateString];
+		cell.badgeString=[task shortDueDateString];
 		
 		if([task isOverdue])
 		{
 			cell.badgeColor=[UIColor redColor];
+			cell.badgeColorHighlighted=[UIColor redColor];
 		}
 		else 
 		{
 			cell.badgeColor=[UIColor blueColor];
+			cell.badgeColorHighlighted=[UIColor blueColor];
 		}
 	}
 	
@@ -259,7 +297,8 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	AddTaskViewController * taskViewController=[[AddTaskViewController alloc] initWithNibName:@"AddTaskView" bundle:nil];
+	//AddTaskViewController_iPhone * taskViewController=[[AddTaskViewController_iPhone alloc] initWithNibName:@"AddTaskView-iPhone" bundle:nil];
+	AddTaskViewController_iPhone * taskViewController=[[AddTaskViewController_iPhone alloc] init];//WithNibName:@"AddTaskView-iPhone" bundle:nil];
 	
 	taskViewController.editMode=YES;
 	
@@ -271,11 +310,23 @@
 	
 	taskViewController.project=task.project;
 	
-	[taskViewController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	//[taskViewController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
 	
-	[taskViewController setModalPresentationStyle:UIModalPresentationFormSheet];
+	//[taskViewController setModalPresentationStyle:UIModalPresentationFormSheet];
 	
-	[self presentModalViewController:taskViewController animated:YES];
+	//[self presentModalViewController:taskViewController animated:YES];
+	
+	UINavigationController * nav=[[UINavigationController alloc] initWithRootViewController:taskViewController];
+	
+	[nav setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	
+	[nav setModalPresentationStyle:UIModalPresentationFormSheet];
+	
+	[self presentModalViewController:nav animated:YES];
+	
+	[nav release];
+	
+	
 	
 	[taskViewController release];
 }
@@ -319,16 +370,15 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	return self.title;
+	return nil;
+	//return self.title;
 }
 
-
-- (void)dealloc {
-	[tasks release];
-	 
+- (void)dealloc 
+{
+	[tasks release];	 
     [project release];
 	[taskTableView release];
-	 
     [super dealloc];
 }
 

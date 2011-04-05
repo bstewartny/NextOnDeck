@@ -2,7 +2,17 @@
 #import "Project.h"
  
 @implementation ProjectFormViewController
-@synthesize textField,project,delegate,summaryField;
+@synthesize textField,project,delegate;
+
+- (id) init
+{
+	self=[super initwithStyle:UITableViewStyleGrouped];
+	if(self)
+	{
+		
+	}
+	return self;
+}
 
 - (IBAction) cancel
 {
@@ -15,12 +25,11 @@
 		
 		if(project==nil)
 		{
-			self.project=[[[UIApplication sharedApplication] delegate] createNewProject:textField.text summary:summaryField.text];
+			self.project=[[[UIApplication sharedApplication] delegate] createNewProject:textField.text summary:nil];
 		}
 		else 
 		{
 			self.project.name=self.textField.text;
-			self.project.summary=self.summaryField.text;
 			self.project.modifiedOn=[NSDate date];
 		}
 			
@@ -43,13 +52,13 @@
 	[[self textField] becomeFirstResponder];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     return YES;
 }
 
 - (void)dealloc {
 	[textField release];
-	[summaryField release];
 	[project release];
     [super dealloc];
 }

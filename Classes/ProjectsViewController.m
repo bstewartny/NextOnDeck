@@ -8,23 +8,21 @@
 #import "BadgedTableViewCell.h"
 #import "CustomCellBackgroundView.h"
 #import "BlankToolbar.h"
+#import "FormViewController.h"
+
+#define kAddProjectFormTag 99
 
 @implementation ProjectsViewController
 @synthesize tableView, blankToolbar;
 
 - (void)viewDidLoad 
 {
-	NSLog(@"ProjectsViewController viewDidLoad");
-    [super viewDidLoad];
-    
+	[super viewDidLoad];
 	[self setupView];
-	
 }
 
 - (void) setupView
 {
-	NSLog(@"ProjectsViewController setupView");
-    
 	self.contentSizeForViewInPopover = CGSizeMake(340.0, 600.0);
 	self.tableView.allowsSelectionDuringEditing=YES;
 	
@@ -42,6 +40,13 @@
 	UIBarButtonItem * editButton=[[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
 	[tools addObject:editButton];
 	[editButton release];
+	
+	[tools addObject:[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease]];
+	
+	[tools addObject:[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)] autorelease]];
+	
+	
+	
 	
 	[blankToolbar setItems:tools];
 	[tools release];
@@ -71,22 +76,50 @@
 	}
 }
 
-- (void)add:(id)sender
+- (void) formViewDidCancel:(int)tag
 {
-	ProjectFormViewController * projectFormView=[[ProjectFormViewController alloc] initWithNibName:@"ProjectFormView" bundle:nil];
-	projectFormView.delegate=self;
-	[projectFormView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-	[projectFormView setModalPresentationStyle:UIModalPresentationFormSheet];
+	// dismiss
+	[[self getParentViewController] dismissModalViewControllerAnimated:YES];
+}
+
+- (void) formViewDidFinish:(int)tag withValues:(NSArray*)values
+{
+	if(tag==kAddProjectFormTag)
+	{
+		NSString * projectName=[values objectAtIndex:0];
+		
+		// create new project
+		if([projectName length]>0)
+		{
+			Project * newProject=[[[UIApplication sharedApplication] delegate] createNewProject:projectName summary:nil];
+		}
+		
+		// dismiss
+		[[self getParentViewController] dismissModalViewControllerAnimated:YES];
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
+		
+		[self.tableView reloadData];
+	}
+}
+
+- (IBAction)refresh:(id)sender
+{
+	[[[UIApplication sharedApplication] delegate] refresh];
+}
+
+- (IBAction)add:(id)sender
+{
+	FormViewController * projectFormView=[[FormViewController alloc] initWithTitle:@"Add Project" tag:kAddProjectFormTag delegate:self names:[NSArray arrayWithObject:@"Project Name"] andValues:nil];
 	
-	[self.parentViewController presentModalViewController:projectFormView animated:YES];
+	[[self getParentViewController] presentModalViewController:projectFormView animated:YES];
+	
 	[projectFormView release];
 }
 
-- (void) projectFormViewDone
+- (UIViewController*) getParentViewController
 {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
-	
-	[self.tableView reloadData];
+	return [[[UIApplication sharedApplication] delegate] splitViewController];	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -96,7 +129,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
 	[allProjects release];
 	allProjects=[[[[UIApplication sharedApplication] delegate] allProjects] retain];
-	return 2;
+	return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -135,21 +168,23 @@
 	switch(section)
 	{
 		case 0:
-			return 2;
+			return 1;
 		case 1:
+			return 1;
+		case 2:
 			return [allProjects count]+1;
 	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    static NSString *CellIdentifier = @"CellIdentifier";
+    //static NSString *CellIdentifier = @"CellIdentifier";
     
-    BadgedTableViewCell *cell =nil;// [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    AlphaBadgedTableViewCell *cell =nil;// [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
    
 	if (cell == nil) 
 	{
-        cell = [[[BadgedTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[AlphaBadgedTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil] autorelease];
         cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 	cell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -165,22 +200,22 @@
 	cell.backgroundView.alpha=0.3;
 	
 	cell.textLabel.textColor=[UIColor whiteColor];
+	
 	if(indexPath.section==0)
 	{
-		if(indexPath.row==0)
-		{
-			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionTop];
-			cell.textLabel.text=@"Inbox";
-			cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] unassignedTasks] count]];
-		}
-		else 
-		{
-			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionBottom];
-			cell.textLabel.text=@"Next on deck";
-			cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] nextOnDeckTasks] count]];
-		}
+		[cell.backgroundView setPosition:CustomCellBackgroundViewPositionSingle];
+		cell.textLabel.text=@"Inbox";
+		cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] unassignedTasks] count]];
 	}
-	else 
+	
+	if(indexPath.section==1)
+	{
+		[cell.backgroundView setPosition:CustomCellBackgroundViewPositionSingle];
+		cell.textLabel.text=@"Next on deck";
+		cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] nextOnDeckTasks] count]];
+	}
+	
+	if(indexPath.section>1)
 	{
 		if(indexPath.row==[allProjects count])
 		{
@@ -219,7 +254,7 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.section==1)
+	if(indexPath.section==2)
 	{
 		if (indexPath.row ==[allProjects count]) 
 		{
@@ -238,12 +273,12 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    return (indexPath.section==1);
+    return (indexPath.section==2);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if(indexPath.section>0)
+    if(indexPath.section>1)
 	{
 		if (editingStyle == UITableViewCellEditingStyleDelete) 
 		{
@@ -261,20 +296,21 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {    
+	NSLog(@"didSelectRowAtIndexPath:%@",[indexPath description]);
+	
 	if(indexPath.section==0)
 	{
-		if(indexPath.row==0)
-		{
+		 
 			// show inbox
 			[[[UIApplication sharedApplication] delegate] showInbox];
-		}
-		else 
-		{
+	}
+	if(indexPath.section==1)
+	{
 			// show next on deck
 			[[[UIApplication sharedApplication] delegate] showNextOnDeck];
-		}
+		
 	}
-	else 
+	if(indexPath.section>1)
 	{
 		if(indexPath.row==[allProjects count])
 		{

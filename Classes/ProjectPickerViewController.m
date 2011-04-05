@@ -2,7 +2,7 @@
 #import "Project.h"
 
 @implementation ProjectPickerViewController
-@synthesize projects,delegate;
+@synthesize projects,project,delegate;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -30,59 +30,63 @@
     static NSString *CellIdentifier = @"CellIdentifier";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-		cell.accessoryType=UITableViewCellAccessoryNone;
-	}
     
+	if (cell == nil) 
+	{
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+	}
+
+	cell.accessoryType=UITableViewCellAccessoryNone;
+	
 	if(indexPath.row>0)
 	{
 		Project * p=[projects objectAtIndex:indexPath.row-1];
 	
 		cell.textLabel.text=p.name;
+	
+		if([p isEqual:project])
+		{
+			cell.accessoryType=UITableViewCellAccessoryCheckmark;
+		}
 	}
-	else {
+	else 
+	{
 		cell.textLabel.text=@"Inbox";
+		if(project==nil)
+		{
+			cell.accessoryType=UITableViewCellAccessoryCheckmark;
+		}
 	}
 
 	return cell;
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	Project * p=nil;
-	
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{	
 	if(indexPath.row>0)
 	{
-		p=[projects objectAtIndex:indexPath.row-1];
+		self.project=[projects objectAtIndex:indexPath.row-1];
+	}
+	else 
+	{
+		self.project=nil;
 	}
 	
+	[self.tableView reloadData];
 	
-
 	if(delegate)
 	{
-		[delegate projectSelected:p];
+		[delegate projectSelected:self.project];
 	}
+	
+	[self.navigationController popViewControllerAnimated:YES];
 }
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
+ 
+- (void)dealloc 
+{
 	[projects release];
+	[project release];
     [super dealloc];
 }
-
 
 @end

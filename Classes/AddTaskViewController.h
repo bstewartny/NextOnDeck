@@ -12,9 +12,9 @@ typedef enum
 }
 AddTaskMode;
 
-@interface AddTaskViewController : UIViewController <UITextViewDelegate,DateViewDelegate> 
+@interface AddTaskViewController : UITableViewController <UITextViewDelegate,DateViewDelegate> 
 {
-	IBOutlet UITableView * tableView;
+	//IBOutlet UITableView * tableView;
 	Task * task;
 	NSDate * pickedDate;
 	Project * project;
@@ -27,7 +27,7 @@ AddTaskMode;
 	BOOL editMode;
 	UIView * projectPickerOriginView;
 	UIView * datePickerOriginView;
-	IBOutlet UINavigationBar * navigationBar;
+	//IBOutlet UINavigationBar * navigationBar;
 	IBOutlet UIBarButtonItem * actionButton;
 	NSDateFormatter * formatter;
 	//UISegmentedControl * prioritySegmentedControl;
@@ -35,7 +35,7 @@ AddTaskMode;
 	AddTaskMode addTaskMode;
 }
 
-@property(nonatomic,retain) IBOutlet UITableView * tableView;
+//@property(nonatomic,retain) IBOutlet UITableView * tableView;
 @property(nonatomic,retain) Task * task;
 @property(nonatomic,retain) Project * project;
 @property(nonatomic,retain) NSDate * pickedDate;
@@ -46,7 +46,7 @@ AddTaskMode;
 @property(nonatomic,retain) UIPopoverController * datePickerPopover;
 @property(nonatomic,retain) ProjectPickerViewController * projectPicker;
 //@property(nonatomic,retain) DateViewController * datePicker;
-@property(nonatomic,retain) IBOutlet UINavigationBar * navigationBar;
+//@property(nonatomic,retain) IBOutlet UINavigationBar * navigationBar;
 @property(nonatomic,retain) IBOutlet UIBarButtonItem * actionButton;
 @property(nonatomic,retain) NSDateFormatter * formatter;
 //@property(nonatomic,retain) UISegmentedControl * prioritySegmentedControl;

@@ -132,17 +132,31 @@
 
 - (void)add:(id)sender
 {
-	AddTaskViewController * taskFormView=[[AddTaskViewController alloc] initWithNibName:@"AddTaskView" bundle:nil];
+	
+	AddTaskViewController * taskFormView=[[AddTaskViewController alloc] init ];//initWithNibName:@"AddTaskView" bundle:nil];
 	
 	taskFormView.delegate=self;
 
 	taskFormView.project=self.project;
 	
-	[taskFormView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	//[taskFormView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
 	
-	[taskFormView setModalPresentationStyle:UIModalPresentationFormSheet];
+	//[taskFormView setModalPresentationStyle:UIModalPresentationFormSheet];
 	
-	[self presentModalViewController:taskFormView animated:YES];
+	//[self presentModalViewController:taskFormView animated:YES];
+	
+	UINavigationController * nav=[[UINavigationController alloc] initWithRootViewController:taskFormView];
+	
+	[nav setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	
+	[nav setModalPresentationStyle:UIModalPresentationFormSheet];
+	
+	[self presentModalViewController:nav animated:YES];
+	
+	
+	[nav release];
+	
+	
 	
 	[taskFormView release];
 }
@@ -247,7 +261,16 @@
     
 	Task * task=[tasks objectAtIndex:indexPath.row];
 	
-	cell.noteLabel.text=task.note;
+	//cell.noteLabel.text=task.note;
+	
+	if(task.project)
+	{
+		cell.noteLabel.text=task.project.name;
+	}
+	else
+	{
+		cell.noteLabel.text=@"Inbox";
+	}
 	cell.nameLabel.text=task.name;
 		
 	if([task isCompleted])
@@ -327,7 +350,7 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	AddTaskViewController * taskViewController=[[AddTaskViewController alloc] initWithNibName:@"AddTaskView" bundle:nil];
+	AddTaskViewController * taskViewController=[[AddTaskViewController alloc] init]; //WithNibName:@"AddTaskView" bundle:nil];
 	
 	taskViewController.editMode=YES;
 	
@@ -339,11 +362,23 @@
 	
 	taskViewController.project=task.project;
 	
-	[taskViewController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	//[taskViewController setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
 	
-	[taskViewController setModalPresentationStyle:UIModalPresentationFormSheet];
+	//[taskViewController setModalPresentationStyle:UIModalPresentationFormSheet];
 	
-	[self presentModalViewController:taskViewController animated:YES];
+	//[self presentModalViewController:taskViewController animated:YES];
+	
+	UINavigationController * nav=[[UINavigationController alloc] initWithRootViewController:taskViewController];
+	
+	[nav setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	
+	[nav setModalPresentationStyle:UIModalPresentationFormSheet];
+	
+	[self presentModalViewController:nav animated:YES];
+	
+	
+	[nav release];
+	
 	
 	[taskViewController release];
 }

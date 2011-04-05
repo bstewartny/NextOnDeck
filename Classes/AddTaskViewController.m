@@ -2,9 +2,20 @@
 #import "Task.h"
 #import "Project.h"
 #import "DatePickerViewController.h"
+#import "UUID.h"
 
 @implementation AddTaskViewController
-@synthesize tableView,pickedDate,task,navigationBar,formatter,actionButton,editMode,delegate,nameTextField,notesTextView,project,datePickerPopover,projectPickerPopover,projectPicker;//prioritySegmentedControl,estimatedTimeSegmentedControl,
+@synthesize pickedDate,task,formatter,actionButton,editMode,delegate,nameTextField,notesTextView,project,datePickerPopover,projectPickerPopover,projectPicker;//prioritySegmentedControl,estimatedTimeSegmentedControl,
+
+- (id) init
+{
+	self=[super initWithStyle:UITableViewStyleGrouped];
+	if(self)
+	{
+		
+	}
+	return self;
+}
 
 - (IBAction) cancel
 {
@@ -44,7 +55,7 @@
 	else 
 	{
 		Task * t=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[[[UIApplication sharedApplication] delegate] managedObjectContext]];
-		t.uid=...;
+		t.uid=[UUID GetUUID];;
 		t.name=name;
 		t.note=note;
 		t.dueDate=dueDate;
@@ -104,24 +115,30 @@
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
+	
+	self.navigationItem.leftBarButtonItem=[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
+	self.navigationItem.rightBarButtonItem=[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
+	
 	if(self.editMode)
 	{
 		self.title=@"Edit Task";
 		self.navigationItem.title=@"Edit Task";
-		self.navigationBar.topItem.title=@"Edit Task";
+		//self.navigationBar.topItem.title=@"Edit Task";
 	}
 	else 
 	{
 		self.title=@"New Task";
-		self.navigationItem.title=@"New Task";
-		self.navigationBar.topItem.title=@"New Task";
+		//self.navigationItem.title=@"New Task";
+		//self.navigationBar.topItem.title=@"New Task";
 		
 		UISegmentedControl * segmentedControl=[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Add One",@"Add Many",nil]];
 		segmentedControl.segmentedControlStyle=UISegmentedControlStyleBar;
 		[segmentedControl addTarget:self action:@selector(addTaskModeChanged:) forControlEvents:UIControlEventValueChanged];
 		segmentedControl.selectedSegmentIndex=0;
 		addTaskMode=AddTaskModeSingle;
-		self.navigationBar.topItem.titleView=segmentedControl;
+		self.navigationItem.titleView=segmentedControl;
+		
+		//self.navigationBar.topItem.titleView=segmentedControl;
 		
 		[segmentedControl release];
 		
@@ -140,7 +157,6 @@
 
 - (void) addTaskModeChanged:(id)sender
 {
-	NSLog(@"addTaskModeChanged");
 	UISegmentedControl * segmentedControl=sender;
 	
 	switch(segmentedControl.selectedSegmentIndex)
@@ -152,10 +168,11 @@
 			addTaskMode=AddTaskModeMultiple;
 			break;
 	}
-	[tableView reloadData];
+	[self.tableView reloadData];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
+{
     return YES;
 }
 
@@ -175,7 +192,7 @@
 {
 	static NSString * cellIdentifier=@"nameCell";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
 	if(cell==nil)
 	{
@@ -219,7 +236,7 @@
 {
 	static NSString * cellIdentifier=@"projectCell";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
 	if(cell==nil)
 	{
@@ -254,7 +271,7 @@
 {
 	static NSString * cellIdentifier=@"dueDateCell";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
 	if(cell==nil)
 	{
@@ -265,7 +282,6 @@
 		cell.textLabel.text=@"Due Date:";
 		cell.textLabel.textColor=[UIColor grayColor];
 		cell.textLabel.font=[UIFont systemFontOfSize:18];
-
 	}
 
 	if(self.pickedDate)
@@ -286,7 +302,7 @@
 {
 	static NSString * cellIdentifier=@"getMultiNamesCell";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
 	if(cell==nil)
 	{
@@ -322,7 +338,7 @@
 {
 	static NSString * cellIdentifier=@"notesCell";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
 	if(cell==nil)
 	{
@@ -386,7 +402,8 @@
 	}
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)aTableView 
+{
 	if(addTaskMode==AddTaskModeMultiple)
 	{
 		return 2;
@@ -397,7 +414,8 @@
 	}
 }
 
-- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section 
+{
     if(addTaskMode==AddTaskModeMultiple)
 	{
 		switch (section) 
@@ -410,7 +428,8 @@
 			return 1;
 		}
 	}
-	else {
+	else 
+	{
 		switch (section) 
 		{
 			case 0:
@@ -496,53 +515,53 @@
 {
 	switch (indexPath.section) 
 	{
-			case 1:
+		case 1:
+		{
+			switch (indexPath.row) 
 			{
-				switch (indexPath.row) 
+				case 1:
 				{
-					case 1:
-					{
-						self.datePickerPopover=nil;
-						
-						// choose due date from date picker control
-						DateViewController * dateView=[[DateViewController alloc] init];
-						
-						dateView.delegate=self;
-						
-						dateView.date=self.pickedDate;
-						
-						dateView.contentSizeForViewInPopover = CGSizeMake(320.0, 365.0);
-						UIPopoverController * datePopover=[[UIPopoverController alloc]
-														   initWithContentViewController:dateView];
-							
-						self.datePickerPopover=datePopover;
-						
-						[datePopover release];
-						
-						[dateView release];
-						
-						[self.datePickerPopover presentPopoverFromRect:CGRectMake(5,5,20,20) inView:datePickerOriginView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-					}
-						break;
+					self.datePickerPopover=nil;
 					
-					case 0:
-						// choose project from list
-						self.projectPicker = [[ProjectPickerViewController alloc] 
-												  initWithStyle:UITableViewStylePlain];
-						self.projectPicker.delegate = self;
-							
-						self.projectPicker.projects=[[[UIApplication sharedApplication] delegate] allProjects];
-							
-						self.projectPickerPopover = [[UIPopoverController alloc] 
-														 initWithContentViewController:projectPicker];               
+					// choose due date from date picker control
+					DateViewController * dateView=[[DateViewController alloc] init];
+					
+					dateView.delegate=self;
+					
+					dateView.date=self.pickedDate;
+					
+					dateView.contentSizeForViewInPopover = CGSizeMake(320.0, 365.0);
+					UIPopoverController * datePopover=[[UIPopoverController alloc]
+													   initWithContentViewController:dateView];
 						
-						[self.projectPicker release];
-						
-						[self.projectPickerPopover presentPopoverFromRect:CGRectMake(5, 5, 20, 20) inView:projectPickerOriginView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-						
+					self.datePickerPopover=datePopover;
+					
+					[datePopover release];
+					
+					[dateView release];
+					
+					[self.datePickerPopover presentPopoverFromRect:CGRectMake(5,5,20,20) inView:datePickerOriginView permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 				}
+					break;
+				
+				case 0:
+					// choose project from list
+					self.projectPicker = [[ProjectPickerViewController alloc] 
+											  initWithStyle:UITableViewStylePlain];
+					self.projectPicker.delegate = self;
+						
+					self.projectPicker.projects=[[[UIApplication sharedApplication] delegate] allProjects];
+						
+					self.projectPickerPopover = [[UIPopoverController alloc] 
+													 initWithContentViewController:projectPicker];               
+					
+					[self.projectPicker release];
+					
+					[self.projectPickerPopover presentPopoverFromRect:CGRectMake(5, 5, 20, 20) inView:projectPickerOriginView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+					
 			}
 		}
+	}
 }
 
 - (void)projectSelected:(Project *)newProject
@@ -559,8 +578,9 @@
 	
 }
 
-- (void)dealloc {
-	[tableView release];
+- (void)dealloc 
+{
+	 
 	[task release];
 	[nameTextField release];
 	[notesTextView release];
@@ -569,7 +589,7 @@
 	[datePickerPopover release];
 	[projectPicker release];
 	[pickedDate release];
-	[navigationBar release];
+	 
 	[actionButton release];
 	[formatter release];
     [super dealloc];

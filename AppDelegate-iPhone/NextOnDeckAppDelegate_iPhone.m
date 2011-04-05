@@ -5,55 +5,69 @@
 #import "Project.h"
 #import "Task.h"
 #import "ProjectViewController_iPhone.h"
+#import "DropboxSDK.h"
 
 @implementation NextOnDeckAppDelegate_iPhone
 @synthesize projectsViewController;
 
-- (void) showInbox
+- (void) doLogin
 {
-	// subclass
+	DBLoginController* controller = [[DBLoginController new] autorelease];
+	controller.delegate=self;
+	[controller presentFromController:navController];
 }
 
-- (void) showNextOnDeck
+- (void) showProjectView:(Project*)project selector:(SEL)selector title:(NSString*)title
 {
-	// subclass
-}
-
-- (void) showProject:(Project*)project
-{
-	// subclass
 	ProjectViewController_iPhone * projectView=[[ProjectViewController_iPhone alloc] initWithNibName:@"ProjectView-iPhone" bundle:nil];
 	
-	[projectView setTaskSelector:@selector(getProjectTasks:) withObject:project withTarget:self];
+	[projectView setTaskSelector:selector withObject:project withTarget:self];
 	
 	projectView.project=project;
-	
-	if([project.summary length]>0)
-	{
-		projectView.title= [NSString stringWithFormat:@"%@ - %@",project.name,project.summary];
-	}
-	else 
-	{
-		projectView.title= project.name;
-	}
+	projectView.title=title;
 	
 	[navController pushViewController:projectView animated:YES];
 	
 	[projectView release];
 }
 
+- (void) showInbox
+{
+	[self showProjectView:nil selector:@selector(getInboxTasks:) title:@"Inbox"];
+}
+
+- (BOOL) isPhone
+{
+	return YES;
+}
+
+- (void) showNextOnDeck
+{
+	[self showProjectView:nil selector:@selector(getNextOnDeckTasks:) title:@"Next On Deck"];
+}
+
+- (void) showProject:(Project*)project
+{
+	NSString * title;
+
+	if([project.summary length]>0)
+	{
+		title= [NSString stringWithFormat:@"%@ - %@",project.name,project.summary];
+	}
+	else 
+	{
+		title= project.name;
+	}
+	
+	[self showProjectView:project selector:@selector(getProjectTasks:) title:title];
+}
+
 - (void) setUpWindow
 {
-	NSLog(@"iPhone setUpWindow");
-	// subclass
-	
-	
 	projectsViewController=[[ProjectsViewController_iPhone alloc] initWithNibName:@"ProjectsView-iPhone" bundle:nil];
 	navController=[[UINavigationController alloc] initWithRootViewController:self.projectsViewController];
 	
-	// Add the split view controller's view to the window and display.
 	[window addSubview:navController.view];
-	
 	
 	[window makeKeyAndVisible];
 }

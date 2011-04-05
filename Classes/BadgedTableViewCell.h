@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 @class BadgeView;
 
+
 @interface BadgedTableViewCell : UITableViewCell {
 	NSString *badgeString;
 	BadgeView *badge;
@@ -13,5 +14,12 @@
 @property (readonly, retain) BadgeView *badge;
 @property (nonatomic, retain) UIColor *badgeColor;
 @property (nonatomic, retain) UIColor *badgeColorHighlighted;
+
+@end
+
+@interface AlphaBadgedTableViewCell : BadgedTableViewCell
+{
+	
+}
 
 @end

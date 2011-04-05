@@ -12,7 +12,7 @@
 		badge.parent = self;
 		
 		//redraw cells in accordance to accessory
-		float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+		//float version = [[[UIDevice currentDevice] systemVersion] floatValue];
 		
 		[self.contentView addSubview:self.badge];
 		
@@ -36,11 +36,9 @@
 		
 		CGSize badgeSize = [self.badgeString sizeWithFont:[UIFont boldSystemFontOfSize: 14]];
 		
-		float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+		//float version = [[[UIDevice currentDevice] systemVersion] floatValue];
 		
-		CGRect badgeframe;
-		
-		badgeframe = CGRectMake(self.contentView.frame.size.width - (badgeSize.width+16) - 10, round((self.contentView.frame.size.height - 18) / 2), badgeSize.width+16, 18);
+		CGRect badgeframe = CGRectMake(self.contentView.frame.size.width - (badgeSize.width+16) - 10, round((self.contentView.frame.size.height - 18) / 2), badgeSize.width+16, 18);
 		
 		
 		[self.badge setFrame:badgeframe];
@@ -88,15 +86,8 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 	[super setSelected:selected animated:animated];
-	if(selected)
-	{
-		self.backgroundView.alpha=0.5;
-	}
-	else 
-	{
-		self.backgroundView.alpha=0.3;
-	}
-	[badge setNeedsDisplay];
+	
+	//[badge setNeedsDisplay];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -124,5 +115,23 @@
 	
     [super dealloc];
 }
+@end
+
+@implementation AlphaBadgedTableViewCell
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+	[super setSelected:selected animated:animated];
+	if(selected)
+	{
+		self.backgroundView.alpha=0.5;
+	}
+	else 
+	{
+		self.backgroundView.alpha=0.3;
+	}
+	[badge setNeedsDisplay];
+}
+
+
 @end
 

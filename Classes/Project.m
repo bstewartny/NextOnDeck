@@ -1,5 +1,22 @@
 #import "Project.h"
 #import "Task.h"
+#import "UUID.h"
+@implementation TempProject
+@synthesize name,tasks,notes,summary,createdOn,modifiedOn,uid;
+
+- (void) dealloc
+{
+	[name release];
+	[tasks release];
+	[notes release];
+	[summary release];
+	[createdOn release];
+	[modifiedOn release];
+	[uid release];
+	
+	[super dealloc];
+}
+@end
 
 @implementation Project
 @dynamic name,tasks,notes,summary,createdOn,modifiedOn,uid;
@@ -20,7 +37,7 @@
 - (void) addNewTask:(NSString*)name note:(NSString*)note dueDate:(NSDate *)dueDate
 {
 	Task * task=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[self managedObjectContext]];
-	task.uid=...;
+	task.uid=[UUID GetUUID];
 	task.name=name;
 	task.note=note;
 	task.dueDate=dueDate;

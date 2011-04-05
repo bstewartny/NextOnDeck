@@ -38,11 +38,13 @@
 					
 					dateView.date=self.pickedDate;
 					
-					[dateView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+					//[dateView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
 					
-					[dateView setModalPresentationStyle:UIModalPresentationFormSheet];
+					//[dateView setModalPresentationStyle:UIModalPresentationFormSheet];
 					
-					[self presentModalViewController:dateView animated:YES];
+					[self.navigationController pushViewController:dateView animated:YES];
+					
+					//[self presentModalViewController:dateView animated:YES];
 					
 					[dateView release];
 					
@@ -54,14 +56,16 @@
 					self.projectPicker = [[ProjectPickerViewController alloc] 
 										  initWithStyle:UITableViewStylePlain];
 					self.projectPicker.delegate = self;
+					self.projectPicker.project=self.project;
 					
 					self.projectPicker.projects=[[[UIApplication sharedApplication] delegate] allProjects];
 					
-					[projectPicker setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+					//[projectPicker setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
 					
-					[projectPicker setModalPresentationStyle:UIModalPresentationFormSheet];
+					//[projectPicker setModalPresentationStyle:UIModalPresentationFormSheet];
 					
-					[self presentModalViewController:projectPicker animated:YES];
+					//[self presentModalViewController:projectPicker animated:YES];
+					[self.navigationController pushViewController:self.projectPicker animated:YES];
 			}
 		}
 	}
@@ -70,7 +74,7 @@
 - (void)projectSelected:(Project *)newProject
 {
 	self.project=newProject;
-	[self dismissModalViewControllerAnimated:YES];
+	//[self dismissModalViewControllerAnimated:YES];
 	[self.tableView reloadData];
 }
 

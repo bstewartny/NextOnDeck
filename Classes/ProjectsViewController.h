@@ -10,4 +10,7 @@
 @property(nonatomic,retain) UITableView * tableView;
 @property(nonatomic,retain) BlankToolbar * blankToolbar;
 
+- (IBAction) refresh:(id)sender;
+- (IBAction) add:(id)sender;
+
 @end

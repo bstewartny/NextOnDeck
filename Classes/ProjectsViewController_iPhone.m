@@ -4,20 +4,27 @@
 #import <QuartzCore/QuartzCore.h>
 #import "BadgedTableViewCell.h"
 #import "CustomCellBackgroundView.h"
+#import "FormViewController.h"
+#define kEditProjectFormTag 101
 
 @implementation ProjectsViewController_iPhone
  
+- (UIViewController*) getParentViewController
+{
+	return self.parentViewController;
+}
+
 - (void)setupView 
 {
-    NSLog(@"ProjectsViewController_iPhone setupView");
-	 
-	self.tableView.allowsSelectionDuringEditing=YES;
+    self.tableView.allowsSelectionDuringEditing=YES;
 	
 	UIBarButtonItem * editButton=[[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
 	
 	self.navigationItem.leftBarButtonItem=editButton;
 	
 	[editButton release];
+	
+	//self.navigationItem.rightBarButtonItem=[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)] autorelease];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNotification:) name:@"projectDataChanged" object:nil];
 }
@@ -26,91 +33,99 @@
     return NO;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if(section==0) return nil;
-
-	UIView * v=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 23)];
-	v.backgroundColor=[UIColor clearColor];
-	
-	UILabel * label=[[UILabel alloc] init];
-	
-	label.textColor=[UIColor blackColor];
-	label.text=@"Projects";
-	label.backgroundColor=[UIColor clearColor];
-	
-	[label sizeToFit];
-	
-	CGRect f=label.frame;
-	f.origin.x=15;
-	f.origin.y=5;
-	label.frame=f;
-	
-	[v addSubview:label];
-	
-	[label release];
-	
-	return [v autorelease];
+	if(section<2) return nil;
+	return @"Projects";
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    static NSString *CellIdentifier = @"CellIdentifier";
-    
-    BadgedTableViewCell *cell =nil;// [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	return 30;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return nil;
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+	// edit project name
+	Project  * project=[allProjects objectAtIndex:indexPath.row];
 	
-	if (cell == nil) 
+	if(project)
 	{
-        cell = [[[BadgedTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-	}
-	cell.selectionStyle=UITableViewCellSelectionStyleNone;
+		editingProject=project;
+		FormViewController * projectFormView=[[FormViewController alloc] initWithTitle:@"Edit Project" tag:kEditProjectFormTag delegate:self names:[NSArray arrayWithObject:@"Project Name"] andValues:[NSArray arrayWithObject:project.name]];
 		
-	if(indexPath.section==0)
+		[[self getParentViewController] presentModalViewController:projectFormView animated:YES];
+		
+		[projectFormView release];
+	}
+}
+
+- (void) formViewDidFinish:(int)tag withValues:(NSArray*)values
+{
+	if(tag==kEditProjectFormTag)
 	{
-		if(indexPath.row==0)
+		NSString * projectName=[values objectAtIndex:0];
+		if([projectName length]>0)
 		{
-			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionTop];
-			cell.textLabel.text=@"Inbox";
-			cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] unassignedTasks] count]];
+			if(editingProject)
+			{
+				editingProject.name=projectName;
+				[editingProject save];
+				editingProject=nil;
+			}
 		}
-		else 
-		{
-			[cell.backgroundView setPosition:CustomCellBackgroundViewPositionBottom];
-			cell.textLabel.text=@"Next on deck";
-			cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] nextOnDeckTasks] count]];
-		}
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
+		
+		[self.tableView reloadData];
 	}
 	else 
+	{
+		[super formViewDidFinish:tag withValues:values];
+	}
+}
+ 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    BadgedTableViewCell * cell = [[[BadgedTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil] autorelease];
+	
+	cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+	cell.badgeColor=[UIColor colorWithRed:0.530 green:0.600 blue:0.738 alpha:1.000];
+	cell.badgeColorHighlighted=[UIColor colorWithRed:0.530 green:0.600 blue:0.738 alpha:1.000];
+	
+	cell.selectionStyle=UITableViewCellSelectionStyleNone;
+	cell.editingAccessoryType=UITableViewCellAccessoryNone;
+	
+	if(indexPath.section==0)
+	{
+		cell.textLabel.text=@"Inbox";
+		cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] unassignedTasks] count]];
+	}
+	
+	if(indexPath.section==1)
+	{
+		cell.textLabel.text=@"Next on deck";
+		cell.badgeString=[NSString stringWithFormat:@"%d",[[[[UIApplication sharedApplication] delegate] nextOnDeckTasks] count]];
+	}
+	
+	if(indexPath.section==2)
 	{
 		if(indexPath.row==[allProjects count])
 		{
 			// add project row
-			if([allProjects count]==0)
-			{
-				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionSingle];
-			}
-			else 
-			{
-				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionBottom];
-			}
 			cell.textLabel.textColor=[UIColor lightGrayColor];
 			cell.textLabel.text=@"Add Project";
+			cell.accessoryType=UITableViewCellAccessoryNone;
 		}
 		else
 		{
-			if (indexPath.row==0) 
-			{
-				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionTop];
-			}
-			else 
-			{
-				[cell.backgroundView setPosition:CustomCellBackgroundViewPositionMiddle];
-			}
-			
+			cell.editingAccessoryType=UITableViewCellAccessoryDetailDisclosureButton;
 			Project  * project=[allProjects objectAtIndex:indexPath.row];
-			
 			cell.textLabel.text=project.name;
 			cell.badgeString=[NSString stringWithFormat:@"%d",[project countUncompleted]];
 		}
@@ -119,11 +134,10 @@
 	return cell;
 }
 
-
-- (void)dealloc {
+- (void)dealloc 
+{
 	[tableView release];
     [super dealloc];
 }
-
 
 @end
