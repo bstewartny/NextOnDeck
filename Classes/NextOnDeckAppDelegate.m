@@ -5,6 +5,7 @@
 #import "UUID.h"
 #import "DropboxSDK.h"
 #import "JSON.h"
+#import "Synchronizer.h"
 
 @implementation NextOnDeckAppDelegate
 @synthesize window,restClient;
@@ -14,7 +15,8 @@
 	return NO;
 }
 
-- (NSString *)applicationDocumentsDirectory {
+- (NSString *)applicationDocumentsDirectory 
+{
 	return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
@@ -32,7 +34,8 @@
 
 - (void)loginControllerDidLogin:(DBLoginController*)controller
 {
-	if ([[DBSession sharedSession] isLinked]) {
+	if ([[DBSession sharedSession] isLinked]) 
+	{
 		[self doRefresh];
 	}
 }
@@ -42,7 +45,6 @@
 	NSLog(@"loginControllerDidCancel");
 }
 
-
 - (void) doRefresh
 {
 	[self.restClient loadMetadata:@"/NextOnDeck" withHash:metadataHash];
@@ -50,7 +52,7 @@
 
 - (void) doLogin
 {
-	// implement in subclass...
+	// subclass
 }
 
 - (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session {
@@ -91,6 +93,7 @@
 {
 	return [self unassignedTasks];
 }
+
 - (DBRestClient*)restClient {
     if (restClient == nil) {
     	restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
@@ -98,14 +101,12 @@
     }
     return restClient;
 }
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {    
 	formatter=[[NSDateFormatter alloc] init];
 	[formatter setDateStyle:NSDateFormatterLongStyle];
 	[formatter setTimeStyle:NSDateFormatterLongStyle];
-	
-	//[formatter setDateFormat:@""];
-	
 	
 	DBSession* dbSession = [[[DBSession alloc]
 	  initWithConsumerKey:kDropBoxKey
@@ -346,7 +347,6 @@
 	[self saveData];
 }
 
-
 // DBRestClientDelegate methods
 
 - (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath
@@ -355,17 +355,11 @@
 	
 	lastSyncDate=[[NSDate date] retain];
 	[self saveData];
-	
-	//[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
-	
 }
 
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error
 {
 	NSLog(@"uploadFileFailedWithError: %@",[error localizedDescription]);
-	
-	//[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
-	
 }
 
 - (void)restClient:(DBRestClient*)client loadedFile:(NSString*)destPath
@@ -374,14 +368,23 @@
 	
 	NSString * json=[NSString stringWithContentsOfFile:destPath encoding:NSUTF8StringEncoding error:nil];
 	
-	 
 	if([json length]>0)
 	{
 		NSArray * remoteProjects=[self parseJsonProjects:[json JSONValue]];
 		
 		if([remoteProjects count]>0)
 		{
-			[self updateDatabaseWithRemoteProjects:remoteProjects];
+			Synchronizer * sync=[[Synchronizer alloc] init];
+			
+			SyncLog * log=[sync syncDatabaseWithLastSyncDate:lastSyncDate 
+										   andRemoteProjects:remoteProjects 
+											andLocalProjects:[self allProjects] 
+											   andLocalTasks:[self allTasks] 
+									  andManagedObjectContex:[self managedObjectContext]];
+			
+			
+			
+			[sync release];
 			
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"projectDataChanged" object:nil];
 			
@@ -431,14 +434,14 @@
 			{
 				NSLog(@"No such file exists: %@",fromPath);
 			}
-
 		}
-		else {
+		else 
+		{
 			NSLog(@"Failed to create file: %@",fromPath);
 		}
-
 	}	
-	else {
+	else 
+	{
 		NSLog(@"Failed to generate JSON from local database");
 	}
 }
@@ -460,7 +463,8 @@
     return [NSTemporaryDirectory() stringByAppendingPathComponent:@"nextondeck_dump.json"];
 }
 
-- (void)restClient:(DBRestClient*)client loadedMetadata:(DBMetadata*)metadata {
+- (void)restClient:(DBRestClient*)client loadedMetadata:(DBMetadata*)metadata 
+{
     NSLog(@"restClient:loadedMetadata: %@", metadata.path);
 	[metadataHash release];
     metadataHash = [metadata.hash retain];
@@ -481,7 +485,7 @@
 	
 	[self.restClient loadFile:@"/NextOnDeck/nextondeck.json" intoPath:localPath];
 }
-
+/*
 - (NSArray*) collectTasksFromProjects:(NSArray*)projects
 {
 	NSMutableArray * tasks=[[NSMutableArray alloc] init];
@@ -497,16 +501,19 @@
 	return [tasks autorelease];
 }
 
+
 - (Task*) taskWithUid:(NSString*)uid
 {
 	NSLog(@"taskWithUid: %@",uid);
 	NSArray * results=[self searchObjects:@"Task" predicate:[NSPredicate predicateWithFormat:@"uid==%@",uid] sortKey:nil sortAscending:NO];
 	if([results count]>0)
 	{
+		NSLog(@"Found task with uid: %@",uid);
 		return [results objectAtIndex:0];
 	}
 	else 
 	{
+		NSLog(@"No such task found with uid: %@",uid);
 		return nil;
 	}
 }
@@ -517,82 +524,82 @@
 	NSArray * results=[self searchObjects:@"Project" predicate:[NSPredicate predicateWithFormat:@"uid==%@",uid] sortKey:nil sortAscending:NO];
 	if([results count]>0)
 	{
+		NSLog(@"Found project with uid: %@",uid);
 		return [results objectAtIndex:0];
 	}
 	else 
 	{
+		NSLog(@"No such project found with uid: %@",uid);
 		return nil;
 	}
 }
 
-- (BOOL) updateLocalTaskWithRemoteTask:(Task*)task
+- (BOOL) updateLocalTaskWithRemoteTask:(Task*)remoteTask
 {
-	NSLog(@"updateLocalProjectWithRemoteProject: %@",task.name);
+	NSLog(@"updateLocalProjectWithRemoteProject: %@",remoteTask.name);
 	// see if task exists with uid
 	
-	Task * localTask=[self taskWithUid:task.uid];
+	Task * localTask=[self taskWithUid:remoteTask.uid];
 	
 	if(localTask)
 	{
-		if([self isDate:task.modifiedOn laterThan:localTask.modifiedOn])
+		if([self isDate:remoteTask.modifiedOn laterThan:localTask.modifiedOn])
 		{
-		//if([[task.modifiedOn laterDate:localTask.modifiedOn] isEqual:task.modifiedOn])
-		//{
 			NSLog(@"Remote task was modified since last sync, overwrite local...");
 			
 			// see if remote task changed project...
-			if(![localTask.project.uid isEqualToString:task.project.uid])
+			if(![localTask.project.uid isEqualToString:remoteTask.project.uid])
 			{
+				NSLog(@"Task project changed...");
 				// verify local project exists...
-				Project * project=[self projectWithUid:task.project.uid];
+				Project * project=[self projectWithUid:remoteTask.project.uid];
 				if(project)
 				{
 					localTask.project=project;
 				}
-				else {
+				else 
+				{
 					NSLog(@"No such local project exists for modified task, will try again after projects are synced...");
 					// we will need to try again after projects have been synced...
 					return NO;
 				}
-
 			}
 			
-			
-			localTask.name=task.name;
-			localTask.modifiedOn=task.modifiedOn;
-			localTask.completedOn	=task.completedOn;
-			localTask.note=task.note;
-			localTask.completed=task.completed;
-			localTask.dueDate=task.dueDate;
+			localTask.name=remoteTask.name;
+			localTask.modifiedOn=remoteTask.modifiedOn;
+			localTask.completedOn=remoteTask.completedOn;
+			localTask.note=remoteTask.note;
+			localTask.completed=remoteTask.completed;
+			localTask.dueDate=remoteTask.dueDate;
 			
 			[localTask save];
-			
 		}
-		else {
+		else 
+		{
 			NSLog(@"local task exists but is modified later than remote task");
 		}
-
 	}
 	else 
 	{
 		NSLog(@"No such local task exists...");
-		if(lastSyncDate==nil || [self isDate:task.modifiedOn laterThan:lastSyncDate])
+		if(lastSyncDate==nil || [self isDate:remoteTask.modifiedOn laterThan:lastSyncDate])
 		{
 			NSLog(@"Creating new local task...");
-			Project * project=[self projectWithUid:task.project.uid];
+			Project * project=[self projectWithUid:remoteTask.project.uid];
 			if(project)
 			{
-				Task * t=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[self managedObjectContext]];
-				t.uid=task.uid;
-				t.name=task.name;
-				t.note=task.note;
-				t.dueDate=task.dueDate;
-				t.createdOn=t.createdOn;
-				t.modifiedOn=t.modifiedOn;
-				t.completed=t.completed;
-				t.project=project;
+				Task * newTask=[NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:[self managedObjectContext]];
 				
-				[t save];
+				newTask.uid=remoteTask.uid;
+				newTask.name=remoteTask.name;
+				newTask.note=remoteTask.note;
+				newTask.dueDate=remoteTask.dueDate;
+				newTask.createdOn=remoteTask.createdOn;
+				newTask.modifiedOn=remoteTask.modifiedOn;
+				newTask.completed=remoteTask.completed;
+				newTask.project=project;
+				
+				[newTask save];
 			}
 			else 
 			{
@@ -601,7 +608,8 @@
 				return NO;
 			}
 		}
-		else {
+		else 
+		{
 			NSLog(@"remote task was modified prior to last sync, assume we deleted it...");
 		}
 	}
@@ -644,8 +652,6 @@
 	
 	if(localProject)
 	{
-		//if([[project.modifiedOn laterDate:localProject.modifiedOn] isEqual:project.modifiedOn])
-		//{
 		if([self isDate:remoteProject.modifiedOn laterThan:localProject.modifiedOn])
 		{
 			NSLog(@"Remote project was modified since last sync, overwrite local...");
@@ -657,10 +663,10 @@
 			
 			[localProject save];
 		}
-		else {
+		else 
+		{
 			NSLog(@"local project exists but was modified later than remote project");
 		}
-
 	}
 	else 
 	{
@@ -680,33 +686,29 @@
 			
 			[newProject save];
 		}
-		else {
+		else 
+		{
 			NSLog(@"remote project was modified prior to last sync, assume we deleted it...");
 		}
-
 	}
 	return YES;
 }
 
-- (BOOL) deleteLocalProjectWithModifiedDatePriorToLastSyncDate:(NSDictionary*)map
+- (BOOL) deleteLocalProjectWithModifiedDatePriorToLastSyncDate:(NSDictionary*)remoteProjectsMap
 {
 	NSLog(@"deleteLocalProjectWithModifiedDatePriorToLastSyncDate");
 	if(lastSyncDate)
 	{
-		for(Project * project in [self allProjects])
+		for(Project * localProject in [self allProjects])
 		{
-			if ([map objectForKey:project.uid]==nil) {
+			// see if local project exists in remote projects
+			if ([remoteProjectsMap objectForKey:localProject.uid]==nil) {
 				// no project with this uid exists on remote...
 				// if local project was modified prior to last sync, we assume we deleted the project remotely...
-				NSLog(@"project.modifiedOn=%@",[project.modifiedOn description]);
-				NSLog(@"lastSyncDate=%@",[lastSyncDate description]);
-				
-				if([self isDate:lastSyncDate laterThan:project.modifiedOn])
+				if([self isDate:lastSyncDate laterThan:localProject.modifiedOn])
 				{
-				//if([[project.modifiedOn laterDate:lastSyncDate] isEqual:lastSyncDate])
-				//{
-					NSLog(@"Deleting local project: %@",project.name);
-					[project delete];
+					NSLog(@"Deleting local project: %@",localProject.name);
+					[localProject delete];
 				}
 			}
 		}
@@ -714,20 +716,22 @@
 	return YES;
 }
 
-- (BOOL) deleteLocalTasksWithModifiedDatePriorToLastSyncDate:(NSDictionary*)map
+- (BOOL) deleteLocalTasksWithModifiedDatePriorToLastSyncDate:(NSDictionary*)remoteTasksMap
 {
 	NSLog(@"deleteLocalTasksWithModifiedDatePriorToLastSyncDate");
 	if(lastSyncDate)
 	{
-		for(Task * task in [self allTasks])
+		for(Task * localTask in [self allTasks])
 		{
-			if ([map objectForKey:task.uid]==nil) {
-				// no project with this uid exists on remote...
-				// if local project was modified prior to last sync, we assume we deleted the project remotely...
-				if([self isDate:lastSyncDate laterThan:task.modifiedOn])
+			// see if local task exists in remote tasks
+			if ([remoteTasksMap objectForKey:localTask.uid]==nil) 
+			{
+				// no task with this uid exists on remote...
+				// if local task was modified prior to last sync, we assume we deleted the task remotely...
+				if([self isDate:lastSyncDate laterThan:localTask.modifiedOn])
 				{
-					NSLog(@"Deleting local task: %@",task.uid);
-					[task delete];
+					NSLog(@"Deleting local task: %@",localTask.uid);
+					[localTask delete];
 				}
 			}
 		}
@@ -735,51 +739,46 @@
 	return YES;
 }
 
-- (void) updateDatabaseWithRemoteProjects:(NSArray*)projects
+- (void) updateDatabaseWithRemoteProjects:(NSArray*)remoteProjects
 {
 	NSLog(@"updateDatabaseWithRemoteProjects");
 	
 	// go through all remote tasks first
-	NSArray * allRemoteTasks=[self collectTasksFromProjects:projects];
+	NSArray * allRemoteTasks=[self collectTasksFromProjects:remoteProjects];
 	NSMutableArray * unUpdatedRemoteTasks=[[NSMutableArray alloc] init];
 	NSMutableDictionary * remoteTasksMap=[[NSMutableDictionary alloc] init];
 	
-	for(Task * task in allRemoteTasks)
+	for(Task * remoteTask in allRemoteTasks)
 	{
-		if(![self updateLocalTaskWithRemoteTask:task])
+		if(![self updateLocalTaskWithRemoteTask:remoteTask])
 		{
-			[unUpdatedRemoteTasks addObject:task];
+			[unUpdatedRemoteTasks addObject:remoteTask];
 		}
-		[remoteTasksMap setObject:task.uid forKey:task.uid];
+		[remoteTasksMap setObject:remoteTask forKey:remoteTask.uid];
 	}
+	
 	NSMutableDictionary * remoteProjectsMap=[[NSMutableDictionary alloc] init];
 	
 	// now go through all projects
-	for(Project * project in projects)
+	for(Project * remoteProject in remoteProjects)
 	{
-		if([project.uid isEqualToString:kInboxUID])
+		if([remoteProject.uid isEqualToString:@"_inbox"])
 		{
 			// inbox project
 		}
 		else 
 		{
-			[self updateLocalProjectWithRemoteProject:project];
-			[remoteProjectsMap setObject:project.uid forKey:project.uid];
+			[self updateLocalProjectWithRemoteProject:remoteProject];
+			[remoteProjectsMap setObject:remoteProject forKey:remoteProject.uid];
 		}
 	}
-	// do we have any projects that dont exist on remote?
-		// if any of these have createon dates < last sync date, assume we deleted it remotely (delete locally too)
-		// should we warn user before deleting?
-		// delete local project
 	
 	[self deleteLocalProjectWithModifiedDatePriorToLastSyncDate:remoteProjectsMap];
 	 
-	
 	// go through un-updated tasks again (for tasks with new projects)
-	
-	for(Task * task in unUpdatedRemoteTasks)
+	for(Task * remoteTask in unUpdatedRemoteTasks)
 	{
-		[self updateLocalTaskWithRemoteTask:task];
+		[self updateLocalTaskWithRemoteTask:remoteTask];
 	}
 	
 	[self deleteLocalTasksWithModifiedDatePriorToLastSyncDate:remoteTasksMap];
@@ -788,7 +787,7 @@
 	[remoteProjectsMap release];
 	
 	[unUpdatedRemoteTasks release];
-}
+}*/
 
 - (NSString*) getJsonFromDatabase
 {
@@ -798,8 +797,9 @@
 	
 	// get inbox projects...
 	TempProject * inbox=[[TempProject alloc] init];
+	
 	inbox.name=@"Inbox";
-	inbox.uid=kInboxUID;
+	inbox.uid=@"_inbox";
 	inbox.modifiedOn=[NSDate date];
 	inbox.createdOn=[NSDate date];
 	inbox.tasks=[self unassignedTasks];
@@ -862,16 +862,12 @@
 	
 	if(date)
 	{
-		NSString * s=[formatter stringFromDate:date];
-		NSLog(@"date=%@",s);
-		
-		NSDate * d=[formatter dateFromString:s];
-		
-		NSLog(@"parsed date to: %@",[d description]);
-		
-		return s;
+		return [formatter stringFromDate:date];
 	}
-	return nil;
+	else 
+	{
+		return nil;
+	}
 }
 
 - (NSDictionary*) getDictionaryFromTask:(Task*)task
@@ -932,11 +928,6 @@
 		NSMutableArray * tasks=[[NSMutableArray alloc] init];
 		
 		NSArray * tasksArray=[dict objectForKey:@"tasks"];
-		if(![tasksArray isKindOfClass:[NSArray class]])
-		{
-			// what is it then?
-			NSLog(@"tasksArray is something else!");
-		}
 		   
 		for(NSDictionary * taskDict in tasksArray)
 		{
@@ -977,35 +968,31 @@
 		return nil;
 	}
 }
-- (void)restClient:(DBRestClient*)client metadataUnchangedAtPath:(NSString*)path {
+
+- (void)restClient:(DBRestClient*)client metadataUnchangedAtPath:(NSString*)path 
+{
 	NSLog(@"restClient:metadataUnchangedAtPath: %@", path);
-    //[self loadRandomPhoto];
 }
 
-- (void)restClient:(DBRestClient*)client loadMetadataFailedWithError:(NSError*)error {
+- (void)restClient:(DBRestClient*)client loadMetadataFailedWithError:(NSError*)error 
+{
     NSLog(@"restClient:loadMetadataFailedWithError: %@", [error localizedDescription]);
 	// possibly folder does not exist, try creating it...
-	
 	[self.restClient createFolder:@"NextOnDeck"];
-	
-    //[self displayError];
-    //[self setWorking:NO];
 }
 
 - (void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder
 {
 	NSLog(@"restClient:createdFolder: %@",folder.path);
-	
-	 
 }
 
-// Folder is the metadata for the newly created folder
 - (void)restClient:(DBRestClient*)client createFolderFailedWithError:(NSError*)error
 {
 	NSLog(@"restClient:createFolderFailedWithError: %@",[error localizedDescription]);
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
 	[formatter release];
 	[restClient release];
 	[metadataHash release];

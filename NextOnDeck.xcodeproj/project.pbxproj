@@ -84,6 +84,7 @@
 		B056F0DB1311EBDD00EA99CC /* ProjectViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = B056F0DA1311EBDD00EA99CC /* ProjectViewController_iPhone.m */; };
 		B056F0E21311EDF600EA99CC /* ProjectView-iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B056F0E11311EDF600EA99CC /* ProjectView-iPhone.xib */; };
 		B056F0F81311F02B00EA99CC /* AddTaskViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = B056F0F71311F02B00EA99CC /* AddTaskViewController_iPhone.m */; };
+		B0A6C5C1134CB23900EF8DE8 /* Synchronizer.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A6C5C0134CB23900EF8DE8 /* Synchronizer.m */; };
 		B0AFDB7711ADF7E100CDDD3E /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */; };
 		B0AFE18011A47E7400ABB6DA /* checkbox_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE17E11A47E7400ABB6DA /* checkbox_checked.png */; };
 		B0AFE18111A47E7400ABB6DA /* checkbox_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = B0AFE17F11A47E7400ABB6DA /* checkbox_unchecked.png */; };
@@ -250,6 +251,8 @@
 		B056F0E11311EDF600EA99CC /* ProjectView-iPhone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "ProjectView-iPhone.xib"; sourceTree = "<group>"; };
 		B056F0F61311F02B00EA99CC /* AddTaskViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTaskViewController_iPhone.h; sourceTree = "<group>"; };
 		B056F0F71311F02B00EA99CC /* AddTaskViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTaskViewController_iPhone.m; sourceTree = "<group>"; };
+		B0A6C5BF134CB23900EF8DE8 /* Synchronizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Synchronizer.h; sourceTree = "<group>"; };
+		B0A6C5C0134CB23900EF8DE8 /* Synchronizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Synchronizer.m; sourceTree = "<group>"; };
 		B0AFDB7611ADF7E100CDDD3E /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
 		B0AFE17E11A47E7400ABB6DA /* checkbox_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_checked.png; sourceTree = "<group>"; };
 		B0AFE17F11A47E7400ABB6DA /* checkbox_unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_unchecked.png; sourceTree = "<group>"; };
@@ -308,6 +311,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B0A6C5BE134CB21500EF8DE8 /* Synchronization */,
 				B0554847134B62C300564DA7 /* FormViewController.h */,
 				B0554848134B62C300564DA7 /* FormViewController.m */,
 				B0554849134B62C300564DA7 /* FormViewTableViewController.h */,
@@ -573,6 +577,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		B0A6C5BE134CB21500EF8DE8 /* Synchronization */ = {
+			isa = PBXGroup;
+			children = (
+				B0A6C5BF134CB23900EF8DE8 /* Synchronizer.h */,
+				B0A6C5C0134CB23900EF8DE8 /* Synchronizer.m */,
+			);
+			path = Synchronization;
+			sourceTree = "<group>";
+		};
 		B0E0688E11B741BA006AC173 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,6 +795,7 @@
 				B0554B1C134B86D800564DA7 /* NSURL+MPURLParameterAdditions.m in Sources */,
 				B0554B1D134B86D800564DA7 /* NSURLResponse+Encoding.m in Sources */,
 				B0554B1E134B86D800564DA7 /* NSString+Dropbox.m in Sources */,
+				B0A6C5C1134CB23900EF8DE8 /* Synchronizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
