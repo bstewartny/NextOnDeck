@@ -20,6 +20,8 @@
 	
 	UIBarButtonItem * editButton=[[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(edit:)];
 	
+	self.navigationItem.title=@"Next On Deck";
+	
 	self.navigationItem.leftBarButtonItem=editButton;
 	
 	[editButton release];

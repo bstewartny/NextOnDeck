@@ -30,7 +30,7 @@
 	//NSMutableArray* buttons = [[NSMutableArray alloc] init];
 	
 	// create a standard "action" button
-	UIBarButtonItem* bi;
+	//UIBarButtonItem* bi;
 	
 		
 	// edit button
@@ -48,12 +48,12 @@
 	//[bi release];
 	
 	// add button
-	bi=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
-	self.navigationItem.rightBarButtonItem=bi;
+	//bi=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)];
+	//self.navigationItem.rightBarButtonItem=bi;
 	//[bi setStyle:UIBarButtonItemStyleBordered];
 	
 	//[buttons addObject:bi];
-	[bi release];
+	//[bi release];
 	
 	// stick the buttons in the toolbar
 	//[topToolbar setItems:buttons animated:NO];
@@ -66,19 +66,21 @@
 	UIBarButtonItem * editButton=(UIBarButtonItem*)sender;
 	if(self.taskTableView.editing)
 	{
+		deleteRowMode=NO;
 		[self.taskTableView setEditing:NO animated:YES];
 		[editButton setStyle:UIBarButtonItemStyleBordered];
 		[editButton setTitle:@"Edit"];
 	}
 	else 
 	{
+		deleteRowMode=YES;
 		[self.taskTableView setEditing:YES animated:YES];
 		[editButton setTitle:@"Done"];
 		[editButton setStyle:UIBarButtonItemStyleDone];
 	}
 }
 
-- (void)add:(id)sender
+- (IBAction)add:(id)sender
 {
 	AddTaskViewController_iPhone * taskFormView=[[AddTaskViewController_iPhone alloc] init ];//nitWithNibName:@"AddTaskView-iPhone" bundle:nil];
 	
@@ -94,9 +96,9 @@
 	
 	UINavigationController * nav=[[UINavigationController alloc] initWithRootViewController:taskFormView];
 	
-	[nav setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	[nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
 	
-	[nav setModalPresentationStyle:UIModalPresentationFormSheet];
+	[nav setModalPresentationStyle:UIModalPresentationFullScreen];
 	
 	[self presentModalViewController:nav animated:YES];
 	
@@ -282,15 +284,38 @@
 {
 	return YES;
 }
-
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	Task * task=[tasks objectAtIndex:indexPath.row];
+	
+	if(deleteRowMode || [task.completed boolValue])
+	{
+		return @"Delete";
+	}
+	else 
+	{
+		return @"Complete";
+	}
+}
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
 {    
 	if (editingStyle == UITableViewCellEditingStyleDelete) 
 	{
 		Task * task=[tasks objectAtIndex:indexPath.row];
-		[task delete];
-		[self loadTasks];
-		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		if(deleteRowMode || [task.completed boolValue])
+		{
+			[task delete];
+			[self loadTasks];
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}
+		else 
+		{
+			task.completed=[NSNumber numberWithBool:YES];
+			task.completedOn=[NSDate date];
+			[task save];
+			[self loadTasks];
+			[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}
 		[self sendProjectDataChangedNotification];
 	}
 }
@@ -318,9 +343,9 @@
 	
 	UINavigationController * nav=[[UINavigationController alloc] initWithRootViewController:taskViewController];
 	
-	[nav setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+	[nav setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
 	
-	[nav setModalPresentationStyle:UIModalPresentationFormSheet];
+	[nav setModalPresentationStyle:UIModalPresentationFullScreen];
 	
 	[self presentModalViewController:nav animated:YES];
 	

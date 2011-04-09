@@ -93,7 +93,7 @@
 		}
 	}
 	
-	[self deleteLocalProjectWithModifiedDatePriorToLastSyncDate:remoteProjectsMap];
+	[self deleteLocalProjectWithModifiedDatePriorToLastSyncDate:localProjects remoteProjects:remoteProjectsMap];
 	
 	// go through un-updated tasks again (for tasks with new projects)
 	for(Task * remoteTask in unUpdatedRemoteTasks)
@@ -101,7 +101,7 @@
 		[self updateLocalTaskWithRemoteTask:remoteTask];
 	}
 	
-	[self deleteLocalTasksWithModifiedDatePriorToLastSyncDate:remoteTasksMap];
+	[self deleteLocalTasksWithModifiedDatePriorToLastSyncDate:localTasks remoteTasks:remoteTasksMap];
 	
 	[remoteTasksMap release];
 	[remoteProjectsMap release];
@@ -335,12 +335,12 @@
 	return YES;
 }
 
-- (BOOL) deleteLocalProjectWithModifiedDatePriorToLastSyncDate:(NSDictionary*)remoteProjectsMap
+- (BOOL) deleteLocalProjectWithModifiedDatePriorToLastSyncDate:(NSArray*)localProjects remoteProjects:(NSDictionary*)remoteProjectsMap
 {
 	NSLog(@"deleteLocalProjectWithModifiedDatePriorToLastSyncDate");
 	if(lastSyncDate)
 	{
-		for(Project * localProject in [self allProjects])
+		for(Project * localProject in localProjects)
 		{
 			// see if local project exists in remote projects
 			if ([remoteProjectsMap objectForKey:localProject.uid]==nil) {
@@ -362,12 +362,12 @@
 	return YES;
 }
 
-- (BOOL) deleteLocalTasksWithModifiedDatePriorToLastSyncDate:(NSDictionary*)remoteTasksMap
+- (BOOL) deleteLocalTasksWithModifiedDatePriorToLastSyncDate:(NSArray*)localTasks remoteTasks:(NSDictionary*)remoteTasksMap
 {
 	NSLog(@"deleteLocalTasksWithModifiedDatePriorToLastSyncDate");
 	if(lastSyncDate)
 	{
-		for(Task * localTask in [self allTasks])
+		for(Task * localTask in localTasks)
 		{
 			// see if local task exists in remote tasks
 			if ([remoteTasksMap objectForKey:localTask.uid]==nil) 

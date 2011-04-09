@@ -161,13 +161,13 @@
 		if(sinceNow>0)
 		{
 			// due date is in the future
-			if(sinceNow < 60*60*24)
+			/*if(sinceNow < 60*60*24)
 			{
 				// due tommorow
 				return @"Due Tommorow";
 			}
 			else 
-			{
+			{*/
 				// format for the specified date
 				
 				NSDateFormatter * formatter=[[NSDateFormatter alloc] init];
@@ -179,7 +179,7 @@
 				[formatter release];
 				
 				return tmp;
-			}
+			//}
 		}
 		else 
 		{
@@ -191,15 +191,16 @@
 			}
 			else 
 			{
-				int days=floor((-sinceNow)/(60*60*24));
+				/*int days=floor((-sinceNow)/(60*60*24));
 				if(days<2)
 				{
 					return @"Due Yesterday";
 				}
 				else 
-				{
-					return [NSString stringWithFormat:@"%d days overdue",days];
-				}
+				{*/
+					return @"Overdue";
+					//return [NSString stringWithFormat:@"%d days overdue",days];
+				//}
 			}
 		}
 	}

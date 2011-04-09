@@ -76,7 +76,12 @@
 	
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
-
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+	[textField resignFirstResponder];
+	[self done:nil];
+	return YES;
+}
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	id * textField=[valueFields objectAtIndex:indexPath.section];
@@ -131,6 +136,7 @@ heightForRowAtIndexPath:(NSIndexPath*)indexPath
 		t.backgroundColor=[UIColor clearColor];
 		t.delegate=self;
 		t.autocapitalizationType=UITextAutocapitalizationTypeWords;
+		t.returnKeyType=UIReturnKeyDone;
 		
 		t.autoresizingMask=UIViewAutoresizingFlexibleWidth;
 		

@@ -17,6 +17,7 @@
 	id _object;
 	
 	UIToolbar * leftToolbar;
+	BOOL deleteRowMode;
 }
 @property(nonatomic,retain) Project * project;
 @property(nonatomic,retain) IBOutlet UITableView * taskTableView;

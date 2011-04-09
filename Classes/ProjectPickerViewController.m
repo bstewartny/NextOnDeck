@@ -9,6 +9,7 @@
     [super viewDidLoad];
 	self.clearsSelectionOnViewWillAppear = NO;
 	self.contentSizeForViewInPopover = CGSizeMake(250.0, 350.0);
+	self.navigationItem.title=@"Projects";
 }
 
 // Override to allow orientations other than the default portrait orientation.

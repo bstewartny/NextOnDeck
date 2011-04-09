@@ -11,14 +11,16 @@
 
 - (void) pickedDate:(NSDate*)dueDate
 {
+	NSLog(@"pickedDate: %@",[dueDate description]);
+	
 	self.pickedDate=dueDate;
-	[self dismissModalViewControllerAnimated:YES];
+	[self.navigationController popViewControllerAnimated:YES];
 	[self.tableView reloadData];
 }
 
 - (void) cancelledDatePicker
 {
-	[self dismissModalViewControllerAnimated:YES];
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -38,13 +40,7 @@
 					
 					dateView.date=self.pickedDate;
 					
-					//[dateView setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
-					
-					//[dateView setModalPresentationStyle:UIModalPresentationFormSheet];
-					
 					[self.navigationController pushViewController:dateView animated:YES];
-					
-					//[self presentModalViewController:dateView animated:YES];
 					
 					[dateView release];
 					
@@ -68,6 +64,10 @@
 					[self.navigationController pushViewController:self.projectPicker animated:YES];
 			}
 		}
+			break;
+		case 3:
+			[super tableView:aTableView didSelectRowAtIndexPath:indexPath];
+			break;
 	}
 }
 

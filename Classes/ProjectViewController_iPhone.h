@@ -11,12 +11,13 @@
 	SEL _selector;
 	id _target;
 	id _object;
+	BOOL deleteRowMode;
 }
 @property(nonatomic,retain) Project * project;
 @property(nonatomic,retain) IBOutlet UITableView * taskTableView;
 
 - (void) setTaskSelector:(SEL)selector withObject:(id)object withTarget:(id)target;
 
-
+- (IBAction)add:(id)sender;
 
 @end

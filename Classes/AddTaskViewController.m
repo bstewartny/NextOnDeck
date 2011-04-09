@@ -85,7 +85,7 @@
 		}
 		[delegate taskFormViewDone];
 	}
-	[[self parentViewController] dismissModalViewControllerAnimated:NO];
+	[[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
 - (void) doneSingleMode
@@ -108,7 +108,7 @@
 		
 		[delegate taskFormViewDone];
 	}
-	[[self parentViewController] dismissModalViewControllerAnimated:NO];
+	[[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -117,19 +117,17 @@
     [super viewDidLoad];
 	
 	self.navigationItem.leftBarButtonItem=[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
-	self.navigationItem.rightBarButtonItem=[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
+	
+	self.navigationItem.rightBarButtonItem=[[[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonSystemItemDone target:self action:@selector(done)] autorelease];
 	
 	if(self.editMode)
 	{
 		self.title=@"Edit Task";
 		self.navigationItem.title=@"Edit Task";
-		//self.navigationBar.topItem.title=@"Edit Task";
 	}
 	else 
 	{
 		self.title=@"New Task";
-		//self.navigationItem.title=@"New Task";
-		//self.navigationBar.topItem.title=@"New Task";
 		
 		UISegmentedControl * segmentedControl=[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Add One",@"Add Many",nil]];
 		segmentedControl.segmentedControlStyle=UISegmentedControlStyleBar;
@@ -137,8 +135,6 @@
 		segmentedControl.selectedSegmentIndex=0;
 		addTaskMode=AddTaskModeSingle;
 		self.navigationItem.titleView=segmentedControl;
-		
-		//self.navigationBar.topItem.titleView=segmentedControl;
 		
 		[segmentedControl release];
 		
@@ -228,6 +224,43 @@
 		[cell.contentView addSubview:textField];
 		
 		[textField release];
+	}
+	return cell;
+}
+- (UITableViewCell*) completeCell
+{
+	static NSString * cellIdentifier=@"completeCell";
+	
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+	if(cell==nil)
+	{
+		cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		
+		if(![self.task.completed boolValue])
+		{
+			cell.selectionStyle=UITableViewCellSelectionStyleBlue;
+			cell.backgroundColor=[UIColor redColor];
+			cell.textLabel.textAlignment=UITextAlignmentCenter;
+			cell.textLabel.text=@"Complete";
+			cell.textLabel.font=[UIFont boldSystemFontOfSize:20];
+							 
+			cell.textLabel.textColor=[UIColor whiteColor];
+		}
+		else {
+			cell.selectionStyle=UITableViewCellSelectionStyleNone;
+			cell.backgroundColor=[UIColor blueColor];
+			cell.textLabel.textAlignment=UITextAlignmentCenter;
+			cell.textLabel.text=[NSString stringWithFormat:@"Completed on %@",[formatter stringFromDate:self.task.completedOn]];
+			cell.textLabel.font=[UIFont boldSystemFontOfSize:20];
+			
+			cell.textLabel.textColor=[UIColor whiteColor];
+			
+		}
+
+		
+		
+		
 	}
 	return cell;
 }
@@ -351,7 +384,7 @@
 		label.backgroundColor=[UIColor clearColor];
 		label.font=[UIFont systemFontOfSize:18];
 		
-		UITextView * textView=[[UITextView alloc] initWithFrame:CGRectMake(5, 30, 450, 170)];
+		UITextView * textView=[[UITextView alloc] initWithFrame:CGRectMake(5, 30, 450, 120)];
 	
 		textView.backgroundColor=[UIColor clearColor];
 		textView.font=[UIFont systemFontOfSize:14];
@@ -393,7 +426,7 @@
 	{
 		if(indexPath.section==2)
 		{
-			return 210;
+			return 150;
 		}
 		else 
 		{
@@ -410,7 +443,13 @@
 	}
 	else 
 	{
-		return 3;
+		if(self.editMode)
+			return 4;
+		else {
+			return 3;
+		}
+
+		 
 	}
 }
 
@@ -493,7 +532,9 @@
 				return [self getNotesCell];
 				
 			default:
-				return nil;
+				return [self completeCell];
+				
+				//return nil;
 		}
 	}
 }
@@ -561,6 +602,17 @@
 					
 			}
 		}
+			break;
+		case 3:
+			if(![self.task.completed boolValue])
+			{
+				self.task.completed=[NSNumber numberWithBool:YES];
+				self.task.completedOn=[NSDate date];
+				//[self.task save];
+				[self done];
+			}
+			break;
+			
 	}
 }
 

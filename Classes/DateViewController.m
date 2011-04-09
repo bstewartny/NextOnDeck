@@ -27,26 +27,28 @@
 {
 	UIView *theView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.view = theView;
+	self.view.backgroundColor=[UIColor groupTableViewBackgroundColor];
     [theView release];
 	
-	UITableView *theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 44.0, 320.0, 105.0) style:UITableViewStyleGrouped];
+	UITableView *theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 140.0) style:UITableViewStyleGrouped];
     theTableView.delegate = self;
     theTableView.dataSource = self;
     [self.view addSubview:theTableView];
     self.dateTableView = theTableView;
     [theTableView release];
 	
-	UIDatePicker *theDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 149.0, 320.0, 216.0)];
+	UIDatePicker *theDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0.0, 140.0, 320.0, 250.0)];
     theDatePicker.datePickerMode = UIDatePickerModeDate;
     self.datePicker = theDatePicker;
     [theDatePicker release];
-	self.datePicker.autoresizingMask=UIViewAutoresizingFlexibleHeight;
+	self.datePicker.autoresizingMask=UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     [datePicker addTarget:self action:@selector(dateChanged) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:datePicker];
 	
-	UINavigationBar *navBar=[[UINavigationBar alloc] initWithFrame:CGRectMake(0,0,320.0,44)];
 	
-	[self.view addSubview:navBar];
+	//UINavigationBar *navBar=[[UINavigationBar alloc] initWithFrame:CGRectMake(0,0,320.0,44)];
+	
+	//[self.view addSubview:navBar];
 	
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc]
                                      initWithTitle:@"Cancel" 
@@ -60,14 +62,22 @@
                                    target:self
                                    action:@selector(save)];
     
-	UINavigationItem * navItem=[[UINavigationItem alloc] initWithTitle:nil];
-	[navBar pushNavigationItem:navItem animated:NO];
-	[navItem release];
+	//UINavigationItem * navItem=[[UINavigationItem alloc] initWithTitle:nil];
+	//[navBar pushNavigationItem:navItem animated:NO];
+	//[navItem release];
 	
-	navBar.topItem.leftBarButtonItem=cancelButton;
-	navBar.topItem.rightBarButtonItem=saveButton;
+	//navBar.topItem.leftBarButtonItem=cancelButton;
+	//navBar.topItem.rightBarButtonItem=saveButton;
 	
-	[navBar release];
+	//[navBar release];
+	
+	if(self.navigationController==nil)
+	{
+		self.navigationItem.leftBarButtonItem=cancelButton;
+	}
+	
+	self.navigationItem.rightBarButtonItem=saveButton;
+	self.navigationItem.title=@"Due Date";
 	
 	[cancelButton release];
 	
@@ -93,15 +103,20 @@
     [date release];
     [super dealloc];
 }
-
+- (int) numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return 2;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = nil;
     
-	if(indexPath.row==0)
+	if(indexPath.section==0)
 	{
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:nil] autorelease];
-        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        cell.selectionStyle=UITableViewCellSelectionStyleBlue;
+		cell.textLabel.textAlignment=UITextAlignmentCenter;
+		
 		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		[formatter setDateFormat:@"MMMM dd, yyyy"];
 		
@@ -116,12 +131,12 @@
 
 		[formatter release];
 	}
-	if(indexPath.row==1)
+	if(indexPath.section==1)
 	{
 		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:nil] autorelease];
         cell.selectionStyle=UITableViewCellSelectionStyleBlue;
-		
-		cell.text=@"Tap here to use no date";	
+		cell.textLabel.textAlignment=UITextAlignmentCenter;
+		cell.textLabel.text=@"Tap here to use no date";	
 	}
 	 	
 	 return cell;
@@ -129,12 +144,18 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	 return 2;
+	 return 1;
 }
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if(indexPath.row==1)
+	if(indexPath.section==0)
+	{
+		self.date = [datePicker date];
+		[self.delegate pickedDate:date];
+	}
+	
+	if(indexPath.section==1)
 	{
 		// use no due date
 		// select row

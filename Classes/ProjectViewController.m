@@ -244,6 +244,8 @@
 	return 55;
 }
 
+ 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	static NSString *CellIdentifier = @"TaskTableViewCellIdentifier";
@@ -279,7 +281,7 @@
 		
 		cell.nameLabel.textColor=[UIColor lightGrayColor];
 		
-		cell.badgeString=[task completedOnString];
+		cell.badgeString=nil; //[task completedOnString];
 		
 		cell.badgeColor=[UIColor greenColor];
 	}
@@ -336,14 +338,38 @@
 	return YES;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	Task * task=[tasks objectAtIndex:indexPath.row];
+	
+	if(deleteRowMode || [task.completed boolValue])
+	{
+		return @"Delete";
+	}
+	else 
+	{
+		return @"Complete";
+	}
+}
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath 
 {    
 	if (editingStyle == UITableViewCellEditingStyleDelete) 
 	{
 		Task * task=[tasks objectAtIndex:indexPath.row];
-		[task delete];
-		[self loadTasks];
-		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		if(deleteRowMode || [task.completed boolValue])
+		{
+			[task delete];
+			[self loadTasks];
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}
+		else 
+		{
+			task.completed=[NSNumber numberWithBool:YES];
+			task.completedOn=[NSDate date];
+			[task save];
+			[self loadTasks];
+			[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}
 		[self sendProjectDataChangedNotification];
 	}
 }
